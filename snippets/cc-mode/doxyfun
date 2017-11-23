@@ -1,0 +1,8 @@
+#name : Doxygen function comment
+# key: doxyfun
+# --
+/*!
+ * @brief ${1:Brief explaination of the function.}
+ *
+ * $0
+ */

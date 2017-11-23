@@ -1,0 +1,1519 @@
+#+TITLE: Storviks Emacs Configurations
+#+AUTHOR: Petter S. Storvik
+#+EMAIL: petterstorvik@gmail.com
+#+PROPERTY: header-args    :results silent
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css" />
+
+* Installation notes
+- Symlink emacs.d to home folder
+
+** Inspiration and useful links
+- [[https://emacs.zeef.com/ehartc?ref=robert.thorpe][Emacs top list]]
+- [[https://github.com/joodie/emacs-literal-config][Joodie github]]
+- [[https://github.com/mwfogleman/config/tree/master/home/.emacs.d][mwfoglemans github]]
+- [[https://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][sachas configs]]
+- [[http://pages.sachachua.com/.emacs.d/Sacha.html][sachas configs again]]
+- [[http://endlessparentheses.com/][Endless Parantheses]]
+- [[http://emacsrocks.com/][Emacs Rocks!]]
+- [[http://doc.norang.ca/org-mode.html][Norangs org-mode configs]]
+- [[http://www.totherme.org/configs/gds.html][Gareth's Emacs Configs]]
+- [[http://writequit.org/org/settings.html][Lees Emacs Configs]]
+- [[http://tuhdo.github.io/c-ide.html][C/C++ Development in Emacs]]
+
+** Add to workflow
+- =C--= or =M--= as negative argument. Can among others be used with =M-d= (delete from point to end of word) or =C-k= (delete from point to end of line).
+- Get help with =C-h i= (manuals) and =C-h a= (apropos, search for commands containing search string).
+- =C-h f= to describe function and =C-h v= to describe variables. Should be exchanged with counsel describe.
+- Keep buffers around, using =C-x s= to save all.
+- Do stuff in other window. =C-x 4 C-h= to list all bindings.
+- Frames, create new emacs windows to use in multimonitor setups and such. =C-x 5 C-h=.
+- Use =C-M-f/b= to move by s-expression. From start paren to end paren and such.
+- Use =C-M-= (d)own into list, (u)p out of list. Move into the nearest balanced expression.
+- Use =C-M-= (n)ext list, (p)revious list.
+- Move by sentence by reblacing =C= with =M=. That is =M-a/e=.
+- Move by defun with =C-M-a/e=.
+- Scroll other window with =C-M-v= (down) and =C-M-S-v= (up).
+- Ivy-hydra =C-o= when in ivy minibuffer.
+
+* Personal information
+Add name and E-mail.
+
+#+begin_src emacs-lisp
+  (setq user-full-name "Petter S. Storvik"
+        user-mail-address "petterstorvik@gmail.com")
+#+end_src
+
+* General settings
+** System
+Macro for setting different settings for OSX / Linux.
+[[https://gist.github.com/beyeran/4118401][Thanks to beyeran]].
+
+#+begin_src emacs-lisp
+  (defun sys-type-p (name)
+    (eq system-type name))
+
+  (defmacro sys-diversification (darwin &optional gnu/linux win)
+     (cond ((sys-type-p 'darwin) darwin)
+           ((sys-type-p 'gnu/linux) gnu/linux)
+           ((sys-type-p 'windows-nt) win)
+           (t nil)))
+
+  (defun sys-type-p (name)
+    (eq system-type name))
+
+  (setq homedir-path
+        (sys-diversification
+           "/Users/storvik/"
+           "/home/storvik/"))
+#+end_src
+
+** Initial settings
+Set up =use-package= and add MELPA as archive.
+Configure load-path to include =~/.emacs.d/elisp/=.
+
+#+begin_src emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (package-initialize)
+
+  (mapc
+   (lambda (package)
+     (if (not (package-installed-p package))
+         (progn
+           (package-refresh-contents)
+           (package-install package))))
+   '(use-package diminish bind-key))
+
+  (eval-when-compile
+    (require 'use-package))
+  (require 'diminish)
+  (require 'bind-key)
+  (setq use-package-always-ensure t)
+  ;;(package-refresh-contents)
+
+  (add-to-list 'load-path "~/.emacs.d/elisp/")
+#+end_src
+
+** Backup
+Change backup location to common dir, =~/.emacs.saves= in emacs directory.
+
+#+begin_src emacs-lisp
+  (setq backup-directory-alist
+        `((".*" . ,(concat homedir-path "tmp/emacs.saves/"))))
+  (setq auto-save-file-name-transforms
+        `((".*" ,(concat homedir-path "tmp/emacs.saves/") t)))
+ #+end_src
+
+** Bulit in keybindings
+Key bindings not related to external packages or functions.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-o") 'other-window)
+  (global-set-key (kbd "RET") 'newline-and-indent)
+#+end_src
+
+** Lastpass
+[[https://github.com/storvik/emacs-lastpass][Visit webpage]].
+Package used to communicate with LastPass.
+
+#+begin_src emacs-lisp
+  (use-package lastpass
+    :config
+    (setq lastpass-user "petterstorvik@gmail.com")
+    (lastpass-auth-source-enable))
+#+end_src
+
+** Key Chord
+[[http://emacswiki.org/emacs/key-chord.el][Visit website]].
+Key chord, run command when two keys are pressed simultanously.
+
+#+begin_src emacs-lisp
+  (use-package key-chord
+    :init
+    (progn
+      (setq key-chord-two-keys-delay .015
+            key-chord-one-key-delay .020)
+      (key-chord-mode 1)
+
+      ;; Global key chord maps
+      (key-chord-define-global ",u" 'undo)
+      (key-chord-define-global ",r" 'redo)
+      (key-chord-define-global ",o" 'other-window)
+      (key-chord-define-global ",0" 'delete-window)
+      (key-chord-define-global ",1" 'delete-other-windows)
+      (key-chord-define-global ",2" 'split-window-below)
+      (key-chord-define-global ",3" 'split-window-right)
+      (key-chord-define-global ":G" 'avy-goto-char)
+      (key-chord-define-global "gf" 'avy-goto-line)
+      (key-chord-define-global "gh" 'avy-goto-word-1)
+      (key-chord-define-global "xf" 'counsel-find-file)
+      (key-chord-define-global "mx" 'counsel-M-x)
+
+      ;; Mode specific chord maps
+      ;;(key-chord-define c++-mode-map ";E" "\C-e;")
+      ))
+#+end_src
+
+** Multiple cursors
+[[https://github.com/magnars/multiple-cursors.el][Visit website]].
+Multiple cursors is an awesome package thats makes editing multiple entries with similar structure a breeze.
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :bind (("C->" . mc/mark-next-like-this)
+           ("C-<" . mc/mark-previous-like-this)
+           ("C-*" . mc/mark-all-like-this)
+           ("C-;" . mc/edit-lines)))
+#+end_src
+
+** Newline
+Add newline to end of files.
+
+#+begin_src emacs-lisp
+  (setq require-final-newline t)
+#+end_src
+
+** Recentf
+Number of items to be saved in recent file list.
+
+#+begin_src emacs-lisp
+  (setq recentf-max-saved-items 2048)
+#+end_src
+
+** Scrolling
+Smoother scrolling, with a margin of 5.
+
+#+begin_src emacs-lisp
+  (use-package smooth-scrolling
+    :config
+    (smooth-scrolling-mode 1)
+    (setq smooth-scroll-margin 5))
+#+end_src
+** Tramp settings
+Make tramp auto-save in another local directory.
+
+#+begin_src emacs-lisp
+  (require 'tramp)
+  (setq tramp-default-method "scp")
+  (setq tramp-auto-save-directory "~/.emacs.d/tramp-autosave")
+#+end_src
+
+** Try
+[[https://github.com/larstvei/Try][Visit webpage]].
+Try allows you to try packages from melpa or a url without installing them / adding them to config.
+
+#+begin_src emacs-lisp
+  (use-package try)
+#+end_src
+
+** Undo Tree
+Undo tree, visualize the undo / redo tree.
+
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :diminish undo-tree-mode
+    :init
+    (global-undo-tree-mode))
+#+end_src
+** Whitespace
+Delete trailing whitespaces on save.
+
+#+begin_src emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
+
+** Ztree
+[[https://github.com/fourier/ztree][Visit website]].
+Visualize dir trees and run Ediff on folders.
+Useful when upgrading between frameworks and such.
+
+#+begin_src emacs-lisp
+  (use-package ztree
+    :config
+    (setq ediff-window-setup-function 'ediff-setup-windows-plain))
+#+end_src
+
+* Appearance settings
+** Font
+Set default font and size.
+
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil :font "Fira Mono-10")
+  ;;(set-face-attribute 'default nil :font "Fira Mono for Powerline-10")
+#+End_src
+
+** Golden ratio
+[[https://github.com/roman/golden-ratio.el][Visit website]].
+Resize windows so that the active window is optimized for editing.
+Todo: Use (x-display-pixel-width) and (x-display-pixel-height) to figure out if golden ratio should be used.
+
+#+begin_src emacs-lisp
+  (use-package golden-ratio
+    :diminish golden-ratio-mode
+    :init
+    (progn
+      (golden-ratio-mode 1)
+      (setq golden-ratio-auto-scale t))
+    :config
+    (add-to-list 'golden-ratio-extra-commands 'ace-window))
+#+end_src
+
+** Highlight line mode
+Highlight current line.
+
+#+begin_src emacs-lisp
+  (when window-system
+    (global-hl-line-mode))
+#+end_src
+
+** Line numbering
+Show line numbers on left side and include linum-off from ~/emacs-d/elisp/.
+
+#+begin_src emacs-lisp
+;;  (global-linum-mode t)
+;;  (require 'linum-off)
+#+end_src
+
+** Startup messages
+Turn off splash screen and startup message.
+
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t
+        initial-scratch-message ""
+        inhibit-startup-echo-area-message t)
+#+end_src
+
+** Theme
+Solarized-theme is pretty awesome!
+
+#+begin_src emacs-lisp
+  (unless (eq window-system nil)
+    (use-package solarized-theme
+      :config
+      (progn
+        (set-terminal-parameter nil 'background-mode 'light)
+        (load-theme 'solarized-dark t))))
+#+end_src
+
+** Smart mode line
+[[https://github.com/Malabarba/smart-mode-line][Visit website]].
+Smart mode line looks pretty, and is actually quite helpful.
+
+#+begin_src emacs-lisp
+  (use-package smart-mode-line
+    :config
+    (progn
+      (setq sml/no-confirm-load-theme t)
+      (add-to-list 'sml/replacer-regexp-list '("^~/developer/" ":dev:"))
+      (add-to-list 'sml/replacer-regexp-list '("^:dev:go/" ":golang:") t)
+      (add-to-list 'sml/replacer-regexp-list '("^:dev:rpi/" ":rpi:") t)
+      (add-to-list 'sml/replacer-regexp-list '("^:dev:elisp/" ":elisp:") t)
+      (add-to-list 'sml/replacer-regexp-list '("^:dev:www/" ":web:") t)
+      (sml/setup)))
+#+end_src
+
+** Tab width
+Use tabs, set default tab width to 4.
+
+#+begin_src emacs-lisp
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
+#+end_src
+
+** Tool bar modifications
+Turn off tool bar and scroll bar. Menu bar is kept on.
+
+#+begin_src emacs-lisp
+  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+#+end_src
+
+** Y/N Prompt
+Make emacs use y/n instead of yes/no.
+
+#+begin_src emacs-lisp
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+** Unique buffer names
+Helps differentiating between buffers with similar / same name.
+
+#+begin_src emacs-lisp
+  (require 'uniquify)
+#+end_src
+
+* Mac specific
+Use Ctrl key as control modifier and Cmd as meta modifier.
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'darwin)
+    (setq mac-command-modifier 'meta)
+    (setq mac-control-modifier 'control))
+#+end_src
+
+* Shell
+Shell package for enhanced shell experience.
+Set up to work with zsh on Os X and Linux.
+
+#+begin_src emacs-lisp
+  (use-package shell
+    :bind ("<f1>" . shell)
+    :init
+    (dirtrack-mode)
+    (setq explicit-shell-file-name (sys-diversification
+                                    "/bin/zsh"
+                                    "/usr/bin/fish"))
+    (use-package exec-path-from-shell
+      :init
+      (exec-path-from-shell-initialize)))
+#+end_src
+
+* Terminal specific
+** Mouse clicks
+Enable mouse clicks in terminal.
+
+#+begin_src emacs-lisp
+  (when (not (window-system))
+    (xterm-mouse-mode +1))
+#+end_src
+
+** Disable yasnippet
+Disable yasnippet in ansi-term.
+
+#+begin_src emacs-lisp
+  (add-hook 'term-mode-hook (lambda()
+                              (setq yas-dont-activate t)))
+#+end_src
+
+* Navigation
+** Ace-window
+[[https://github.com/abo-abo/ace-window][Visit website]].
+Easier window movement, bind it to default other-window =C-x o=.
+
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :bind (("C-x o" . ace-window))
+    :init
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+#+end_src
+
+** Avy
+[[https://github.com/abo-abo/avy][Visit webpage]].
+Tool for jumping to a given char on the screen.
+The following keybindings can be used:
+- =C-:= Avy goto char
+- =C-'= Avy goto char 2
+- =M-g g= Avy goto line
+- =M-g w= Avy goto word 1
+  - =n= to copy
+  - =m= to mark after jumping
+  - =x= to kill after jumping
+- =M-g e= Avy goto word 0
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :bind (("C-:" . avy-goto-char)
+           ("C-'" . avy-goto-char-2)
+           ("M-g g" . avy-goto-line)
+           ("M-g w" . avy-goto-word-1)
+           ("M-g e" . avy-goto-word-0)))
+#+end_src
+
+** Expand region
+[[https://github.com/magnars/expand-region.el][Visit webpage]].
+This package expands region by semantic units.
+
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :bind (("C-=" . er/expand-region)))
+#+end_src
+
+** Hyperlinks
+Open hyperlinks at point. =C-c B(rowse)=.
+
+#+begin_src emacs-lisp
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program (sys-diversification
+                                    "open"
+                                    "firefox"))
+
+  (bind-key "C-c B" 'browse-url-at-point)
+#+end_src
+** Winner mode
+[[http://emacswiki.org/emacs/WinnerMode][Visit website]].
+Winner mode to undo/redo window changes. Used with =C-c left/right=.
+
+#+begin_src emacs-lisp
+  (use-package winner
+    :init (winner-mode))
+#+end_src
+
+* Language
+Set default ispell language to English.
+
+#+begin_src emacs-lisp
+  (setq ispell-dictionary "en")
+#+end_src
+
+* Ivy
+[[https://github.com/abo-abo/swiper][Visit webpage]]/[[http://oremacs.com/swiper/][Documentation]].
+Ivy replaces the heavier Helm package, try it and be amazed!
+
+#+begin_src emacs-lisp
+  (use-package counsel
+    :bind
+    (("M-y" . counsel-yank-pop)
+     :map ivy-minibuffer-map
+     ("M-y" . ivy-next-line-and-call)))
+
+  (use-package swiper
+    :diminish ivy-mode
+    :config
+    (progn
+      (ivy-mode 1)
+      (setq ivy-height 10)
+      (setq ivy-count-format "")
+      (setq ivy-extra-directories nil)     ;; Do not show "./" and "../"
+      (setq ivy-virtual-abbreviate 'full)  ;; Show full file path
+      (setq ivy-use-virtual-buffers t)     ;; Show recently killed buffers
+      (setq ivy-use-ignore-default 'always)
+      (setq ivy-ignore-buffers '("smex-autoloads.el"
+                                 "emacs.d/custom.el"))
+      (setq ivy-initial-inputs-alist nil)
+      (setq ivy-re-builders-alist
+            '((t	 . ivy--regex-ignore-order)))
+      (advice-add 'swiper :after 'recenter))
+    :bind (("C-s" . swiper)
+           ("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("C-c C-r" . ivy-resume)
+           ("C-x C-r" . counsel-recentf)
+           ("C-c i" . counsel-imenu)
+           ("C-c g" . counsel-git)
+           ("C-c j" . counsel-git-grep)
+           ("C-c k" . counsel-ag)
+           ("C-x l" . counsel-locate)))
+
+  (use-package ivy-hydra)
+#+end_src
+
+To enhance the M-x experience, smex must be installed.
+#+begin_src emacs-lisp
+(use-package smex)
+#+end_src
+
+* Projectile
+[[https://github.com/bbatsov/projectile][Visit webpage]].
+Projectile simplifies navigation and structuring on large projects.
+Git folders are identified as projects, other projects have to have an empty =.projectile=-file to be categorized as project.
+List all available bindings with =C-c p=, which is the prefix, followed by =C-h=.
+
+#+begin_src emacs-lisp
+  (use-package projectile
+    :diminish projectile-mode
+    :config
+    (progn
+      (projectile-global-mode t)
+      (setq projectile-completion-system 'ivy)))
+#+end_src
+
+* Programming
+** C/C++
+*** Compile key
+Change compile key binding to =C-c C-c=.
+
+#+begin_src emacs-lisp
+  (add-hook 'c-mode-common-hook
+            '(lambda ()
+               (local-set-key "\C-c\C-c" 'compile)))
+#+end_src
+*** Default indentation
+Set default indentation to 4.
+
+#+begin_src emacs-lisp
+  (defun my-c-mode-common-hook ()
+      (c-set-offset 'substatement-open 0)
+      ;;(setq c++-tab-always-indent nil)
+      (setq c-basic-offset 4)
+      (setq c-indent-level 4)
+      (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
+      (setq tab-width 4))
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+#+end_src
+
+*** Look for Makefile
+Look for Makefile in parent folder and change directory.
+
+#+begin_src emacs-lisp
+  (require 'cl) ;; If you don't have it already
+  (defun* get-closest-pathname (&optional (file "Makefile"))
+    (let ((root (expand-file-name "/"))) ;; the win32 builds should translate this correctly
+      (expand-file-name file
+                        (loop
+                         for d = default-directory then (expand-file-name ".." d)
+                         if (file-exists-p (expand-file-name file d))
+                         return d
+                         if (equal d root)
+                         return nil))))
+
+  ;; Use make command and change default-directory to the one with the makefile
+  (require 'compile)
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (set (make-local-variable 'compile-command)
+                   (format "make -k" (get-closest-pathname))) ;;add %s to output the string
+              (setq default-directory (substring (get-closest-pathname) 0 -8))))
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (set (make-local-variable 'compile-command)
+                   (format "make -k" (get-closest-pathname)))
+              (setq default-directory (substring (get-closest-pathname) 0 -8))))
+#+end_src
+
+** Company mode
+*** Irony
+[[https://github.com/Sarcasm/irony-mode][Visit website]].
+Company mode is a auto complete package and irony is autocomplete for C/C++.
+Installation notes:
+- Add this when installing in Os X: =-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON /usr/local/opt/llvm/lib/libclang.dylib=
+- LLVM must be installed. Os X: =brew install llvm --with-clang=
+
+#+begin_src emacs-lisp
+  (use-package irony
+    :defer t
+    :init
+    (progn
+      (add-hook 'c++-mode-hook 'irony-mode)
+      (add-hook 'c-mode-hook 'irony-mode)
+      (add-hook 'objc-mode-hook 'irony-mode))
+    :config
+    ;; replace the `completion-at-point' and `complete-symbol' bindings in
+    ;; irony-mode's buffers by irony-mode's function
+    (progn
+      (defun my-irony-mode-hook ()
+        (define-key irony-mode-map [remap completion-at-point]
+          'irony-completion-at-point-async)
+        (define-key irony-mode-map [remap complete-symbol]
+          'irony-completion-at-point-async))
+      (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
+#+end_src
+
+*** Company
+[[http://company-mode.github.io/][Visit website]].
+To configure company with irony, [[http://cachestocaches.com/2015/8/c-completion-emacs/][follow this guide]].
+
+#+begin_src emacs-lisp
+  (use-package company
+    :defer t
+    :init
+    (global-company-mode 1)
+    :config
+    (progn
+      (use-package company-irony
+        :defer t)
+      (setq company-idle-delay              nil
+            company-minimum-prefix-length   2
+            company-show-numbers            t
+            company-tooltip-limit           20
+            company-dabbrev-downcase        nil)
+      (with-eval-after-load 'company
+        (add-to-list 'company-backends 'company-irony)
+        (add-to-list 'company-backends 'company-gtags)))
+    :bind
+    ("C-;" . company-complete-common))
+#+end_src
+
+*** Company quickhelp
+[[https://github.com/expez/company-quickhelp][Visit website]].
+Quickhelp popup in company mode.
+
+#+begin_src emacs-lisp
+  (use-package company-quickhelp
+    :defer t
+    :init
+    (progn
+      (company-quickhelp-mode 1)
+      (eval-after-load 'company
+        '(define-key company-active-map (kbd "M-h") #'company-quickhelp-manual-begin))))
+#+end_src
+
+** CSV files
+[[http://www.emacswiki.org/emacs/CsvMode][Visit website]].
+Prettify csv files.
+
+#+begin_src emacs-lisp
+  (use-package csv-mode)
+#+end_src
+
+** Dockerfiles
+
+#+begin_src emacs-lisp
+(use-package dockerfile-mode)
+#+end_src
+
+** Elisp
+*** Package lint
+[[https://github.com/purcell/package-lint][Visit webpage]].
+Linter for Emacs packages meta data.
+
+#+begin_src emacs-lisp
+  (use-package package-lint)
+#+end_src
+
+** Fixme/Todo Highlights
+Highlights fixme and todo in comments.
+
+#+begin_src emacs-lisp
+  (defun font-lock-comment-annotations ()
+    "Highlight a bunch of well known comment annotations.
+     This functions should be added to the hooks of major modes for programming."
+    (font-lock-add-keywords
+     nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
+            1 font-lock-warning-face t))))
+
+  (add-hook 'prog-mode-hook 'font-lock-comment-annotations)
+#+end_src
+
+** Flycheck
+[[https://github.com/flycheck/flycheck][Visit webpage]].
+Flycheck is a programming grammar checker.
+It includes on the fly function lookup and syntax validation.
+
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :defer t
+    :init
+    (add-hook 'prog-mode-hook #'flycheck-mode)
+    :commands flycheck-mode)
+#+end_src
+
+** Flycheck-irony
+[[https://github.com/Sarcasm/flycheck-irony][Visit webpage]].
+Flycheck-irony uses irony's backend to perform function lookups.
+
+#+begin_src emacs-lisp
+  (use-package flycheck-irony
+    :defer t
+    :init
+    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+#+end_src
+
+** Flymd
+[[https://github.com/mola-T/flymd][Visit webpage]].
+Flymd is a markdown previewer.
+
+#+begin_src emacs-lisp
+  (use-package flymd)
+#+end_src
+
+*** Define browser
+Use Safari to preview markdown, as google chrome is not supported.
+
+#+begin_src emacs-lisp
+  (defun my-flymd-browser-function (url)
+    (let ((process-environment (browse-url-process-environment)))
+      (apply 'start-process
+             (concat "safari " url)
+             nil
+             "/usr/bin/open"
+             (list "-a" "safari" url))))
+  (setq flymd-browser-open-function 'my-flymd-browser-function)
+#+end_src
+
+** Golang
+*** Go mode
+[[https://github.com/dominikh/go-mode.el][Visit webpage]].
+Major mode for go(lang).
+Must import GOPATH enviromental variable.
+
+#+begin_src emacs-lisp
+  (use-package go-mode
+    :init
+    (progn
+      (setq gofmt-command "goimports")
+      (add-hook 'before-save-hook 'gofmt-before-save)
+      (bind-key [remap find-tag] #'godef-jump)
+      (bind-key (kbd "C-c C-r") #'go-remove-unused-imports))
+      :config
+      (exec-path-from-shell-copy-env "GOPATH"))
+#+end_src
+
+*** Company-go
+[[https://github.com/nsf/gocode/tree/master/emacs-company][Visit webpage]].
+Go support for company mode.
+
+#+begin_src emacs-lisp
+  (use-package company-go
+    :defer t
+    :init
+    (with-eval-after-load 'company
+      (add-to-list 'company-backends 'company-go)))
+#+end_src
+
+*** Eldoc
+[[https://github.com/syohex/emacs-go-eldoc][Visit webpage]]
+
+#+begin_src emacs-lisp
+;;(use-package go-eldoc
+;
+;;  :defer
+;;  :init
+;;  (add-hook 'go-mode-hook 'go-eldoc-setup))
+#+end_src
+
+** Latex
+Auctex is the best way editing LaTeX documents!
+
+#+begin_src emacs-lisp
+  (use-package tex
+    :ensure auctex
+    :config
+    (progn
+      (setq TeX-auto-save t)
+      (setq TeX-parse-self t)
+      (setq-default TeX-master nil)
+      (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+      (add-hook 'LaTeX-mode-hook 'flyspell-mode)      ;; Enable flyspell as default
+      (add-hook 'LaTeX-mode-hook 'turn-on-reftex)     ;; Enable reftex as default
+      (setq reftex-plug-into-AUCTeX t)
+      (setq TeX-PDF-mode t)                           ;; Enable PDF mode
+
+      ;; Use Skim as default pdf viewer
+      ;; Skim's displayline is used for forward search (from .tex to .pdf)
+      ;; option -b highlights the current line; option -g opens Skim in the background
+      (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
+      (setq TeX-view-program-list
+            ;;(sys-diversification
+            ;; '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))
+            ;; "/usr/share/emacs/site-lisp/mu4e")))
+    '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))))
+
+  ;; Use aspell
+  (add-to-list 'exec-path "/usr/local/bin")
+  (setq ispell-program-name "aspell")
+  (setq ispell-list-command "--list")
+#+end_src
+
+I use LatexMk to compile my latex documents. Replace default latex command with LatexMk.
+
+#+begin_src emacs-lisp
+  (use-package auctex-latexmk
+    :config
+    (auctex-latexmk-setup)
+    (add-hook 'TeX-mode-hook '(lambda ()
+                                (setq TeX-command-default "LatexMk"))))
+#+end_src
+
+** Magit
+Brilliant interface to git.
+=C-x g= to open.
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :bind ("C-x g" . magit-status)
+    :config
+    (progn
+      (defun visit-pull-request-url ()
+        "Visit the current branch's PR on Github."
+        (interactive)
+        (browse-url
+         (format "https://github.com/%s/pull/new/%s"
+                 (replace-regexp-in-string
+                  "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
+                  (magit-get "remote"
+                             (magit-get-remote)
+                             "url"))
+                 (cdr (magit-get-remote-branch)))))
+      (setq magit-completing-read-function 'ivy-completing-read)
+      (bind-key "v" 'visit-pull-request-url magit-mode-map)
+      (bind-keys :map magit-status-mode-map
+                 ("TAB" . magit-section-toggle)
+                 ("<C-tab>" . magit-section-cycle))
+      (bind-keys :map magit-branch-section-map
+                 ("RET" . magit-checkout))))
+#+end_src
+
+** Markdown
+[[http://jblevins.org/projects/markdown-mode/][Visit webpage]].
+Mode to edit markdown files more efficiently.
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :commands (markdown-mode gfm-mode)
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'" . gfm-mode)
+           ("\\.markdown\\'" . markdown-mode))
+    :init (setq markdown-command "multimarkdown"))
+#+end_src
+
+** Markdown toc
+[[https://github.com/ardumont/markdown-toc][Visit webpage]].
+Generate toc with `markdown-toc-generate-toc`.
+
+#+begin_src emacs-lisp
+  (use-package markdown-toc)
+#+end_src
+** Nginx mode
+[[https://github.com/ajc/nginx-mode][Visit webpage]].
+Nginx mode for editing Nginx config files.
+
+#+begin_src emacs-lisp
+  (use-package nginx-mode)
+#+end_src
+
+** SQL Mode
+Bind file extentions to sql mode.
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.create\\'" . sql-mode))
+  (add-to-list 'auto-mode-alist '("\\.drop\\'" . sql-mode))
+  (add-to-list 'auto-mode-alist '("\\.alter\\'" . sql-mode))
+#+end_src
+
+Function to capitalize SQL keywords
+
+#+begin_src emacs-lisp
+    (defun point-in-comment ()
+      (let ((syn (syntax-ppss)))
+        (and (nth 8 syn)
+             (not (nth 3 syn)))))
+
+    (defun my-upcase-all-sql-keywords ()
+      (interactive)
+      (require 'sql)
+      (save-excursion
+        (dolist (keywords sql-mode-mysql-font-lock-keywords)
+          (goto-char (point-min))
+          (while (re-search-forward (car keywords) nil t)
+            (unless (point-in-comment)
+              (goto-char (match-beginning 0))
+              (upcase-word 1))))))
+
+  ;;(add-hook 'sql-mode-hook
+  ;;          (lambda ()
+  ;;            (add-hook 'before-save-hook 'my-upcase-all-sql-keywords nil 'make-it-local)))
+#+end_src
+
+** Systemd mode
+[[https://github.com/holomorph/systemd-mode][Visit webpage]].
+Edit systemd files with syntax highlightning.
+
+#+begin_src emacs-lisp
+  (use-package systemd)
+#+end_src
+
+** Web mode
+[[http://web-mode.org/][Visit webpage]].
+Works with php files with html and js.
+
+#+begin_src emacs-lisp
+  (use-package web-mode
+    :init
+    (progn
+      (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.sass?\\'" . web-mode))
+      (setq web-mode-content-types-alist
+            '(("jsx" . "\\.js[x]?\\'")
+              ("jsx" . "\\.sass?\\'")))
+      (setq-default web-mode-markup-indent-offset 2)
+      (setq-default web-mode-css-indent-offset 4)
+      (setq-default web-mode-code-indent-offset 4)
+      (setq-default web-mode-sql-indent-offset 4)
+      (setq web-mode-enable-current-column-highlight t)))
+#+end_src
+
+** YAML mode
+YAML editing improved.
+
+#+begin_src emacs-lisp
+  (use-package yaml-mode)
+#+end_src
+
+** Yasnippet
+[[https://github.com/joaotavora/yasnippet][Visit webpage]].
+Expand snippets, making your life easier.
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :diminish yas-minor-mode
+    :config
+    (progn
+      (yas-global-mode 1)
+      (setq yas-prompt-functions
+            '( yas-ido-prompt
+               yas-dropdown-prompt
+               yas-completing-prompt
+               yas-no-prompt
+               yas-x-prompt))))
+#+end_src
+
+To make [[Company mode][company mode]] and yasnippet to play nicely together, yasnippet backend is automatically loaded with other backends.
+This according to this [[https://github.com/syl20bnr/spacemacs/pull/179][pull request]].
+
+#+begin_src emacs-lisp
+  (defvar company-mode/enable-yas t
+    "Enable yasnippet for all backends.")
+
+  (defun company-mode/backend-with-yas (backend)
+    (if (or (not company-mode/enable-yas)
+            (and (listp backend)
+                 (member 'company-yasnippet backend)))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+
+  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+#+end_src
+* Div modes
+** Artist mode
+Draw on screen with mouse.
+
+#+begin_src emacs-lisp
+(use-package artist)
+#+end_src
+
+** Typit
+Typing game to learn faster typing / touch typing.
+
+#+begin_src emacs-lisp
+  (use-package typit
+    :commands (typit))
+#+end_src
+
+* Org mode
+** Initial config
+Install org mode package
+
+#+begin_src emacs-lisp
+  (use-package org
+    :mode (("\\.org$" . org-mode))
+    :ensure org-plus-contrib
+    :bind (("C-c l" . org-store-link)
+           ("C-c a" . org-agenda)
+           ("C-c b" . org-iswitchb)
+           ("C-c c" . org-capture))
+    :config
+    (progn
+      ;; Agenda view
+      (setq org-agenda-files (quote ("~/org")))
+      ;; Indentation
+      (setq org-startup-indented t)
+      (setq org-indent-mode t)
+      (setq org-catch-invisible-edit 'nil)
+      ;; File locations
+      (setq org-directory "~/org")
+      (setq org-default-notes-file "~/org/refile.org")
+      ;; Refile
+      (setq org-refile-use-outline-path t)
+      (setq org-outline-path-complete-in-steps nil)
+      (setq org-refile-allow-creating-parent-nodes (quote confirm))
+      (setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                       (org-agenda-files :maxlevel . 9))))
+      ;; Clock
+      (setq org-clock-persist 'history)
+      (org-clock-persistence-insinuate)
+      (setq org-clock-out-remove-zero-time-clocks t)
+      (setq org-log-into-drawer "LOGBOOK")
+      (setq org-clock-into-drawer 1)
+      (setq org-log-done 'time)
+      ;; Todo
+      (setq org-clock-in-switch-to-state "STARTED")
+      ))
+#+end_src
+
+** Capture
+Templates for capturing stuff. Same as the todo states defined above.
+- A phone call (p)
+- A meeting (m)
+- An email I need to respond to (r)
+- A new task (t)
+- A new note (n)
+- A jounral entry in AAT (j)
+- Status meeting (s)
+
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+        (quote (("t" "Todo" entry (file "~/org/refile.org")
+                 "* TODO %?\n")
+                ("r" "Respond" entry (file "~/org/refile.org")
+                 "* STARTED Respond to %:from on %:subject\n\tSCHEDULED: %t\n" :immediate-finish t)
+                ("n" "Note" entry (file "~/org/refile.org")
+                 "* %? :NOTE:\n")
+                ("m" "Meeting" entry (file "~/org/refile.org")
+                 "* MEETING with %? :MEETING:\n")
+                ("p" "Phone Call" entry (file "~/org/refile.org")
+                 "* PHONE %? :PHONE:\n")
+                ("j" "Journal Entry (AAT)" entry (file+datetree "~/org/aat.org")
+                 "* %? %T" :empty-lines 0)
+                ("s" "Status meeting (AAT)" entry (file+datetree "~/org/aat.org")
+                 "* Statusmøte\n%?" :clock-in t)
+                )))
+#+end_src
+
+** Org reveal presentations
+Export org files as reveal.js presentations.
+
+#+begin_src emacs-lisp
+  (use-package ox-reveal
+    :ensure ox-reveal)
+
+  (setq org-reveal-root "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.0/")
+  (setq org-reveal-mathjax t)
+
+  (use-package htmlize)
+#+end_src
+
+** Todo
+*** Define todo states
+Todo states can be cycled through with =S-<left>/<right>=.
+Custom todo states are defined.
+
+#+begin_src emacs-lisp
+  (setq org-todo-keywords
+        (quote ((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
+                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+#+end_src
+
+This defines different colors for different states.
+#+begin_src emacs-lisp
+  (setq org-todo-keyword-faces
+        (quote (("TODO" :foreground "red" :weight bold)
+                ("STARTED" :foreground "blue" :weight bold)
+                ("DONE" :foreground "forest green" :weight bold)
+                ("WAITING" :foreground "orange" :weight bold)
+                ("HOLD" :foreground "magenta" :weight bold)
+                ("CANCELLED" :foreground "forest green" :weight bold)
+                ("MEETING" :foreground "forest green" :weight bold)
+                ("PHONE" :foreground "forest green" :weight bold))))
+#+end_src
+
+* Email
+** Receiving
+[[http://www.djcbsoftware.nl/code/mu/mu4e.html][Visit webpage]] / [[http://www.djcbsoftware.nl/code/mu/mu4e/index.html][documentation]].
+MU4E is used together with offlineimap to receive mail.
+
+#+begin_src emacs-lisp
+  ;; Load path to mu4e, platform dependent.
+  (add-to-list 'load-path (expand-file-name
+                           (sys-diversification
+                            "/usr/local/Cellar/mu/0.9.18_1/share/emacs/site-lisp/mu/mu4e"
+                            "/usr/share/emacs/site-lisp/mu4e")))
+
+  (require 'mu4e)
+  (setq mu4e-maildir "~/email")
+  (setq mu4e-get-mail-command "offlineimap")
+
+  ;; LastPass login test
+  (defun lastpass-mu4e-update-mail-and-index (update-function &rest r)
+    "Check if user is logged in and run UPDATE-FUNCTION with arguments R."
+    (unless (lastpass-logged-in-p)
+      (lastpass-login)
+      (error "LastPass: Not logged in, log in and retry"))
+    (apply update-function r))
+
+  (advice-add 'mu4e-update-mail-and-index :around #'lastpass-mu4e-update-mail-and-index)
+
+  ;; Automatic updates
+  ;;(setq mu4e-update-interval 600)
+
+  ;; Mu4e drafts, sent and trash folder.
+  (setq mu4e-drafts-folder "/mu4e/drafts")
+  (setq mu4e-sent-folder "/mu4e/sent")
+  (setq mu4e-trash-folder "/mu4e/trash")
+
+  ;; Shortcuts to maildirs
+  (setq mu4e-maildir-shortcuts
+        '( ("/petterstorvik@gmail.com/INBOX"               . ?i)
+           ("/petterstorvik@gmail.com/sent"                . ?s)
+           ("/petterstorvik@gmail.com/trash"               . ?t)
+           ("/petterstorvik@gmail.com/archive"             . ?a)
+           ("/petterstorvik@gmail.com/ArticAquaTrans"      . ?A)
+           ("/petterstorvik@gmail.com/Svartisenfestivalen" . ?S)))
+
+  ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
+  (setq mu4e-sent-messages-behavior 'delete)
+
+  ;; Attempt to show images when viewing messages
+  (setq mu4e-view-show-images t)
+
+  ;; Save attachment (this can also be a function)
+  (setq mu4e-attachment-dir "~/Downloads")
+
+  ;; Remove message buffer when finished
+  (setq message-kill-buffer-on-exit t)
+
+  ;; Disable line numbering in headers view
+  ;;(add-to-list 'linum-disabled-modes-list 'mu4e-headers-view)
+
+  ;; Display html, custom command without external dependencies
+  (defun my-render-html-message ()
+    (let ((dom (libxml-parse-html-region (point-min) (point-max))))
+      (erase-buffer)
+      (shr-insert-document dom)
+      (goto-char (point-min))))
+  (setq mu4e-html2text-command 'my-render-html-message)
+
+  ;; Turn off auto-fill
+  (defun no-auto-fill ()
+    "Turn off auto-fill-mode."
+    (auto-fill-mode -1))
+  (add-hook 'mu4e-compose-mode-hook 'no-auto-fill)
+#+end_src
+
+*** Custom header
+Custom header search, will be a part of =b?=.
+
+#+begin_src emacs-lisp
+  ;; Change date format
+  (setq mu4e-headers-date-format "%Y.%m.%d %H:%M")
+
+  ;; Widths in headers view. nil is unlimited, should be used last.
+  (setq mu4e-headers-fields
+      '( (:date          .  25)    ;; alternatively, use :human-date
+         (:flags         .   6)
+         (:from          .  22)
+         (:subject       .  nil))) ;; alternatively, use :thread-subject
+
+  ;; Include related mail, use carefully when deleting mail with search queries.
+  (setq mu4e-headers-include-related t)
+
+  ;; taken from mu4e page to define bookmarks
+  (add-to-list 'mu4e-bookmarks
+              '("size:5M..500M"       "Big messages"     ?b) t)
+  (add-to-list 'mu4e-bookmarks
+              '("date:100d..now AND NOT maildir:/gm/sent" "My mail" ?m))
+
+  ;; Show number of recipients
+  (add-to-list 'mu4e-header-info-custom
+    '(:recipnum .
+       ( :name "Number of recipients"                  ;; long name, as seen in the message-view
+         :shortname "R#"                               ;; short name, as seen in the headers view
+         :help "Number of recipients for this message" ;; tooltip
+         :function (lambda (msg)
+            (format "%d"
+              (+ (length (mu4e-message-field msg :to))
+                 (length (mu4e-message-field msg :cc))))))))
+  (add-to-list 'mu4e-view-fields :recipnum)
+  (add-to-list 'mu4e-headers-fields '(:recipnum))
+
+#+end_src
+
+*** Attach files with dired
+
+#+begin_src emacs-lisp
+(require 'gnus-dired)
+;; make the `gnus-dired-mail-buffers' function also work on
+;; message-mode derived modes, such as mu4e-compose-mode
+(defun gnus-dired-mail-buffers ()
+  "Return a list of active message buffers."
+  (let (buffers)
+    (save-current-buffer
+      (dolist (buffer (buffer-list t))
+        (set-buffer buffer)
+        (when (and (derived-mode-p 'message-mode)
+                   (null message-sent-message-via))
+          (push (buffer-name buffer) buffers))))
+    (nreverse buffers)))
+
+(setq gnus-dired-mail-mode 'mu4e-user-agent)
+(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+#+end_src
+
+** Sending
+*** Multiple SMTP accounts
+Define SMTP accounts. More information can be seen [[http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html#Multiple-accounts][here]].
+
+#+begin_src emacs-lisp
+  ;; Set smtp settings
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls)
+  ;;      smtpmail-default-smtp-server "smtp.gmail.com"
+  ;;      smtpmail-smtp-server "smtp.gmail.com"
+  ;;      smtpmail-smtp-user "petterstorvik@gmail.com"
+  ;;      smtpmail-smtp-service 587)
+
+  ;; Define multiple mail addresses
+  (setq mu4e-user-mail-address-list '("petterstorvik@gmail.com"
+                                      "petter@aatrans.no"
+                                      "petterstorvik@gmail.com"))
+
+  ;; List of account details
+  (defvar my-mu4e-account-alist
+    '(("Personal"
+       (mu4e-sent-folder "/mu4e/sent")
+       (mu4e-drafts-folder "/mu4e/drafts")
+       (mu4e-compose-signature
+        (concat
+         "Med vennlig hilsen / Kind regards\n"
+         "Petter Sakrihei Storvik\n"
+         "\n"
+         "Phone: +47 95 88 36 76\n"
+         "E-mail: petterstorvik@gmail.com"))
+       (user-mail-address "petterstorvik@gmail.com")
+       (smtpmail-smtp-user "petterstorvik@gmail.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       ;;(smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-service 587))
+      ("AATrans"
+       (mu4e-sent-folder "/mu4e/sent")
+       (mu4e-drafts-folder "/mu4e/drafts")
+       (mu4e-compose-signature
+        (concat
+         "Med vennlig hilsen / Kind regards\n"
+         "Petter Sakrihei Storvik\n"
+         "\n"
+         "Chief Technology Officer\n"
+         "Artic Aqua Trans AS\n"
+         "Phone: +47 95 88 36 76\n"
+         "Web: http://www.aatrans.no"))
+       (user-mail-address "petter@aatrans.no")
+       (smtpmail-smtp-user "petterstorvik@gmail.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-service 587))
+      ("Svartisenfestivalen"
+       (mu4e-sent-folder "/mu4e/sent")
+       (mu4e-drafts-folder "/mu4e/drafts")
+       (mu4e-compose-signature
+        (concat
+         "Med vennlig hilsen / Kind regards\n"
+         "Petter Sakrihei Storvik\n"
+         "\n"
+         "Svartisenfestivalen\n"
+         "Booking / Sponsorkontakt\n"
+         "Web: http://www.svartisenfestivalen.no"
+         "Tlf: +47 958 83 676\n"
+         "E-mail: petter@svartisenfestivalen.no"))
+       (user-mail-address "petter@svartisenfestivalen.no")
+       (smtpmail-smtp-user "petterstorvik@gmail.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-service 587))
+      ))
+#+end_src
+
+*** Use correct account (compose-pre-hook)
+Define function for changing outgoing smtp.
+If replaying to a message, the corresponding account is used.
+If composing a new message, you have to choose which account to use.
+
+#+begin_src emacs-lisp
+  (defun my-mu4e-set-account ()
+    "Set the account for composing/replying a message."
+    (let ((msg mu4e-compose-parent-message)) ;; msg is shorter...
+      (if msg
+          (setq user-mail-address
+                (cond
+                 ((mu4e-message-contact-field-matches msg :to "petterstorvik@gmail.com")
+                  "petterstorvik@gmail.com")
+                 ((mu4e-message-contact-field-matches msg :to "petter@aatrans.no")
+                  "petter@aatrans.no")
+                 (t "petterstorvik@gmail.com")))
+        (let* ((account
+                (if mu4e-compose-parent-message
+                    (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+                      (string-match "/\\(.*?\\)/" maildir)
+                      (match-string 1 maildir))
+                  (completing-read (format "Compose with account: (%s) "
+                                           (mapconcat #'(lambda (var) (car var))
+                                                      my-mu4e-account-alist "/"))
+                                   (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
+                                   nil t nil nil (caar my-mu4e-account-alist))))
+               (account-vars (cdr (assoc account my-mu4e-account-alist))))
+          (if account-vars
+              (mapc #'(lambda (var)
+                        (set (car var) (cadr var)))
+                    account-vars)
+            (error "No email account found"))))))
+  (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+#+end_src
+
+*** Confirm sending with yes or no
+Confirm sending with yes/no.
+
+#+begin_src emacs-lisp
+  (add-hook 'message-send-hook
+            (lambda ()
+              (unless (yes-or-no-p "Are you sure you want to send this?")
+                (signal 'quit nil))))
+#+end_src
+
+** Notifications
+[[https://github.com/iqbalansari/mu4e-alert][Visit webpage]].
+=mu4e-alert= sets up mail notifications in modeline.
+Can also be used to show system notifications on Mac Os X and Linux.
+
+#+begin_src emacs-lisp
+  (use-package mu4e-alert
+    :after mu4e
+    :config
+    (mu4e-alert-enable-mode-line-display))
+#+end_src
+
+* Functions
+** Close compilation buffer
+Function that closes the compilation buffer if compilation is successful.
+
+#+begin_src emacs-lisp
+  (defun bury-compile-buffer-if-successful (buffer string)
+    "Bury a compilation buffer if succeeded without warnings "
+    (if (and
+         (string-match "compilation" (buffer-name buffer))
+         (string-match "finished" string)
+         (not
+          (with-current-buffer buffer
+            (search-forward "warning" nil t))))
+        (progn
+          (run-at-time "2 sec" nil 'winner-undo)
+          (message "Build succesful."))
+      (progn
+        (message "There were warnings or errors."))))
+
+  (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
+#+end_src
+
+** Copy file path to clipboard
+Copy path of current file to clipboard.
+
+#+begin_src emacs-lisp
+  (defun copy-filename ()
+    "Copy the current buffer file name to the clipboard."
+    (interactive)
+    (let ((filename (if (equal major-mode 'dired-mode)
+                        default-directory
+                      (buffer-file-name))))
+      (when filename
+        (kill-new filename)
+        (message "Copied buffer file name '%s' to the clipboard." filename))))
+#+end_src
+
+** Create non-existant folder
+Automatically create folder when visiting a new file.
+
+#+begin_src emacs-lisp
+  (defun my-create-non-existent-directory ()
+    (let ((parent-directory (file-name-directory buffer-file-name)))
+      (when (and (not (file-exists-p parent-directory))
+                 (y-or-n-p (format "Directory `%s' does not exist! Create it?" parent-directory)))
+        (make-directory parent-directory t))))
+  (add-to-list 'find-file-not-found-functions #'my-create-non-existent-directory)
+#+end_src
+
+** Find init
+Finds the init file and opens it.
+
+#+begin_src emacs-lisp
+  (defun find-init-file ()
+    "Edit my init file in another window."
+    (interactive)
+    (let ((mwf-init-file "~/.emacs.d/emacs.org"))
+      (find-file mwf-init-file)))
+
+  (bind-key "C-c I" 'find-init-file)
+#+end_src
+
+** Move line up/down
+Use M-up/down to move the current line up / downwards.
+
+#+begin_src emacs-lisp
+  (defun move-line-up ()
+    (interactive)
+    (transpose-lines 1)
+    (forward-line -2))
+  (defun move-line-down ()
+    (interactive)
+    (forward-line 1)
+    (transpose-lines 1)
+    (forward-line -1))
+  (bind-keys ("M-<up>" . move-line-up)
+             ("M-<down>" . move-line-down))
+#+end_src
+
+** RBUL summary
+Function that sends the summary of a meeting to the people involved.
+To use it, mark the heading for the given summary and send it using personal smtp account.
+
+#+begin_src emacs-lisp
+  (defun get-string-from-file (filePath)
+    "Return filePath's file content."
+    (with-temp-buffer
+      (insert-file-contents filePath)
+      (buffer-string)))
+
+  (defun sf-mail-ref ()
+    (interactive)
+    (org-html-export-to-html)
+    (mu4e-compose-new)
+    ;;(search-forward "To:")
+    (insert
+     (get-string-from-file "/Users/storvik/.emacs.d/sf_mail_list.txt"))
+    (search-forward "Subject:")
+    (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)"))
+    (insert " Festivalmøte")
+    (next-line)
+    (next-line)
+    (insert "Hei\n\nHer er referatet fra møtet.\n\nLes med måte!\n\n")
+    (mail-add-attachment "/Users/storvik/org/rbul.html"))
+#+end_src
+
+** Reindent buffer
+Reindents the entire buffer. Use =C-c /=.
+
+#+begin_src emacs-lisp
+  (defun indent-buffer ()
+    "Indents an entire buffer using the default intenting scheme."
+    (interactive)
+    (save-excursion
+      (delete-trailing-whitespace)
+      (indent-region (point-min) (point-max) nil)
+      (if indent-tabs-mode
+          ;; Add more modes before/after web-mode
+          (if (derived-mode-p 'web-mode)
+              (untabify (point-min) (point-max))
+            (tabify (point-min) (point-max)))
+        (untabify (point-min) (point-max)))))
+
+  (global-set-key (kbd "C-c /") 'indent-buffer)
+#+end_src
+
+** Rename current file
+Rename the current buffer and file. Thanks to [[http://whattheemacsd.com/][whattheemacsd]].
+
+#+begin_src emacs-lisp
+  (defun rename-current-buffer-file ()
+    "Renames current buffer and file it is visiting."
+    (interactive)
+    (let ((name (buffer-name))
+          (filename (buffer-file-name)))
+      (if (not (and filename (file-exists-p filename)))
+          (error "Buffer '%s' is not visiting a file!" name)
+        (let ((new-name (read-file-name "New name: " filename)))
+          (if (get-buffer new-name)
+              (error "A buffer named '%s' already exists!" new-name)
+            (rename-file filename new-name 1)
+            (rename-buffer new-name)
+            (set-visited-file-name new-name)
+            (set-buffer-modified-p nil)
+            (message "File '%s' successfully renamed to '%s'"
+                     name (file-name-nondirectory new-name)))))))
+
+  ;;(global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
+#+end_src
+
+* Daemon
+Start emacs server
+
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src

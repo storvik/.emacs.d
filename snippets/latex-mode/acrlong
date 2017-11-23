@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: acrlong
+# key: acl
+# --
+\acrlong{$1}$0
