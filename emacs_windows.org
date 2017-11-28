@@ -1,0 +1,8 @@
+#+TITLE: Storviks Emacs Windows Configurations
+#+AUTHOR: Petter S. Storvik
+#+EMAIL: petterstorvik@gmail.com
+#+PROPERTY: header-args    :results silent
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css" />
+
+* Notes
+Theese configurations for Emacs are windows only!

@@ -2,10 +2,11 @@
 #+AUTHOR: Petter S. Storvik
 #+EMAIL: petterstorvik@gmail.com
 #+PROPERTY: header-args    :results silent
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css" />'
 
-* Installation notes
-- Symlink emacs.d to home folder
+* Notes
+This emacs configuration aims to provide usable emacs environments that are platform independant.
+All platform independant configurations is put in this file, while platform dependant stuff is put in emacs_platform.org.
 
 ** Inspiration and useful links
 - [[https://emacs.zeef.com/ehartc?ref=robert.thorpe][Emacs top list]]
@@ -52,23 +53,15 @@ Macro for setting different settings for OSX / Linux.
   (defun sys-type-p (name)
     (eq system-type name))
 
-  (defmacro sys-diversification (darwin &optional gnu/linux win)
-     (cond ((sys-type-p 'darwin) darwin)
-           ((sys-type-p 'gnu/linux) gnu/linux)
+  (defmacro sys-diversification (gnu/linux &optional darwin win)
+     (cond ((sys-type-p 'gnu/linux) gnu/linux)
+           ((sys-type-p 'darwin) darwin)
            ((sys-type-p 'windows-nt) win)
            (t nil)))
-
-  (defun sys-type-p (name)
-    (eq system-type name))
-
-  (setq homedir-path
-        (sys-diversification
-           "/Users/storvik/"
-           "/home/storvik/"))
 #+end_src
 
 ** Initial settings
-Set up =use-package= and add MELPA as archive.
+Set up =use-package= and add MELPA and upstream ORG Mode as archive.
 Configure load-path to include =~/.emacs.d/elisp/=.
 
 #+begin_src emacs-lisp
@@ -100,9 +93,9 @@ Change backup location to common dir, =~/.emacs.saves= in emacs directory.
 
 #+begin_src emacs-lisp
   (setq backup-directory-alist
-        `((".*" . ,(concat homedir-path "tmp/emacs.saves/"))))
+        `((".*" . ,(concat user-emacs-directory "emacs.saves/"))))
   (setq auto-save-file-name-transforms
-        `((".*" ,(concat homedir-path "tmp/emacs.saves/") t)))
+        `((".*" ,(concat user-emacs-directory "emacs.saves/") t)))
  #+end_src
 
 ** Bulit in keybindings
@@ -111,17 +104,6 @@ Key bindings not related to external packages or functions.
 #+begin_src emacs-lisp
   (global-set-key (kbd "M-o") 'other-window)
   (global-set-key (kbd "RET") 'newline-and-indent)
-#+end_src
-
-** Lastpass
-[[https://github.com/storvik/emacs-lastpass][Visit webpage]].
-Package used to communicate with LastPass.
-
-#+begin_src emacs-lisp
-  (use-package lastpass
-    :config
-    (setq lastpass-user "petterstorvik@gmail.com")
-    (lastpass-auth-source-enable))
 #+end_src
 
 ** Key Chord
@@ -196,7 +178,7 @@ Make tramp auto-save in another local directory.
 #+begin_src emacs-lisp
   (require 'tramp)
   (setq tramp-default-method "scp")
-  (setq tramp-auto-save-directory "~/.emacs.d/tramp-autosave")
+  (setq tramp-auto-save-directory (concat user-emacs-directory "tramp.autosave/"))
 #+end_src
 
 ** Try
@@ -239,14 +221,15 @@ Useful when upgrading between frameworks and such.
 Set default font and size.
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Fira Mono-10")
-  ;;(set-face-attribute 'default nil :font "Fira Mono for Powerline-10")
+  (set-face-attribute 'default nil :font (sys-diversification
+                                          "Fira Mono-10"
+                                          "Fira Mono-10"
+                                          "DejaVu Sans Mono-10"))
 #+End_src
 
 ** Golden ratio
 [[https://github.com/roman/golden-ratio.el][Visit website]].
 Resize windows so that the active window is optimized for editing.
-Todo: Use (x-display-pixel-width) and (x-display-pixel-height) to figure out if golden ratio should be used.
 
 #+begin_src emacs-lisp
   (use-package golden-ratio
@@ -265,14 +248,6 @@ Highlight current line.
 #+begin_src emacs-lisp
   (when window-system
     (global-hl-line-mode))
-#+end_src
-
-** Line numbering
-Show line numbers on left side and include linum-off from ~/emacs-d/elisp/.
-
-#+begin_src emacs-lisp
-;;  (global-linum-mode t)
-;;  (require 'linum-off)
 #+end_src
 
 ** Startup messages
@@ -344,16 +319,8 @@ Helps differentiating between buffers with similar / same name.
   (require 'uniquify)
 #+end_src
 
-* Mac specific
-Use Ctrl key as control modifier and Cmd as meta modifier.
-
-#+begin_src emacs-lisp
-  (when (eq system-type 'darwin)
-    (setq mac-command-modifier 'meta)
-    (setq mac-control-modifier 'control))
-#+end_src
-
 * Shell
+TODO: Check this in windows.
 Shell package for enhanced shell experience.
 Set up to work with zsh on Os X and Linux.
 
@@ -363,7 +330,6 @@ Set up to work with zsh on Os X and Linux.
     :init
     (dirtrack-mode)
     (setq explicit-shell-file-name (sys-diversification
-                                    "/bin/zsh"
                                     "/usr/bin/fish"))
     (use-package exec-path-from-shell
       :init
@@ -431,6 +397,7 @@ This package expands region by semantic units.
 #+end_src
 
 ** Hyperlinks
+TODO: Check this in windows.
 Open hyperlinks at point. =C-c B(rowse)=.
 
 #+begin_src emacs-lisp
@@ -441,6 +408,7 @@ Open hyperlinks at point. =C-c B(rowse)=.
 
   (bind-key "C-c B" 'browse-url-at-point)
 #+end_src
+
 ** Winner mode
 [[http://emacswiki.org/emacs/WinnerMode][Visit website]].
 Winner mode to undo/redo window changes. Used with =C-c left/right=.
@@ -649,6 +617,7 @@ Prettify csv files.
 #+end_src
 
 ** Dockerfiles
+Simple syntax highlightning for Docker containers.
 
 #+begin_src emacs-lisp
 (use-package dockerfile-mode)
@@ -856,6 +825,7 @@ Generate toc with `markdown-toc-generate-toc`.
 #+begin_src emacs-lisp
   (use-package markdown-toc)
 #+end_src
+
 ** Nginx mode
 [[https://github.com/ajc/nginx-mode][Visit webpage]].
 Nginx mode for editing Nginx config files.
@@ -971,21 +941,6 @@ This according to this [[https://github.com/syl20bnr/spacemacs/pull/179][pull re
 
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
 #+end_src
-* Div modes
-** Artist mode
-Draw on screen with mouse.
-
-#+begin_src emacs-lisp
-(use-package artist)
-#+end_src
-
-** Typit
-Typing game to learn faster typing / touch typing.
-
-#+begin_src emacs-lisp
-  (use-package typit
-    :commands (typit))
-#+end_src
 
 * Org mode
 ** Initial config
@@ -1057,21 +1012,7 @@ Templates for capturing stuff. Same as the todo states defined above.
                 )))
 #+end_src
 
-** Org reveal presentations
-Export org files as reveal.js presentations.
-
-#+begin_src emacs-lisp
-  (use-package ox-reveal
-    :ensure ox-reveal)
-
-  (setq org-reveal-root "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.0/")
-  (setq org-reveal-mathjax t)
-
-  (use-package htmlize)
-#+end_src
-
 ** Todo
-*** Define todo states
 Todo states can be cycled through with =S-<left>/<right>=.
 Custom todo states are defined.
 
@@ -1094,271 +1035,15 @@ This defines different colors for different states.
                 ("PHONE" :foreground "forest green" :weight bold))))
 #+end_src
 
-* Email
-** Receiving
-[[http://www.djcbsoftware.nl/code/mu/mu4e.html][Visit webpage]] / [[http://www.djcbsoftware.nl/code/mu/mu4e/index.html][documentation]].
-MU4E is used together with offlineimap to receive mail.
+* Platform dependant loading
+Load config file dependant on current platform.
 
 #+begin_src emacs-lisp
-  ;; Load path to mu4e, platform dependent.
-  (add-to-list 'load-path (expand-file-name
-                           (sys-diversification
-                            "/usr/local/Cellar/mu/0.9.18_1/share/emacs/site-lisp/mu/mu4e"
-                            "/usr/share/emacs/site-lisp/mu4e")))
-
-  (require 'mu4e)
-  (setq mu4e-maildir "~/email")
-  (setq mu4e-get-mail-command "offlineimap")
-
-  ;; LastPass login test
-  (defun lastpass-mu4e-update-mail-and-index (update-function &rest r)
-    "Check if user is logged in and run UPDATE-FUNCTION with arguments R."
-    (unless (lastpass-logged-in-p)
-      (lastpass-login)
-      (error "LastPass: Not logged in, log in and retry"))
-    (apply update-function r))
-
-  (advice-add 'mu4e-update-mail-and-index :around #'lastpass-mu4e-update-mail-and-index)
-
-  ;; Automatic updates
-  ;;(setq mu4e-update-interval 600)
-
-  ;; Mu4e drafts, sent and trash folder.
-  (setq mu4e-drafts-folder "/mu4e/drafts")
-  (setq mu4e-sent-folder "/mu4e/sent")
-  (setq mu4e-trash-folder "/mu4e/trash")
-
-  ;; Shortcuts to maildirs
-  (setq mu4e-maildir-shortcuts
-        '( ("/petterstorvik@gmail.com/INBOX"               . ?i)
-           ("/petterstorvik@gmail.com/sent"                . ?s)
-           ("/petterstorvik@gmail.com/trash"               . ?t)
-           ("/petterstorvik@gmail.com/archive"             . ?a)
-           ("/petterstorvik@gmail.com/ArticAquaTrans"      . ?A)
-           ("/petterstorvik@gmail.com/Svartisenfestivalen" . ?S)))
-
-  ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
-  (setq mu4e-sent-messages-behavior 'delete)
-
-  ;; Attempt to show images when viewing messages
-  (setq mu4e-view-show-images t)
-
-  ;; Save attachment (this can also be a function)
-  (setq mu4e-attachment-dir "~/Downloads")
-
-  ;; Remove message buffer when finished
-  (setq message-kill-buffer-on-exit t)
-
-  ;; Disable line numbering in headers view
-  ;;(add-to-list 'linum-disabled-modes-list 'mu4e-headers-view)
-
-  ;; Display html, custom command without external dependencies
-  (defun my-render-html-message ()
-    (let ((dom (libxml-parse-html-region (point-min) (point-max))))
-      (erase-buffer)
-      (shr-insert-document dom)
-      (goto-char (point-min))))
-  (setq mu4e-html2text-command 'my-render-html-message)
-
-  ;; Turn off auto-fill
-  (defun no-auto-fill ()
-    "Turn off auto-fill-mode."
-    (auto-fill-mode -1))
-  (add-hook 'mu4e-compose-mode-hook 'no-auto-fill)
-#+end_src
-
-*** Custom header
-Custom header search, will be a part of =b?=.
-
-#+begin_src emacs-lisp
-  ;; Change date format
-  (setq mu4e-headers-date-format "%Y.%m.%d %H:%M")
-
-  ;; Widths in headers view. nil is unlimited, should be used last.
-  (setq mu4e-headers-fields
-      '( (:date          .  25)    ;; alternatively, use :human-date
-         (:flags         .   6)
-         (:from          .  22)
-         (:subject       .  nil))) ;; alternatively, use :thread-subject
-
-  ;; Include related mail, use carefully when deleting mail with search queries.
-  (setq mu4e-headers-include-related t)
-
-  ;; taken from mu4e page to define bookmarks
-  (add-to-list 'mu4e-bookmarks
-              '("size:5M..500M"       "Big messages"     ?b) t)
-  (add-to-list 'mu4e-bookmarks
-              '("date:100d..now AND NOT maildir:/gm/sent" "My mail" ?m))
-
-  ;; Show number of recipients
-  (add-to-list 'mu4e-header-info-custom
-    '(:recipnum .
-       ( :name "Number of recipients"                  ;; long name, as seen in the message-view
-         :shortname "R#"                               ;; short name, as seen in the headers view
-         :help "Number of recipients for this message" ;; tooltip
-         :function (lambda (msg)
-            (format "%d"
-              (+ (length (mu4e-message-field msg :to))
-                 (length (mu4e-message-field msg :cc))))))))
-  (add-to-list 'mu4e-view-fields :recipnum)
-  (add-to-list 'mu4e-headers-fields '(:recipnum))
-
-#+end_src
-
-*** Attach files with dired
-
-#+begin_src emacs-lisp
-(require 'gnus-dired)
-;; make the `gnus-dired-mail-buffers' function also work on
-;; message-mode derived modes, such as mu4e-compose-mode
-(defun gnus-dired-mail-buffers ()
-  "Return a list of active message buffers."
-  (let (buffers)
-    (save-current-buffer
-      (dolist (buffer (buffer-list t))
-        (set-buffer buffer)
-        (when (and (derived-mode-p 'message-mode)
-                   (null message-sent-message-via))
-          (push (buffer-name buffer) buffers))))
-    (nreverse buffers)))
-
-(setq gnus-dired-mail-mode 'mu4e-user-agent)
-(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
-#+end_src
-
-** Sending
-*** Multiple SMTP accounts
-Define SMTP accounts. More information can be seen [[http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html#Multiple-accounts][here]].
-
-#+begin_src emacs-lisp
-  ;; Set smtp settings
-  (setq message-send-mail-function 'smtpmail-send-it
-        smtpmail-stream-type 'starttls)
-  ;;      smtpmail-default-smtp-server "smtp.gmail.com"
-  ;;      smtpmail-smtp-server "smtp.gmail.com"
-  ;;      smtpmail-smtp-user "petterstorvik@gmail.com"
-  ;;      smtpmail-smtp-service 587)
-
-  ;; Define multiple mail addresses
-  (setq mu4e-user-mail-address-list '("petterstorvik@gmail.com"
-                                      "petter@aatrans.no"
-                                      "petterstorvik@gmail.com"))
-
-  ;; List of account details
-  (defvar my-mu4e-account-alist
-    '(("Personal"
-       (mu4e-sent-folder "/mu4e/sent")
-       (mu4e-drafts-folder "/mu4e/drafts")
-       (mu4e-compose-signature
-        (concat
-         "Med vennlig hilsen / Kind regards\n"
-         "Petter Sakrihei Storvik\n"
-         "\n"
-         "Phone: +47 95 88 36 76\n"
-         "E-mail: petterstorvik@gmail.com"))
-       (user-mail-address "petterstorvik@gmail.com")
-       (smtpmail-smtp-user "petterstorvik@gmail.com")
-       (smtpmail-default-smtp-server "smtp.gmail.com")
-       ;;(smtpmail-smtp-server "smtp.gmail.com")
-       (smtpmail-smtp-server "smtp.gmail.com")
-       (smtpmail-stream-type starttls)
-       (smtpmail-smtp-service 587))
-      ("AATrans"
-       (mu4e-sent-folder "/mu4e/sent")
-       (mu4e-drafts-folder "/mu4e/drafts")
-       (mu4e-compose-signature
-        (concat
-         "Med vennlig hilsen / Kind regards\n"
-         "Petter Sakrihei Storvik\n"
-         "\n"
-         "Chief Technology Officer\n"
-         "Artic Aqua Trans AS\n"
-         "Phone: +47 95 88 36 76\n"
-         "Web: http://www.aatrans.no"))
-       (user-mail-address "petter@aatrans.no")
-       (smtpmail-smtp-user "petterstorvik@gmail.com")
-       (smtpmail-default-smtp-server "smtp.gmail.com")
-       (smtpmail-smtp-server "smtp.gmail.com")
-       (smtpmail-stream-type starttls)
-       (smtpmail-smtp-service 587))
-      ("Svartisenfestivalen"
-       (mu4e-sent-folder "/mu4e/sent")
-       (mu4e-drafts-folder "/mu4e/drafts")
-       (mu4e-compose-signature
-        (concat
-         "Med vennlig hilsen / Kind regards\n"
-         "Petter Sakrihei Storvik\n"
-         "\n"
-         "Svartisenfestivalen\n"
-         "Booking / Sponsorkontakt\n"
-         "Web: http://www.svartisenfestivalen.no"
-         "Tlf: +47 958 83 676\n"
-         "E-mail: petter@svartisenfestivalen.no"))
-       (user-mail-address "petter@svartisenfestivalen.no")
-       (smtpmail-smtp-user "petterstorvik@gmail.com")
-       (smtpmail-default-smtp-server "smtp.gmail.com")
-       (smtpmail-smtp-server "smtp.gmail.com")
-       (smtpmail-stream-type starttls)
-       (smtpmail-smtp-service 587))
-      ))
-#+end_src
-
-*** Use correct account (compose-pre-hook)
-Define function for changing outgoing smtp.
-If replaying to a message, the corresponding account is used.
-If composing a new message, you have to choose which account to use.
-
-#+begin_src emacs-lisp
-  (defun my-mu4e-set-account ()
-    "Set the account for composing/replying a message."
-    (let ((msg mu4e-compose-parent-message)) ;; msg is shorter...
-      (if msg
-          (setq user-mail-address
-                (cond
-                 ((mu4e-message-contact-field-matches msg :to "petterstorvik@gmail.com")
-                  "petterstorvik@gmail.com")
-                 ((mu4e-message-contact-field-matches msg :to "petter@aatrans.no")
-                  "petter@aatrans.no")
-                 (t "petterstorvik@gmail.com")))
-        (let* ((account
-                (if mu4e-compose-parent-message
-                    (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
-                      (string-match "/\\(.*?\\)/" maildir)
-                      (match-string 1 maildir))
-                  (completing-read (format "Compose with account: (%s) "
-                                           (mapconcat #'(lambda (var) (car var))
-                                                      my-mu4e-account-alist "/"))
-                                   (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
-                                   nil t nil nil (caar my-mu4e-account-alist))))
-               (account-vars (cdr (assoc account my-mu4e-account-alist))))
-          (if account-vars
-              (mapc #'(lambda (var)
-                        (set (car var) (cadr var)))
-                    account-vars)
-            (error "No email account found"))))))
-  (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
-#+end_src
-
-*** Confirm sending with yes or no
-Confirm sending with yes/no.
-
-#+begin_src emacs-lisp
-  (add-hook 'message-send-hook
-            (lambda ()
-              (unless (yes-or-no-p "Are you sure you want to send this?")
-                (signal 'quit nil))))
-#+end_src
-
-** Notifications
-[[https://github.com/iqbalansari/mu4e-alert][Visit webpage]].
-=mu4e-alert= sets up mail notifications in modeline.
-Can also be used to show system notifications on Mac Os X and Linux.
-
-#+begin_src emacs-lisp
-  (use-package mu4e-alert
-    :after mu4e
-    :config
-    (mu4e-alert-enable-mode-line-display))
+  (org-babel-load-file (expand-file-name (sys-diversification
+                                          "emacs_linux.org"
+                                          "emacs_darwin.org"
+                                          "emacs_windows.org")
+                                         user-emacs-directory))
 #+end_src
 
 * Functions
