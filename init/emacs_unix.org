@@ -1,0 +1,285 @@
+#+TITLE: Storviks Emacs Unix Configurations
+#+AUTHOR: Petter S. Storvik
+#+EMAIL: petterstorvik@gmail.com
+#+PROPERTY: header-args    :results silent
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css" />
+
+* Notes
+Theese configurations for Emacs are for Linux and Mac OS X!
+* Lastpass
+[[https://github.com/storvik/emacs-lastpass][Visit webpage]].
+Package used to communicate with LastPass.
+Depends on lpass command line utility.
+
+#+begin_src emacs-lisp
+  (use-package lastpass
+    :config
+    (setq lastpass-user "petterstorvik@gmail.com")
+    (lastpass-auth-source-enable))
+#+end_src
+* Email
+** Receiving
+[[http://www.djcbsoftware.nl/code/mu/mu4e.html][Visit webpage]] / [[http://www.djcbsoftware.nl/code/mu/mu4e/index.html][documentation]].
+MU4E is used together with offlineimap to receive mail.
+
+#+begin_src emacs-lisp
+  ;; Load path to mu4e, platform dependent.
+  (add-to-list 'load-path (expand-file-name
+                           (sys-diversification
+                            "/usr/local/Cellar/mu/0.9.18_1/share/emacs/site-lisp/mu/mu4e"
+                            "/usr/share/emacs/site-lisp/mu4e")))
+
+  (require 'mu4e)
+  (setq mu4e-maildir "~/email")
+  (setq mu4e-get-mail-command "offlineimap")
+
+  ;; LastPass login test
+  (defun lastpass-mu4e-update-mail-and-index (update-function &rest r)
+    "Check if user is logged in and run UPDATE-FUNCTION with arguments R."
+    (unless (lastpass-logged-in-p)
+      (lastpass-login)
+      (error "LastPass: Not logged in, log in and retry"))
+    (apply update-function r))
+
+  (advice-add 'mu4e-update-mail-and-index :around #'lastpass-mu4e-update-mail-and-index)
+
+  ;; Automatic updates
+  ;;(setq mu4e-update-interval 600)
+
+  ;; Mu4e drafts, sent and trash folder.
+  (setq mu4e-drafts-folder "/mu4e/drafts")
+  (setq mu4e-sent-folder "/mu4e/sent")
+  (setq mu4e-trash-folder "/mu4e/trash")
+
+  ;; Shortcuts to maildirs
+  (setq mu4e-maildir-shortcuts
+        '( ("/petterstorvik@gmail.com/INBOX"               . ?i)
+           ("/petterstorvik@gmail.com/sent"                . ?s)
+           ("/petterstorvik@gmail.com/trash"               . ?t)
+           ("/petterstorvik@gmail.com/archive"             . ?a)
+           ("/petterstorvik@gmail.com/ArticAquaTrans"      . ?A)
+           ("/petterstorvik@gmail.com/Svartisenfestivalen" . ?S)))
+
+  ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
+  (setq mu4e-sent-messages-behavior 'delete)
+
+  ;; Attempt to show images when viewing messages
+  (setq mu4e-view-show-images t)
+
+  ;; Save attachment (this can also be a function)
+  (setq mu4e-attachment-dir "~/Downloads")
+
+  ;; Remove message buffer when finished
+  (setq message-kill-buffer-on-exit t)
+
+  ;; Disable line numbering in headers view
+  ;;(add-to-list 'linum-disabled-modes-list 'mu4e-headers-view)
+
+  ;; Display html, custom command without external dependencies
+  (defun my-render-html-message ()
+    (let ((dom (libxml-parse-html-region (point-min) (point-max))))
+      (erase-buffer)
+      (shr-insert-document dom)
+      (goto-char (point-min))))
+  (setq mu4e-html2text-command 'my-render-html-message)
+
+  ;; Turn off auto-fill
+  (defun no-auto-fill ()
+    "Turn off auto-fill-mode."
+    (auto-fill-mode -1))
+  (add-hook 'mu4e-compose-mode-hook 'no-auto-fill)
+#+end_src
+
+*** Custom header
+Custom header search, will be a part of =b?=.
+
+#+begin_src emacs-lisp
+  ;; Change date format
+  (setq mu4e-headers-date-format "%Y.%m.%d %H:%M")
+
+  ;; Widths in headers view. nil is unlimited, should be used last.
+  (setq mu4e-headers-fields
+      '( (:date          .  25)    ;; alternatively, use :human-date
+         (:flags         .   6)
+         (:from          .  22)
+         (:subject       .  nil))) ;; alternatively, use :thread-subject
+
+  ;; Include related mail, use carefully when deleting mail with search queries.
+  (setq mu4e-headers-include-related t)
+
+  ;; taken from mu4e page to define bookmarks
+  (add-to-list 'mu4e-bookmarks
+              '("size:5M..500M"       "Big messages"     ?b) t)
+  (add-to-list 'mu4e-bookmarks
+              '("date:100d..now AND NOT maildir:/gm/sent" "My mail" ?m))
+
+  ;; Show number of recipients
+  (add-to-list 'mu4e-header-info-custom
+    '(:recipnum .
+       ( :name "Number of recipients"                  ;; long name, as seen in the message-view
+         :shortname "R#"                               ;; short name, as seen in the headers view
+         :help "Number of recipients for this message" ;; tooltip
+         :function (lambda (msg)
+            (format "%d"
+              (+ (length (mu4e-message-field msg :to))
+                 (length (mu4e-message-field msg :cc))))))))
+  (add-to-list 'mu4e-view-fields :recipnum)
+  (add-to-list 'mu4e-headers-fields '(:recipnum))
+
+#+end_src
+
+*** Attach files with dired
+
+#+begin_src emacs-lisp
+(require 'gnus-dired)
+;; make the `gnus-dired-mail-buffers' function also work on
+;; message-mode derived modes, such as mu4e-compose-mode
+(defun gnus-dired-mail-buffers ()
+  "Return a list of active message buffers."
+  (let (buffers)
+    (save-current-buffer
+      (dolist (buffer (buffer-list t))
+        (set-buffer buffer)
+        (when (and (derived-mode-p 'message-mode)
+                   (null message-sent-message-via))
+          (push (buffer-name buffer) buffers))))
+    (nreverse buffers)))
+
+(setq gnus-dired-mail-mode 'mu4e-user-agent)
+(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+#+end_src
+
+** Sending
+*** Multiple SMTP accounts
+Define SMTP accounts. More information can be seen [[http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html#Multiple-accounts][here]].
+
+#+begin_src emacs-lisp
+  ;; Set smtp settings
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls)
+  ;;      smtpmail-default-smtp-server "smtp.gmail.com"
+  ;;      smtpmail-smtp-server "smtp.gmail.com"
+  ;;      smtpmail-smtp-user "petterstorvik@gmail.com"
+  ;;      smtpmail-smtp-service 587)
+
+  ;; Define multiple mail addresses
+  (setq mu4e-user-mail-address-list '("petterstorvik@gmail.com"
+                                      "petter@aatrans.no"
+                                      "petterstorvik@gmail.com"))
+
+  ;; List of account details
+  (defvar my-mu4e-account-alist
+    '(("Personal"
+       (mu4e-sent-folder "/mu4e/sent")
+       (mu4e-drafts-folder "/mu4e/drafts")
+       (mu4e-compose-signature
+        (concat
+         "Med vennlig hilsen / Kind regards\n"
+         "Petter Sakrihei Storvik\n"
+         "\n"
+         "Phone: +47 95 88 36 76\n"
+         "E-mail: petterstorvik@gmail.com"))
+       (user-mail-address "petterstorvik@gmail.com")
+       (smtpmail-smtp-user "petterstorvik@gmail.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       ;;(smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-service 587))
+      ("AATrans"
+       (mu4e-sent-folder "/mu4e/sent")
+       (mu4e-drafts-folder "/mu4e/drafts")
+       (mu4e-compose-signature
+        (concat
+         "Med vennlig hilsen / Kind regards\n"
+         "Petter Sakrihei Storvik\n"
+         "\n"
+         "Chief Technology Officer\n"
+         "Artic Aqua Trans AS\n"
+         "Phone: +47 95 88 36 76\n"
+         "Web: http://www.aatrans.no"))
+       (user-mail-address "petter@aatrans.no")
+       (smtpmail-smtp-user "petterstorvik@gmail.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-service 587))
+      ("Svartisenfestivalen"
+       (mu4e-sent-folder "/mu4e/sent")
+       (mu4e-drafts-folder "/mu4e/drafts")
+       (mu4e-compose-signature
+        (concat
+         "Med vennlig hilsen / Kind regards\n"
+         "Petter Sakrihei Storvik\n"
+         "\n"
+         "Svartisenfestivalen\n"
+         "Booking / Sponsorkontakt\n"
+         "Web: http://www.svartisenfestivalen.no"
+         "Tlf: +47 958 83 676\n"
+         "E-mail: petter@svartisenfestivalen.no"))
+       (user-mail-address "petter@svartisenfestivalen.no")
+       (smtpmail-smtp-user "petterstorvik@gmail.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-service 587))
+      ))
+#+end_src
+
+*** Use correct account (compose-pre-hook)
+Define function for changing outgoing smtp.
+If replaying to a message, the corresponding account is used.
+If composing a new message, you have to choose which account to use.
+
+#+begin_src emacs-lisp
+  (defun my-mu4e-set-account ()
+    "Set the account for composing/replying a message."
+    (let ((msg mu4e-compose-parent-message)) ;; msg is shorter...
+      (if msg
+          (setq user-mail-address
+                (cond
+                 ((mu4e-message-contact-field-matches msg :to "petterstorvik@gmail.com")
+                  "petterstorvik@gmail.com")
+                 ((mu4e-message-contact-field-matches msg :to "petter@aatrans.no")
+                  "petter@aatrans.no")
+                 (t "petterstorvik@gmail.com")))
+        (let* ((account
+                (if mu4e-compose-parent-message
+                    (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+                      (string-match "/\\(.*?\\)/" maildir)
+                      (match-string 1 maildir))
+                  (completing-read (format "Compose with account: (%s) "
+                                           (mapconcat #'(lambda (var) (car var))
+                                                      my-mu4e-account-alist "/"))
+                                   (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
+                                   nil t nil nil (caar my-mu4e-account-alist))))
+               (account-vars (cdr (assoc account my-mu4e-account-alist))))
+          (if account-vars
+              (mapc #'(lambda (var)
+                        (set (car var) (cadr var)))
+                    account-vars)
+            (error "No email account found"))))))
+  (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+#+end_src
+
+*** Confirm sending with yes or no
+Confirm sending with yes/no.
+
+#+begin_src emacs-lisp
+  (add-hook 'message-send-hook
+            (lambda ()
+              (unless (yes-or-no-p "Are you sure you want to send this?")
+                (signal 'quit nil))))
+#+end_src
+
+** Notifications
+[[https://github.com/iqbalansari/mu4e-alert][Visit webpage]].
+=mu4e-alert= sets up mail notifications in modeline.
+Can also be used to show system notifications on Mac Os X and Linux.
+
+#+begin_src emacs-lisp
+  (use-package mu4e-alert
+    :after mu4e
+    :config
+    (mu4e-alert-enable-mode-line-display))
+#+end_src

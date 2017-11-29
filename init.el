@@ -7,6 +7,6 @@
 
 ;; Require org and load emacs_init.org
 (require 'org)
-(org-babel-load-file "~/.emacs.d/emacs_init.org")
+(org-babel-load-file (concat user-emacs-directory "init/emacs_init.org"))
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)

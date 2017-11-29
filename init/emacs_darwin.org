@@ -11,7 +11,7 @@ Theese configurations for Emacs are Mac OS X only!
 Load Unix specific settings, works in both Mac and Linux.
 
 #+begin_src emacs-lisp
-  (org-babel-load-file (expand-file-name "emacs_unix.org" user-emacs-directory))
+  (org-babel-load-file (expand-file-name "init/emacs_unix.org" user-emacs-directory))
 #+end_src
 
 * Ctrl and cmd

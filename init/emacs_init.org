@@ -85,7 +85,7 @@ Configure load-path to include =~/.emacs.d/elisp/=.
   (setq use-package-always-ensure t)
   ;;(package-refresh-contents)
 
-  (add-to-list 'load-path "~/.emacs.d/elisp/")
+  (add-to-list 'load-path (concat user-emacs-directory "elisp/"))
 #+end_src
 
 ** Backup
@@ -1039,10 +1039,10 @@ This defines different colors for different states.
 Load config file dependant on current platform.
 
 #+begin_src emacs-lisp
-  (org-babel-load-file (expand-file-name (sys-diversification
-                                          "emacs_linux.org"
-                                          "emacs_darwin.org"
-                                          "emacs_windows.org")
+  (org-babel-load-file (expand-file-name (concat "init/" (sys-diversification
+                                                          "emacs_linux.org"
+                                                          "emacs_darwin.org"
+                                                          "emacs_windows.org"))
                                          user-emacs-directory))
 #+end_src
 
@@ -1103,9 +1103,9 @@ Finds the init file and opens it.
     "Edit main init file, emacs_init.org."
     (interactive)
     (let ((my-init-file (completing-read "Open init file: " '(init linux darwin windows unix))))
-      (unless (file-exists-p (expand-file-name (format "emacs_%s.org" my-init-file) user-emacs-directory))
-        (error (format "Could not find specified init file: emacs_%s.org" my-init-file)))
-      (find-file (expand-file-name (format "emacs_%s.org" my-init-file) user-emacs-directory))))
+      (unless (file-exists-p (expand-file-name (format "init/emacs_%s.org" my-init-file) user-emacs-directory))
+        (error (format "Could not find specified init file: init/emacs_%s.org" my-init-file)))
+      (find-file (expand-file-name (format "init/emacs_%s.org" my-init-file) user-emacs-directory))))
 
   (bind-key "C-c I" 'find-init-file)
 #+end_src
