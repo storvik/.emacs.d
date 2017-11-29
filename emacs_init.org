@@ -1035,7 +1035,7 @@ This defines different colors for different states.
                 ("PHONE" :foreground "forest green" :weight bold))))
 #+end_src
 
-* Platform dependant loading
+* Platform dependant
 Load config file dependant on current platform.
 
 #+begin_src emacs-lisp
@@ -1100,10 +1100,12 @@ Finds the init file and opens it.
 
 #+begin_src emacs-lisp
   (defun find-init-file ()
-    "Edit my init file in another window."
+    "Edit main init file, emacs_init.org."
     (interactive)
-    (let ((mwf-init-file "~/.emacs.d/emacs.org"))
-      (find-file mwf-init-file)))
+    (let ((my-init-file (completing-read "Open init file: " '(init linux darwin windows unix))))
+      (unless (file-exists-p (expand-file-name (format "emacs_%s.org" my-init-file) user-emacs-directory))
+        (error (format "Could not find specified init file: emacs_%s.org" my-init-file)))
+      (find-file (expand-file-name (format "emacs_%s.org" my-init-file) user-emacs-directory))))
 
   (bind-key "C-c I" 'find-init-file)
 #+end_src
