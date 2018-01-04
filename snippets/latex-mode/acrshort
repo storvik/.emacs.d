@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: acrshort
-# key: acs
-# --
-\acrshort{$1}$0

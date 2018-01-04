@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: acrfull
-# key: acf
-# --
-\acrfull{$1}$0

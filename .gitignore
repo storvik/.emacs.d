@@ -12,3 +12,4 @@ emacs.saves/*
 .mc-lists.el
 smex-items
 recentf
+snippets/*
