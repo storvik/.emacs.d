@@ -106,6 +106,13 @@ Key bindings not related to external packages or functions.
   (global-set-key (kbd "RET") 'newline-and-indent)
 #+end_src
 
+** Turn off alarm
+Turn off audible and visible bell.
+
+#+begin_src emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+end_src
+
 ** Key Chord
 [[http://emacswiki.org/emacs/key-chord.el][Visit website]].
 Key chord, run command when two keys are pressed simultanously.
