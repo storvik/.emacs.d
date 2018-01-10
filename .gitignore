@@ -13,3 +13,5 @@ emacs.saves/*
 smex-items
 recentf
 snippets/*
+eshell/*
+url/*
