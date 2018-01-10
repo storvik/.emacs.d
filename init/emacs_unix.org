@@ -6,6 +6,93 @@
 
 * Notes
 Theese configurations for Emacs are for Linux and Mac OS X!
+* Shell
+TODO: Check this in windows.
+Shell package for enhanced shell experience.
+Set up to work with zsh on Os X and Linux.
+
+#+begin_src emacs-lisp
+  (use-package shell
+    :bind ("<f1>" . shell)
+    :init
+    (dirtrack-mode)
+    (setq explicit-shell-file-name (sys-diversification
+                                    "/usr/bin/fish"))
+    (use-package exec-path-from-shell
+      :init
+      (exec-path-from-shell-initialize)))
+#+end_src
+
+* Golang
+*** Go mode
+[[https://github.com/dominikh/go-mode.el][Visit webpage]].
+Major mode for go(lang).
+Must import GOPATH enviromental variable.
+
+#+begin_src emacs-lisp
+  (use-package go-mode
+    :init
+    (progn
+      (setq gofmt-command "goimports")
+      (add-hook 'before-save-hook 'gofmt-before-save)
+      (bind-key [remap find-tag] #'godef-jump)
+      (bind-key (kbd "C-c C-r") #'go-remove-unused-imports))
+      :config
+      (exec-path-from-shell-copy-env "GOPATH"))
+#+end_src
+
+*** Company-go
+[[https://github.com/nsf/gocode/tree/master/emacs-company][Visit webpage]].
+Go support for company mode.
+
+#+begin_src emacs-lisp
+  (use-package company-go
+    :defer t
+    :init
+    (with-eval-after-load 'company
+      (add-to-list 'company-backends 'company-go)))
+#+end_src
+
+*** Eldoc
+[[https://github.com/syohex/emacs-go-eldoc][Visit webpage]]
+
+#+begin_src emacs-lisp
+;;(use-package go-eldoc
+;
+;;  :defer
+;;  :init
+;;  (add-hook 'go-mode-hook 'go-eldoc-setup))
+#+end_src
+
+* Magit
+Brilliant interface to git.
+=C-x g= to open.
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :bind ("C-x g" . magit-status)
+    :config
+    (progn
+      (defun visit-pull-request-url ()
+        "Visit the current branch's PR on Github."
+        (interactive)
+        (browse-url
+         (format "https://github.com/%s/pull/new/%s"
+                 (replace-regexp-in-string
+                  "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
+                  (magit-get "remote"
+                             (magit-get-remote)
+                             "url"))
+                 (cdr (magit-get-remote-branch)))))
+      (setq magit-completing-read-function 'ivy-completing-read)
+      (bind-key "v" 'visit-pull-request-url magit-mode-map)
+      (bind-keys :map magit-status-mode-map
+                 ("TAB" . magit-section-toggle)
+                 ("<C-tab>" . magit-section-cycle))
+      (bind-keys :map magit-branch-section-map
+                 ("RET" . magit-checkout))))
+#+end_src
+
 * Lastpass
 [[https://github.com/storvik/emacs-lastpass][Visit webpage]].
 Package used to communicate with LastPass.
@@ -17,6 +104,7 @@ Depends on lpass command line utility.
     (setq lastpass-user "petterstorvik@gmail.com")
     (lastpass-auth-source-enable))
 #+end_src
+
 * Email
 ** Receiving
 [[http://www.djcbsoftware.nl/code/mu/mu4e.html][Visit webpage]] / [[http://www.djcbsoftware.nl/code/mu/mu4e/index.html][documentation]].
