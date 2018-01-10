@@ -231,7 +231,7 @@ Set default font and size.
   (set-face-attribute 'default nil :font (sys-diversification
                                           "Fira Mono-10"
                                           "Fira Mono-10"
-                                          "DejaVu Sans Mono-10"))
+                                          "Courier-10"))
 #+End_src
 
 ** Golden ratio
