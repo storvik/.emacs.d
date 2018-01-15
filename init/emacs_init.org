@@ -462,6 +462,36 @@ To enhance the M-x experience, smex must be installed.
 (use-package smex)
 #+end_src
 
+* Magit
+Brilliant interface to git.
+=C-x g= to open.
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :if (executable-find "git")
+    :bind ("C-x g" . magit-status)
+    :config
+    (progn
+      (defun visit-pull-request-url ()
+        "Visit the current branch's PR on Github."
+        (interactive)
+        (browse-url
+         (format "https://github.com/%s/pull/new/%s"
+                 (replace-regexp-in-string
+                  "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
+                  (magit-get "remote"
+                             (magit-get-remote)
+                             "url"))
+                 (cdr (magit-get-remote-branch)))))
+      (setq magit-completing-read-function 'ivy-completing-read)
+      (bind-key "v" 'visit-pull-request-url magit-mode-map)
+      (bind-keys :map magit-status-mode-map
+                 ("TAB" . magit-section-toggle)
+                 ("<C-tab>" . magit-section-cycle))
+      (bind-keys :map magit-branch-section-map
+                 ("RET" . magit-checkout))))
+#+end_src
+
 * Projectile
 [[https://github.com/bbatsov/projectile][Visit webpage]].
 Projectile simplifies navigation and structuring on large projects.
