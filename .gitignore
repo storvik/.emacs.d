@@ -2,10 +2,7 @@ auto-save-list/*
 custom.el
 elpa/*
 emacs_init.el
-emacs_linux.el
-emacs_darwin.el
-emacs_unix.el
-emacs_windows.el
+mu4e.el
 org-clock-save.el
 projectile-bookmarks.eld
 emacs.saves/*
