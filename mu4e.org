@@ -1,83 +1,9 @@
-#+TITLE: Storviks Emacs Unix Configurations
+#+TITLE: Storviks mu4e configs
 #+AUTHOR: Petter S. Storvik
 #+EMAIL: petterstorvik@gmail.com
 #+PROPERTY: header-args    :results silent
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css" />
 
-* Notes
-Theese configurations for Emacs are for Linux and Mac OS X!
-* Shell
-TODO: Check this in windows.
-Shell package for enhanced shell experience.
-Set up to work with zsh on Os X and Linux.
-
-#+begin_src emacs-lisp
-  (use-package shell
-    :bind ("<f1>" . shell)
-    :init
-    (dirtrack-mode)
-    (setq explicit-shell-file-name (sys-diversification
-                                    "/usr/bin/fish"))
-    (use-package exec-path-from-shell
-      :init
-      (exec-path-from-shell-initialize)))
-#+end_src
-
-* Golang
-*** Go mode
-[[https://github.com/dominikh/go-mode.el][Visit webpage]].
-Major mode for go(lang).
-Must import GOPATH enviromental variable.
-
-#+begin_src emacs-lisp
-  (use-package go-mode
-    :init
-    (progn
-      (setq gofmt-command "goimports")
-      (add-hook 'before-save-hook 'gofmt-before-save)
-      (bind-key [remap find-tag] #'godef-jump)
-      (bind-key (kbd "C-c C-r") #'go-remove-unused-imports))
-      :config
-      (exec-path-from-shell-copy-env "GOPATH"))
-#+end_src
-
-*** Company-go
-[[https://github.com/nsf/gocode/tree/master/emacs-company][Visit webpage]].
-Go support for company mode.
-
-#+begin_src emacs-lisp
-  (use-package company-go
-    :defer t
-    :init
-    (with-eval-after-load 'company
-      (add-to-list 'company-backends 'company-go)))
-#+end_src
-
-*** Eldoc
-[[https://github.com/syohex/emacs-go-eldoc][Visit webpage]]
-
-#+begin_src emacs-lisp
-;;(use-package go-eldoc
-;
-;;  :defer
-;;  :init
-;;  (add-hook 'go-mode-hook 'go-eldoc-setup))
-#+end_src
-
-* Lastpass
-[[https://github.com/storvik/emacs-lastpass][Visit webpage]].
-Package used to communicate with LastPass.
-Depends on lpass command line utility.
-
-#+begin_src emacs-lisp
-  (use-package lastpass
-    :config
-    (setq lastpass-user "petterstorvik@gmail.com")
-    (lastpass-auth-source-enable))
-#+end_src
-
-* Email
-** Receiving
+* Receiving
 [[http://www.djcbsoftware.nl/code/mu/mu4e.html][Visit webpage]] / [[http://www.djcbsoftware.nl/code/mu/mu4e/index.html][documentation]].
 MU4E is used together with offlineimap to receive mail.
 
@@ -149,7 +75,7 @@ MU4E is used together with offlineimap to receive mail.
   (add-hook 'mu4e-compose-mode-hook 'no-auto-fill)
 #+end_src
 
-*** Custom header
+** Custom header
 Custom header search, will be a part of =b?=.
 
 #+begin_src emacs-lisp
@@ -187,7 +113,7 @@ Custom header search, will be a part of =b?=.
 
 #+end_src
 
-*** Attach files with dired
+** Attach files with dired
 
 #+begin_src emacs-lisp
 (require 'gnus-dired)
@@ -208,8 +134,8 @@ Custom header search, will be a part of =b?=.
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 #+end_src
 
-** Sending
-*** Multiple SMTP accounts
+* Sending
+** Multiple SMTP accounts
 Define SMTP accounts. More information can be seen [[http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html#Multiple-accounts][here]].
 
 #+begin_src emacs-lisp
@@ -285,7 +211,7 @@ Define SMTP accounts. More information can be seen [[http://www.djcbsoftware.nl/
       ))
 #+end_src
 
-*** Use correct account (compose-pre-hook)
+** Use correct account (compose-pre-hook)
 Define function for changing outgoing smtp.
 If replaying to a message, the corresponding account is used.
 If composing a new message, you have to choose which account to use.
@@ -321,7 +247,7 @@ If composing a new message, you have to choose which account to use.
   (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 #+end_src
 
-*** Confirm sending with yes or no
+** Confirm sending with yes or no
 Confirm sending with yes/no.
 
 #+begin_src emacs-lisp
@@ -331,7 +257,7 @@ Confirm sending with yes/no.
                 (signal 'quit nil))))
 #+end_src
 
-** Notifications
+* Notifications
 [[https://github.com/iqbalansari/mu4e-alert][Visit webpage]].
 =mu4e-alert= sets up mail notifications in modeline.
 Can also be used to show system notifications on Mac Os X and Linux.
