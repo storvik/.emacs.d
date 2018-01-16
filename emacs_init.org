@@ -1071,7 +1071,8 @@ This defines different colors for different states.
 Uncomment this to load mu4e configs
 
 #+begin_src emacs-lisp
-  ;;(org-babel-load-file (expand-file-name "mu4e.org" user-emacs-directory))
+  (when (executable-find "mu")
+    (org-babel-load-file (expand-file-name "mu4e.org" user-emacs-directory)))
 #+end_src
 
 * Functions
