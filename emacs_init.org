@@ -555,6 +555,14 @@ Change compile key binding to =C-c C-c=.
             '(lambda ()
                (local-set-key "\C-c\C-c" 'compile)))
 #+end_src
+
+*** CUDA
+Associate .cu files with c-mode
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.cu\\'" . c-mode))
+#+end_src
+
 *** Default indentation
 Set default indentation to 4.
 
