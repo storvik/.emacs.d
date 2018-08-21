@@ -241,6 +241,17 @@ Useful when upgrading between frameworks and such.
 * Platform dependant
 Load config file dependant on current platform.
 
+** Windows
+*** Ctrl and cmd
+Use Ctrl key as control modifier and Cmd as meta modifier.
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'windows-nt)
+    (prefer-coding-system 'utf-8-unix)
+    (setq coding-system-for-read 'utf-8-unix)
+    (setq coding-system-for-write 'utf-8-unix))
+#+end_src
+
 ** Darwin
 *** Ctrl and cmd
 Use Ctrl key as control modifier and Cmd as meta modifier.
@@ -305,15 +316,23 @@ Turn off splash screen and startup message.
 #+end_src
 
 ** Theme
-Solarized-theme is pretty awesome!
+Trying gruvbox dark hard theme.
 
 #+begin_src emacs-lisp
   (unless (eq window-system nil)
-    (use-package solarized-theme
+    (use-package gruvbox-theme
       :config
       (progn
-        (set-terminal-parameter nil 'background-mode 'light)
-        (load-theme 'solarized-dark t))))
+        (load-theme 'gruvbox-dark-hard t))))
+#+end_src
+
+** Powerline
+Powerline makes mode line look better. 
+
+#+begin_src emacs-lisp
+  (use-package powerline
+    :config
+    (powerline-default-theme))
 #+end_src
 
 ** Smart mode line
@@ -331,6 +350,15 @@ Smart mode line looks pretty, and is actually quite helpful.
       (add-to-list 'sml/replacer-regexp-list '("^:dev:elisp/" ":elisp:") t)
       (add-to-list 'sml/replacer-regexp-list '("^:dev:www/" ":web:") t)
       (sml/setup)))
+#+end_src
+
+** Rainbow delimiters
+Added to `prog-mode-hook`. 
+
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+end_src
 
 ** Tab width
@@ -522,6 +550,7 @@ Brilliant interface to git.
                                "url"))
                    (cdr (magit-get-remote-branch)))))
         (setq magit-completing-read-function 'ivy-completing-read)
+        (setq magit-git-executable "git")
         (bind-key "v" 'visit-pull-request-url magit-mode-map)
         (bind-keys :map magit-status-mode-map
                    ("TAB" . magit-section-toggle)
@@ -615,24 +644,24 @@ Installation notes:
 - LLVM must be installed. Os X: =brew install llvm --with-clang=
 
 #+begin_src emacs-lisp
-  (use-package irony
-    :defer t
-    :init
-    (progn
-      (add-hook 'c++-mode-hook 'irony-mode)
-      (add-hook 'c-mode-hook 'irony-mode)
-      (add-hook 'objc-mode-hook 'irony-mode))
-    :config
-    ;; replace the `completion-at-point' and `complete-symbol' bindings in
-    ;; irony-mode's buffers by irony-mode's function
-    (progn
-      (defun my-irony-mode-hook ()
-        (define-key irony-mode-map [remap completion-at-point]
-          'irony-completion-at-point-async)
-        (define-key irony-mode-map [remap complete-symbol]
-          'irony-completion-at-point-async))
-      (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
+  ;;(use-package irony
+  ;;  :defer t
+  ;;  :init
+  ;;  (progn
+  ;;    (add-hook 'c++-mode-hook 'irony-mode)
+  ;;    (add-hook 'c-mode-hook 'irony-mode)
+  ;;    (add-hook 'objc-mode-hook 'irony-mode))
+  ;;  :config
+  ;;  ;; replace the `completion-at-point' and `complete-symbol' bindings in
+  ;;  ;; irony-mode's buffers by irony-mode's function
+  ;;  (progn
+  ;;    (defun my-irony-mode-hook ()
+  ;;      (define-key irony-mode-map [remap completion-at-point]
+  ;;        'irony-completion-at-point-async)
+  ;;      (define-key irony-mode-map [remap complete-symbol]
+  ;;        'irony-completion-at-point-async))
+  ;;    (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  ;;    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
 #+end_src
 
 *** Company
@@ -646,8 +675,8 @@ To configure company with irony, [[http://cachestocaches.com/2015/8/c-completion
     (global-company-mode 1)
     :config
     (progn
-      (use-package company-irony
-        :defer t)
+      ;;(use-package company-irony
+      ;;  :defer t)
       (setq company-idle-delay              nil
             company-minimum-prefix-length   2
             company-show-numbers            t
@@ -764,6 +793,16 @@ Use Safari to preview markdown, as google chrome is not supported.
 Major mode for go(lang).
 Must import GOPATH enviromental variable.
 
+The following packages must be installed:
+#+begin_src bash
+go get -u golang.org/x/tools/cmd/...
+go get -u github.com/rogpeppe/godef/...
+go get -u github.com/nsf/gocode
+go get -u golang.org/x/tools/cmd/goimports
+go get -u golang.org/x/tools/cmd/guru
+go get -u github.com/dougm/goflymake
+#+end_src
+
 #+begin_src emacs-lisp
   (when (executable-find "go")
     (use-package go-mode
@@ -772,9 +811,9 @@ Must import GOPATH enviromental variable.
         (setq gofmt-command "goimports")
         (add-hook 'before-save-hook 'gofmt-before-save)
         (bind-key [remap find-tag] #'godef-jump)
-        (bind-key (kbd "C-c C-r") #'go-remove-unused-imports))
-      :config
-      (exec-path-from-shell-copy-env "GOPATH")))
+        (bind-key (kbd "C-c C-r") #'go-remove-unused-imports))))
+      ;;:config
+      ;;(exec-path-from-shell-copy-env "GOPATH")))
 #+end_src
 
 *** Company-go
@@ -813,7 +852,6 @@ Auctex is the best way editing LaTeX documents!
       (setq TeX-auto-save t)
       (setq TeX-parse-self t)
       (setq-default TeX-master nil)
-      (add-hook 'LaTeX-mode-hook 'visual-line-mode)
       (add-hook 'LaTeX-mode-hook 'flyspell-mode)      ;; Enable flyspell as default
       (add-hook 'LaTeX-mode-hook 'turn-on-reftex)     ;; Enable reftex as default
       (setq reftex-plug-into-AUCTeX t)
@@ -840,9 +878,11 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
 #+begin_src emacs-lisp
   (use-package auctex-latexmk
     :config
-    (auctex-latexmk-setup)
-    (add-hook 'TeX-mode-hook '(lambda ()
-                                (setq TeX-command-default "LatexMk"))))
+    (progn 
+      (auctex-latexmk-setup)
+      (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+      (add-hook 'TeX-mode-hook '(lambda ()
+                                (setq TeX-command-default "LatexMk")))))
 #+end_src
 
 ** Markdown

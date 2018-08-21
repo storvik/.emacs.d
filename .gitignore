@@ -12,3 +12,5 @@ recentf
 snippets/*
 eshell/*
 url/*
+server/*
+tramp*
