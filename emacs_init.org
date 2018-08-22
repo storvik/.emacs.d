@@ -277,10 +277,10 @@ Use Ctrl key as control modifier and Cmd as meta modifier.
 Set default font and size.
 
 #+begin_src emacs-lisp
-  ;;(set-face-attribute 'default nil :font (sys-diversification
-  ;;                                        "Fira Mono-10"
-  ;;                                        "Fira Mono-10"
-  ;;                                        "Courier-10"))
+  (set-face-attribute 'default nil :font (sys-diversification
+                                           "Ubuntu Mono-11"
+                                           "Fira Mono-10"
+                                           "Courier New-10"))
 #+End_src
 
 ** Golden ratio
@@ -327,7 +327,7 @@ Trying gruvbox dark hard theme.
 #+end_src
 
 ** Powerline
-Powerline makes mode line look better. 
+Powerline makes mode line look better.
 
 #+begin_src emacs-lisp
   (use-package powerline
@@ -353,7 +353,7 @@ Smart mode line looks pretty, and is actually quite helpful.
 #+end_src
 
 ** Rainbow delimiters
-Added to `prog-mode-hook`. 
+Added to `prog-mode-hook`.
 
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
@@ -878,7 +878,7 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
 #+begin_src emacs-lisp
   (use-package auctex-latexmk
     :config
-    (progn 
+    (progn
       (auctex-latexmk-setup)
       (setq auctex-latexmk-inherit-TeX-PDF-mode t)
       (add-hook 'TeX-mode-hook '(lambda ()
