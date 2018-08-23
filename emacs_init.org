@@ -575,6 +575,25 @@ List all available bindings with =C-c p=, which is the prefix, followed by =C-h=
 #+end_src
 
 * Programming
+** Autocomplete
+[[http://company-mode.github.io/][Visit website]].
+Company mode autocomplete.
+
+#+begin_src emacs-lisp
+  (use-package company
+    :defer t
+    :init
+    (global-company-mode t)
+    :config
+    (setq company-idle-delay              nil
+          company-minimum-prefix-length   2
+          company-show-numbers            t
+          company-tooltip-limit           20
+          company-dabbrev-downcase        nil)
+    :bind
+    ("C-;" . company-complete-common))
+#+end_src
+
 ** C/C++
 *** Compile key
 Change compile key binding to =C-c C-c=.
@@ -633,74 +652,6 @@ Look for Makefile in parent folder and change directory.
               (set (make-local-variable 'compile-command)
                    (format "make -k" (get-closest-pathname)))
               (setq default-directory (substring (get-closest-pathname) 0 -8))))
-#+end_src
-
-** Company mode
-*** Irony
-[[https://github.com/Sarcasm/irony-mode][Visit website]].
-Company mode is a auto complete package and irony is autocomplete for C/C++.
-Installation notes:
-- Add this when installing in Os X: =-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON /usr/local/opt/llvm/lib/libclang.dylib=
-- LLVM must be installed. Os X: =brew install llvm --with-clang=
-
-#+begin_src emacs-lisp
-  ;;(use-package irony
-  ;;  :defer t
-  ;;  :init
-  ;;  (progn
-  ;;    (add-hook 'c++-mode-hook 'irony-mode)
-  ;;    (add-hook 'c-mode-hook 'irony-mode)
-  ;;    (add-hook 'objc-mode-hook 'irony-mode))
-  ;;  :config
-  ;;  ;; replace the `completion-at-point' and `complete-symbol' bindings in
-  ;;  ;; irony-mode's buffers by irony-mode's function
-  ;;  (progn
-  ;;    (defun my-irony-mode-hook ()
-  ;;      (define-key irony-mode-map [remap completion-at-point]
-  ;;        'irony-completion-at-point-async)
-  ;;      (define-key irony-mode-map [remap complete-symbol]
-  ;;        'irony-completion-at-point-async))
-  ;;    (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  ;;    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
-#+end_src
-
-*** Company
-[[http://company-mode.github.io/][Visit website]].
-To configure company with irony, [[http://cachestocaches.com/2015/8/c-completion-emacs/][follow this guide]].
-
-#+begin_src emacs-lisp
-  (use-package company
-    :defer t
-    :init
-    (global-company-mode 1)
-    :config
-    (progn
-      ;;(use-package company-irony
-      ;;  :defer t)
-      (setq company-idle-delay              nil
-            company-minimum-prefix-length   2
-            company-show-numbers            t
-            company-tooltip-limit           20
-            company-dabbrev-downcase        nil)
-      (with-eval-after-load 'company
-        (add-to-list 'company-backends 'company-irony)
-        (add-to-list 'company-backends 'company-gtags)))
-    :bind
-    ("C-;" . company-complete-common))
-#+end_src
-
-*** Company quickhelp
-[[https://github.com/expez/company-quickhelp][Visit website]].
-Quickhelp popup in company mode.
-
-#+begin_src emacs-lisp
-  (use-package company-quickhelp
-    :defer t
-    :init
-    (progn
-      (company-quickhelp-mode 1)
-      (eval-after-load 'company
-        '(define-key company-active-map (kbd "M-h") #'company-quickhelp-manual-begin))))
 #+end_src
 
 ** CSV files

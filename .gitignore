@@ -14,3 +14,5 @@ eshell/*
 url/*
 server/*
 tramp*
+session*
+network-security.data
