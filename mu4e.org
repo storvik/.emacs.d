@@ -163,9 +163,9 @@ Shortcuts to maildirs goes here
   ;; Shortcuts to maildirs
   (setq mu4e-maildir-shortcuts
         '( ("/petterstorvik@gmail.com/Inbox"               . ?i)
+           ("/petterstorvik@gmail.com/All"                 . ?a)
            ("/petterstorvik@gmail.com/Sent"                . ?s)
            ("/petterstorvik@gmail.com/Trash"               . ?t)
-           ("/petterstorvik@gmail.com/Archive"             . ?a)
            ("/petterstorvik@gmail.com/Svartisenfestivalen" . ?S)))
 #+end_src
 
@@ -191,13 +191,6 @@ Headers view customizations.
   ;; Change date format
   (setq mu4e-headers-date-format "%Y.%m.%d %H:%M")
 
-  ;; Widths in headers view. nil is unlimited, should be used last.
-  ;;(setq mu4e-headers-fields
-  ;;    '( (:date          .  25)    ;; alternatively, use :human-date
-  ;;       (:flags         .   6)
-  ;;       (:from          .  22)
-  ;;       (:subject       .  nil))) ;; alternatively, use :thread-subject
-
   ;; Include related mail, use carefully when deleting mail with search queries.
   (setq mu4e-headers-include-related t)
 
@@ -205,10 +198,10 @@ Headers view customizations.
   (add-to-list 'mu4e-header-info-custom
     '(:recipnum .
        ( :name "Number of recipients"                  ;; long name, as seen in the message-view
-         :shortname "R"                                ;; short name, as seen in the headers view
+         :shortname " R"                                ;; short name, as seen in the headers view
          :help "Number of recipients for this message" ;; tooltip
          :function (lambda (msg)
-            (format "%d"
+            (format "%2d"
               (+ (length (mu4e-message-field msg :to))
                  (length (mu4e-message-field msg :cc))))))))
   (add-to-list 'mu4e-view-fields :recipnum)
