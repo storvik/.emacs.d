@@ -16,3 +16,4 @@ server/*
 tramp*
 session*
 network-security.data
+irony/*
