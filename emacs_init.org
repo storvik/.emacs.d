@@ -989,19 +989,23 @@ Install org mode package
     (progn
       ;; Agenda view
       (setq org-agenda-files (quote ("~/org")))
+
       ;; Indentation
       (setq org-startup-indented t)
       (setq org-indent-mode t)
       (setq org-catch-invisible-edit 'nil)
+
       ;; File locations
       (setq org-directory "~/org")
       (setq org-default-notes-file "~/org/refile.org")
+
       ;; Refile
       (setq org-refile-use-outline-path t)
       (setq org-outline-path-complete-in-steps nil)
       (setq org-refile-allow-creating-parent-nodes (quote confirm))
       (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                        (org-agenda-files :maxlevel . 9))))
+
       ;; Clock
       (setq org-clock-persist 'history)
       (org-clock-persistence-insinuate)
@@ -1009,6 +1013,7 @@ Install org mode package
       (setq org-log-into-drawer "LOGBOOK")
       (setq org-clock-into-drawer 1)
       (setq org-log-done 'time)
+
       ;; Todo
       (setq org-clock-in-switch-to-state "STARTED")
       ))
@@ -1018,18 +1023,17 @@ Install org mode package
 Templates for capturing stuff. Same as the todo states defined above.
 - A phone call (p)
 - A meeting (m)
-- An email I need to respond to (r)
 - A new task (t)
 - A new note (n)
 - A jounral entry in AAT (j)
 - Status meeting (s)
+- Email response must be written (r)
+- Email todo entry, normal todo with email link (e)
 
 #+begin_src emacs-lisp
   (setq org-capture-templates
         (quote (("t" "Todo" entry (file "~/org/refile.org")
                  "* TODO %?\n")
-                ("r" "Respond" entry (file "~/org/refile.org")
-                 "* STARTED Respond to %:from on %:subject\n\tSCHEDULED: %t\n" :immediate-finish t)
                 ("n" "Note" entry (file "~/org/refile.org")
                  "* %? :NOTE:\n")
                 ("m" "Meeting" entry (file "~/org/refile.org")
@@ -1040,6 +1044,11 @@ Templates for capturing stuff. Same as the todo states defined above.
                  "* %? %T" :empty-lines 0)
                 ("s" "Status meeting (AAT)" entry (file+datetree "~/org/aat.org")
                  "* StatusmÃ¸te\n%?" :clock-in t)
+                ;; MU4E related templates
+                ("r" "Respond to email, must be run from mu4e" entry (file "~/org/refile.org")
+                 "* TODO Respond to %:from on %:subject\n\t%a\n" :immediate-finish t)
+                ("e" "E-mail todo, must be run from mu4e" entry (file "~/org/refile.org")
+                 "* TODO %?\n%a\n")
                 )))
 #+end_src
 

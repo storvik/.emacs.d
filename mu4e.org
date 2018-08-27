@@ -179,6 +179,10 @@ Add some useful bookmarks.
                 "NOT flag:trashed AND "
                 "NOT (maildir:/petterstorvik@gmail.com/Trash OR maildir:/petter.storvik@avantieng.no/Trash)") "Unread in inbox" ?i))
   (add-to-list 'mu4e-bookmarks
+              '((concat
+                "maildir:/petterstorvik@gmail.com/Inbox AND "
+                "to:petter@svartisenfestivalen.no") "Svartisenfestivalen Inbox" ?3))
+  (add-to-list 'mu4e-bookmarks
               '("maildir:/petter.storvik@avantieng.no/Inbox" "Avantieng Inbox" ?2))
   (add-to-list 'mu4e-bookmarks
               '("maildir:/petterstorvik@gmail.com/Inbox" "Gmail Inbox" ?1))
@@ -242,4 +246,11 @@ Can also be used to show system notifications on Mac Os X and Linux.
        "flag:unread maildir:/petter.storvik@avantieng.no/Inbox"))
     :config
     (mu4e-alert-enable-mode-line-display))
+#+end_src
+* Org integration
+Make org capture templates with =%a= include link to selected email in mu4e.
+
+#+begin_src emacs-lisp
+(require 'org-mu4e)
+(setq org-mu4e-link-query-in-headers-mode nil)
 #+end_src
