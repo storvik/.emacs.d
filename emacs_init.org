@@ -405,8 +405,8 @@ Enable mouse clicks in terminal.
 Disable yasnippet in ansi-term.
 
 #+begin_src emacs-lisp
-  (add-hook 'term-mode-hook (lambda()
-                              (setq yas-dont-activate t)))
+;;  (add-hook 'term-mode-hook (lambda()
+;;                              (setq yas-dont-activate t)))
 #+end_src
 
 * Navigation
@@ -595,6 +595,54 @@ Company mode autocomplete.
 #+end_src
 
 ** C/C++
+*** Irony
+[[https://github.com/Sarcasm/irony-mode][Visit website]].
+Irony for C / C++ code completion.
+Depends on libclang.
+Ubuntu: =sudo apt-get install libclang-dev=.
+
+Generate cmake completion database, use =cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .=
+
+#+begin_src emacs-lisp
+(use-package irony
+  :defer t
+  :init
+  (progn
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'objc-mode-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+  :config
+  (progn
+    (defun my-irony-mode-hook ()
+      (define-key irony-mode-map
+        [remap completion-at-point] 'counsel-irony)
+      (define-key irony-mode-map
+        [remap complete-symbol] 'counsel-irony))
+    (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
+#+end_src
+
+Company irony is used to interface irony and company.
+
+#+begin_src emacs-lisp
+  (use-package company-irony
+    :defer t
+    :init
+    (eval-after-load 'company
+      '(add-to-list 'company-backends 'company-irony)))
+#+end_src
+
+Flycheck irony is used to interface irony and flycheck.
+
+#+begin_src emacs-lisp
+  (use-package flycheck-irony
+    :defer t
+    :init
+    (eval-after-load 'flycheck
+      '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
+#+end_src
+
 *** Compile key
 Change compile key binding to =C-c C-c=.
 
@@ -713,17 +761,6 @@ It includes on the fly function lookup and syntax validation.
     :init
     (add-hook 'prog-mode-hook #'flycheck-mode)
     :commands flycheck-mode)
-#+end_src
-
-** Flycheck-irony
-[[https://github.com/Sarcasm/flycheck-irony][Visit webpage]].
-Flycheck-irony uses irony's backend to perform function lookups.
-
-#+begin_src emacs-lisp
-  (use-package flycheck-irony
-    :defer t
-    :init
-    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 #+end_src
 
 ** Flymd
@@ -955,32 +992,13 @@ Expand snippets, making your life easier.
   (use-package yasnippet
     :diminish yas-minor-mode
     :config
-    (progn
-      (yas-global-mode 1)
-      (setq yas-prompt-functions
-            '( yas-ido-prompt
-               yas-dropdown-prompt
-               yas-completing-prompt
-               yas-no-prompt
-               yas-x-prompt))))
+      (yas-global-mode 1))
 #+end_src
 
-To make [[Company mode][company mode]] and yasnippet to play nicely together, yasnippet backend is automatically loaded with other backends.
-This according to this [[https://github.com/syl20bnr/spacemacs/pull/179][pull request]].
-
+As yasnippet doesn't contain any snippets, [[https://github.com/AndreaCrotti/yasnippet-snippets][here]] is an awesome collection!
 #+begin_src emacs-lisp
-  (defvar company-mode/enable-yas t
-    "Enable yasnippet for all backends.")
-
-  (defun company-mode/backend-with-yas (backend)
-    (if (or (not company-mode/enable-yas)
-            (and (listp backend)
-                 (member 'company-yasnippet backend)))
-        backend
-      (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet))))
-
-  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+  (use-package yasnippet-snippets
+    :defer t)
 #+end_src
 
 * Org mode

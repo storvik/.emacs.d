@@ -9,7 +9,6 @@ emacs.saves/*
 .mc-lists.el
 smex-items
 recentf
-snippets/*
 eshell/*
 url/*
 server/*
@@ -17,3 +16,4 @@ tramp*
 session*
 network-security.data
 irony/*
+bookmarks
