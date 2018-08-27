@@ -582,6 +582,7 @@ Company mode autocomplete.
 #+begin_src emacs-lisp
   (use-package company
     :defer t
+    :diminish company-mode
     :init
     (global-company-mode t)
     :config
@@ -595,6 +596,12 @@ Company mode autocomplete.
 #+end_src
 
 ** C/C++
+
+Use either irony or ycm.
+#+begin_src emacs-lisp
+  (setq storvik-irony-or-ycm 'ycm)
+#+end_src
+
 *** Irony
 [[https://github.com/Sarcasm/irony-mode][Visit website]].
 Irony for C / C++ code completion.
@@ -604,29 +611,31 @@ Ubuntu: =sudo apt-get install libclang-dev=.
 Generate cmake completion database, use =cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .=
 
 #+begin_src emacs-lisp
-(use-package irony
-  :defer t
-  :init
-  (progn
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'c-mode-hook 'irony-mode)
-    (add-hook 'objc-mode-hook 'irony-mode)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-  :config
-  (progn
-    (defun my-irony-mode-hook ()
-      (define-key irony-mode-map
-        [remap completion-at-point] 'counsel-irony)
-      (define-key irony-mode-map
-        [remap complete-symbol] 'counsel-irony))
-    (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
+  (use-package irony
+    :if (string= storvik-irony-or-ycm "irony")
+    :defer t
+    :init
+    (progn
+      (add-hook 'c++-mode-hook 'irony-mode)
+      (add-hook 'c-mode-hook 'irony-mode)
+      (add-hook 'objc-mode-hook 'irony-mode)
+      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+    :config
+    (progn
+      (defun my-irony-mode-hook ()
+        (define-key irony-mode-map
+          [remap completion-at-point] 'counsel-irony)
+        (define-key irony-mode-map
+          [remap complete-symbol] 'counsel-irony))
+      (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
 #+end_src
 
 Company irony is used to interface irony and company.
 
 #+begin_src emacs-lisp
   (use-package company-irony
+    :if (string= storvik-irony-or-ycm "irony")
     :defer t
     :init
     (eval-after-load 'company
@@ -637,10 +646,50 @@ Flycheck irony is used to interface irony and flycheck.
 
 #+begin_src emacs-lisp
   (use-package flycheck-irony
+    :if (string= storvik-irony-or-ycm "irony")
     :defer t
     :init
     (eval-after-load 'flycheck
       '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
+#+end_src
+
+*** Emacs YCMD
+[[https://github.com/abingham/emacs-ycmd][Visit webpage]].
+Seems like a faster alternative to irony, even tough i prefere irony :cry:
+
+#+begin_src emacs-lisp
+  (use-package ycmd
+    :if (string= storvik-irony-or-ycm "ycm")
+    :ensure t
+    :init
+    (progn
+      (add-hook 'c++-mode-hook #'ycmd-mode)
+      (add-hook 'c-mode-hook 'irony-mode))
+    :config
+    (set-variable 'ycmd-server-command '("python3" "/home/storvik/ycmd/ycmd")))
+#+end_src
+
+Use company mode for autocompletion.
+
+#+begin_src emacs-lisp
+  (use-package company-ycmd
+    :if (string= storvik-irony-or-ycm "ycm")
+    :ensure t
+    :init (company-ycmd-setup))
+#+end_src
+
+Flycheck used to check for errors on the fly.
+
+#+begin_src emacs-lisp
+  (use-package flycheck-ycmd
+    :if (string= storvik-irony-or-ycm "ycm")
+    :commands (flycheck-ycmd-setup)
+    :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup))
+#+end_src
+
+#+begin_src emacs-lisp
+  (when :if (string= storvik-irony-or-ycm "ycm")
+    (add-hook 'ycmd-mode-hook 'ycmd-eldoc-mode))
 #+end_src
 
 *** Compile key

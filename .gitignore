@@ -1,5 +1,5 @@
 auto-save-list/*
-custom.el
+custom.el*
 elpa/*
 emacs_init.el
 mu4e.el
