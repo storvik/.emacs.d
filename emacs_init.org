@@ -962,6 +962,17 @@ Nginx mode for editing Nginx config files.
   (use-package nginx-mode)
 #+end_src
 
+** Python
+The following python packages must be installed by running:
+=pip install rope jedi flake8 autopep8 yapf=
+
+#+begin_src emacs-lisp
+  (use-package elpy
+    :defer t
+    :init
+    (elpy-enable))
+#+end_src
+
 ** SQL Mode
 Bind file extentions to sql mode.
 

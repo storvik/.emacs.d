@@ -17,3 +17,4 @@ session*
 network-security.data
 irony/*
 bookmarks
+projectile.cache

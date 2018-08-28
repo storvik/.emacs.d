@@ -137,7 +137,7 @@ Multiple contexts equals multiple accounts.
                        "Petter Sakrihei Storvik\n\n"
                        "Svartisenfestivalen\n"
                        "Booking / Sponsorkontakt\n"
-                       "Web: http://www.svartisenfestivalen.no"
+                       "Web: http://www.svartisenfestivalen.no\n"
                        "Tlf: +47 958 83 676\n"
                        "E-mail: petter@svartisenfestivalen.no"))))))
 
