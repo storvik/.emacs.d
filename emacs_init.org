@@ -571,6 +571,7 @@ List all available bindings with =C-c p=, which is the prefix, followed by =C-h=
     :config
     (progn
       (projectile-global-mode t)
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
       (setq projectile-completion-system 'ivy)))
 #+end_src
 
