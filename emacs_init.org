@@ -5,34 +5,15 @@
 
 * Notes
 This emacs configuration aims to provide usable emacs environments that are platform independant.
-All platform independant configurations is put in this file, while platform dependant stuff is put in emacs_platform.org.
-
-** Inspiration and useful links
-- [[https://emacs.zeef.com/ehartc?ref=robert.thorpe][Emacs top list]]
-- [[https://github.com/joodie/emacs-literal-config][Joodie github]]
-- [[https://github.com/mwfogleman/config/tree/master/home/.emacs.d][mwfoglemans github]]
-- [[https://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][sachas configs]]
-- [[http://pages.sachachua.com/.emacs.d/Sacha.html][sachas configs again]]
-- [[http://endlessparentheses.com/][Endless Parantheses]]
-- [[http://emacsrocks.com/][Emacs Rocks!]]
-- [[http://doc.norang.ca/org-mode.html][Norangs org-mode configs]]
-- [[http://www.totherme.org/configs/gds.html][Gareth's Emacs Configs]]
-- [[http://writequit.org/org/settings.html][Lees Emacs Configs]]
-- [[http://tuhdo.github.io/c-ide.html][C/C++ Development in Emacs]]
 
 ** Add to workflow
-- =C--= or =M--= as negative argument. Can among others be used with =M-d= (delete from point to end of word) or =C-k= (delete from point to end of line).
 - Get help with =C-h i= (manuals) and =C-h a= (apropos, search for commands containing search string).
 - =C-h f= to describe function and =C-h v= to describe variables. Should be exchanged with counsel describe.
 - Keep buffers around, using =C-x s= to save all.
-- Do stuff in other window. =C-x 4 C-h= to list all bindings.
-- Frames, create new emacs windows to use in multimonitor setups and such. =C-x 5 C-h=.
 - Use =C-M-f/b= to move by s-expression. From start paren to end paren and such.
 - Use =C-M-= (d)own into list, (u)p out of list. Move into the nearest balanced expression.
 - Use =C-M-= (n)ext list, (p)revious list.
-- Move by sentence by reblacing =C= with =M=. That is =M-a/e=.
 - Move by defun with =C-M-a/e=.
-- Scroll other window with =C-M-v= (down) and =C-M-S-v= (up).
 - Ivy-hydra =C-o= when in ivy minibuffer.
 
 * Personal information
