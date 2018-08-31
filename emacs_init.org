@@ -914,6 +914,16 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
                                 (setq TeX-command-default "LatexMk")))))
 #+end_src
 
+** Lispy
+[[https://github.com/abo-abo/lispy][Visit webpage]].
+Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
+
+#+begin_src emacs-lisp
+  (use-package lispy
+    :defer t
+    :hook (emacs-lisp-mode . (lambda () (lispy-mode 1))))
+#+end_src
+
 ** Markdown
 [[http://jblevins.org/projects/markdown-mode/][Visit webpage]].
 Mode to edit markdown files more efficiently.
