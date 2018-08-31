@@ -970,7 +970,12 @@ The following python packages must be installed by running:
   (use-package elpy
     :defer t
     :init
-    (elpy-enable))
+    (progn
+      (elpy-enable)
+      (defun my-elpy-before-save-hook ()
+        (when (eq major-mode 'python-mode)
+          (elpy-format-code)))
+      (add-hook 'before-save-hook 'my-elpy-before-save-hook)))
 #+end_src
 
 ** SQL Mode
