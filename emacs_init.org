@@ -71,6 +71,18 @@ Configure load-path to include =~/.emacs.d/elisp/=.
   (add-to-list 'load-path (concat user-emacs-directory "elisp/"))
 #+end_src
 
+** Auto update packages
+[[https://github.com/rranelli/auto-package-update.el][Visit webpage]].
+Automatically update packages.
+
+#+begin_src emacs-lisp
+  (use-package auto-package-update
+    :config
+    (setq auto-package-update-delete-old-versions t)
+    (setq auto-package-update-hide-results t)
+    (auto-package-update-maybe))
+#+end_src
+
 ** Backup
 Change backup location to common dir, =~/.emacs.saves= in emacs directory.
 
