@@ -96,17 +96,27 @@ Turn off audible and visible bell.
   (setq ring-bell-function 'ignore)
 #+end_src
 
+** Path
+Use exec-path-from-shell on unix computers.
+
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :when sys-unix-p
+    :init
+    (exec-path-from-shell-initialize))
+#+end_src
+
 ** Lastpass
 [[https://github.com/storvik/emacs-lastpass][Visit webpage]].
 Package used to communicate with LastPass.
 Depends on lpass command line utility.
 
 #+begin_src emacs-lisp
-  (when (executable-find "lpass")
-    (use-package lastpass
-      :config
-      (setq lastpass-user "petterstorvik@gmail.com")
-      (lastpass-auth-source-enable)))
+  (use-package lastpass
+    :when (executable-find "lpass")
+    :config
+    (setq lastpass-user "petterstorvik@gmail.com")
+    (lastpass-auth-source-enable))
 #+end_src
 
 ** Key Chord
@@ -243,16 +253,6 @@ Use Ctrl key as control modifier and Cmd as meta modifier.
     (setq mac-control-modifier 'control))
 #+end_src
 
-** Unix
-*** Shell
-
-#+begin_src emacs-lisp
-  (when sys-unix-p
-    (use-package exec-path-from-shell
-      :init
-      (exec-path-from-shell-initialize)))
-#+end_src
-
 * Appearance settings
 ** Font
 Set default font and size.
@@ -300,11 +300,11 @@ Turn off splash screen and startup message.
 Trying gruvbox dark hard theme.
 
 #+begin_src emacs-lisp
-  (unless (eq window-system nil)
-    (use-package gruvbox-theme
-      :config
-      (progn
-        (load-theme 'gruvbox-dark-hard t))))
+  (use-package gruvbox-theme
+    :when window-system
+    :config
+    (progn
+    (load-theme 'gruvbox-dark-hard t)))
 #+end_src
 
 ** Powerline
@@ -440,7 +440,7 @@ Open hyperlinks at point. =C-c B(rowse)=.
 #+begin_src emacs-lisp
   (setq browse-url-browser-function 'browse-url-generic
         browse-url-generic-program (sys-diversification
-                                    "open"
+                                    "firefox"
                                     "firefox"))
 
   (bind-key "C-c B" 'browse-url-at-point)
@@ -506,7 +506,7 @@ Ivy replaces the heavier Helm package, try it and be amazed!
 
 To enhance the M-x experience, smex must be installed.
 #+begin_src emacs-lisp
-(use-package smex)
+  (use-package smex)
 #+end_src
 
 * Magit
@@ -514,30 +514,31 @@ Brilliant interface to git.
 =C-x g= to open.
 
 #+begin_src emacs-lisp
-  (when (executable-find "git")
-    (use-package magit
-      :bind ("C-x g" . magit-status)
-      :config
-      (progn
-        (defun visit-pull-request-url ()
-          "Visit the current branch's PR on Github."
-          (interactive)
-          (browse-url
-           (format "https://github.com/%s/pull/new/%s"
-                   (replace-regexp-in-string
-                    "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
-                    (magit-get "remote"
-                               (magit-get-remote)
-                               "url"))
-                   (cdr (magit-get-remote-branch)))))
-        (setq magit-completing-read-function 'ivy-completing-read)
-        (setq magit-git-executable "git")
-        (bind-key "v" 'visit-pull-request-url magit-mode-map)
-        (bind-keys :map magit-status-mode-map
-                   ("TAB" . magit-section-toggle)
-                   ("<C-tab>" . magit-section-cycle))
-        (bind-keys :map magit-branch-section-map
-                   ("RET" . magit-checkout)))))
+
+  (use-package magit
+    :when (executable-find "git")
+    :bind ("C-x g" . magit-status)
+    :config
+    (progn
+      (defun visit-pull-request-url ()
+        "Visit the current branch's PR on Github."
+        (interactive)
+        (browse-url
+         (format "https://github.com/%s/pull/new/%s"
+                 (replace-regexp-in-string
+                  "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
+                  (magit-get "remote"
+                             (magit-get-remote)
+                             "url"))
+                 (cdr (magit-get-remote-branch)))))
+      (setq magit-completing-read-function 'ivy-completing-read)
+      (setq magit-git-executable "git")
+      (bind-key "v" 'visit-pull-request-url magit-mode-map)
+      (bind-keys :map magit-status-mode-map
+                 ("TAB" . magit-section-toggle)
+                 ("<C-tab>" . magit-section-cycle))
+      (bind-keys :map magit-branch-section-map
+                 ("RET" . magit-checkout))))
 #+end_src
 
 * Projectile
@@ -581,7 +582,7 @@ Company mode autocomplete.
 
 Use either irony or ycm.
 #+begin_src emacs-lisp
-  (setq storvik-irony-or-ycm 'ycm)
+  (setq storvik/irony-or-ycm 'ycm)
 #+end_src
 
 *** Irony
@@ -594,7 +595,7 @@ Generate cmake completion database, use =cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=O
 
 #+begin_src emacs-lisp
   (use-package irony
-    :if (string= storvik-irony-or-ycm "irony")
+    :when (string= storvik/irony-or-ycm "irony")
     :defer t
     :init
     (progn
@@ -617,7 +618,7 @@ Company irony is used to interface irony and company.
 
 #+begin_src emacs-lisp
   (use-package company-irony
-    :if (string= storvik-irony-or-ycm "irony")
+    :when (string= storvik/irony-or-ycm "irony")
     :defer t
     :init
     (eval-after-load 'company
@@ -628,7 +629,7 @@ Flycheck irony is used to interface irony and flycheck.
 
 #+begin_src emacs-lisp
   (use-package flycheck-irony
-    :if (string= storvik-irony-or-ycm "irony")
+    :when (string= storvik/irony-or-ycm "irony")
     :defer t
     :init
     (eval-after-load 'flycheck
@@ -641,7 +642,7 @@ Seems like a faster alternative to irony, even tough i prefere irony :cry:
 
 #+begin_src emacs-lisp
   (use-package ycmd
-    :if (string= storvik-irony-or-ycm "ycm")
+    :when (string= storvik/irony-or-ycm "ycm")
     :ensure t
     :init
     (progn
@@ -655,7 +656,7 @@ Use company mode for autocompletion.
 
 #+begin_src emacs-lisp
   (use-package company-ycmd
-    :if (string= storvik-irony-or-ycm "ycm")
+    :when (string= storvik/irony-or-ycm "ycm")
     :ensure t
     :init (company-ycmd-setup))
 #+end_src
@@ -664,13 +665,13 @@ Flycheck used to check for errors on the fly.
 
 #+begin_src emacs-lisp
   (use-package flycheck-ycmd
-    :if (string= storvik-irony-or-ycm "ycm")
+    :when (string= storvik/irony-or-ycm "ycm")
     :commands (flycheck-ycmd-setup)
     :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup))
 #+end_src
 
 #+begin_src emacs-lisp
-  (when :if (string= storvik-irony-or-ycm "ycm")
+  (when (string= storvik/irony-or-ycm "ycm")
     (add-hook 'ycmd-mode-hook 'ycmd-eldoc-mode))
 #+end_src
 
@@ -745,7 +746,7 @@ Prettify csv files.
 Simple syntax highlightning for Docker containers.
 
 #+begin_src emacs-lisp
-(use-package dockerfile-mode)
+  (use-package dockerfile-mode)
 #+end_src
 
 ** Elisp
@@ -833,16 +834,16 @@ go get -u github.com/dougm/goflymake
 #+end_src
 
 #+begin_src emacs-lisp
-  (when (executable-find "go")
-    (use-package go-mode
-      :init
-      (progn
-        (setq gofmt-command "goimports")
-        (add-hook 'before-save-hook 'gofmt-before-save)
-        (bind-key [remap find-tag] #'godef-jump)
-        (bind-key (kbd "C-c C-r") #'go-remove-unused-imports))))
-      ;;:config
-      ;;(exec-path-from-shell-copy-env "GOPATH")))
+  (use-package go-mode
+    :when (executable-find "go")
+    :init
+    (progn
+      (setq gofmt-command "goimports")
+      (add-hook 'before-save-hook 'gofmt-before-save)
+      (bind-key [remap find-tag] #'godef-jump)
+      (bind-key (kbd "C-c C-r") #'go-remove-unused-imports)))
+    ;;:config
+    ;;(exec-path-from-shell-copy-env "GOPATH")))
 #+end_src
 
 *** Company-go
@@ -850,13 +851,13 @@ go get -u github.com/dougm/goflymake
 Go support for company mode.
 
 #+begin_src emacs-lisp
-  (when (executable-find "go")
-    (use-package company-go
-      :requires go-mode
-      :defer t
-      :init
-      (with-eval-after-load 'company
-        (add-to-list 'company-backends 'company-go))))
+  (use-package company-go
+    :when (executable-find "go")
+    :requires go-mode
+    :defer t
+    :init
+    (with-eval-after-load 'company
+    (add-to-list 'company-backends 'company-go)))
 #+end_src
 
 *** Eldoc
