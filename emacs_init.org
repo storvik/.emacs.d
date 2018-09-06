@@ -929,6 +929,19 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
                                 (setq TeX-command-default "LatexMk")))))
 #+end_src
 
+** Lisp
+[[https://github.com/slime/slime][Visit webpage]].
+Using SLIME, the superior lisp mode.
+
+#+begin_src emacs-lisp
+  (use-package slime
+    :when (executable-find "sbcl")
+    :init
+    (progn
+      (setq inferior-lisp-program "/usr/bin/sbcl")
+      (setq slime-contribs '(slime-fancy))))
+#+end_src
+
 ** Lispy
 [[https://github.com/abo-abo/lispy][Visit webpage]].
 Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
