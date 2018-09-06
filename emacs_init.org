@@ -1090,6 +1090,9 @@ Install org mode package
       ;; Agenda view
       (setq org-agenda-files (quote ("~/org")))
 
+      ;; Archive location
+      (setq org-archive-location "archive/%s_archive::")
+
       ;; Indentation
       (setq org-startup-indented t)
       (setq org-indent-mode t)
@@ -1115,8 +1118,7 @@ Install org mode package
       (setq org-log-done 'time)
 
       ;; Todo
-      (setq org-clock-in-switch-to-state "STARTED")
-      ))
+      (setq org-clock-in-switch-to-state "STARTED")))
 #+end_src
 
 ** Capture
