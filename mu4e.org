@@ -18,6 +18,9 @@ MU4E is used together with mbsync to receive mail.
   (setq mu4e-maildir "~/email")
   (setq mu4e-get-mail-command "mbsync gmail avantieng")
 
+  ;; MU4E key-chord
+  (key-chord-define-global "mu" 'mu4e)
+
   ;; LastPass login test
   (defun lastpass-mu4e-update-mail-and-index (update-function &rest r)
     "Check if user is logged in and run UPDATE-FUNCTION with arguments R."
