@@ -36,6 +36,9 @@ MU4E is used together with mbsync to receive mail.
   ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
   (setq mu4e-sent-messages-behavior 'delete)
 
+  ;; Change luminosity to work with dark themes
+  (setq shr-color-visible-luminance-min 80)
+
   ;; Attempt to show images when viewing messages
   (setq mu4e-view-show-images t)
 
