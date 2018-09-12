@@ -218,6 +218,14 @@ Headers view customizations.
   (add-to-list 'mu4e-headers-fields '(:recipnum))
 #+end_src
 
+* Message setting
+Use org mode tables and structure in message mode.
+
+#+begin_src emacs-lisp
+  (add-hook 'message-mode-hook 'turn-on-orgtbl)
+  (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+#+end_src
+
 * SMTP settings
 Outgoing SMTP settings, note that username, server address etc. are defined in contexts.
 
