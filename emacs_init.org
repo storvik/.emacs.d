@@ -337,7 +337,7 @@ Smart mode line looks pretty, and is actually quite helpful.
     (progn
       (setq sml/no-confirm-load-theme t)
       (add-to-list 'sml/replacer-regexp-list '("^~/developer/" ":dev:"))
-      (add-to-list 'sml/replacer-regexp-list '("^:dev:go/" ":golang:") t)
+      (add-to-list 'sml/replacer-regexp-list '("^:dev:golang/" ":golang:") t)
       (add-to-list 'sml/replacer-regexp-list '("^:dev:rpi/" ":rpi:") t)
       (add-to-list 'sml/replacer-regexp-list '("^:dev:elisp/" ":elisp:") t)
       (add-to-list 'sml/replacer-regexp-list '("^:dev:www/" ":web:") t)
@@ -949,7 +949,8 @@ Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
 #+begin_src emacs-lisp
   (use-package lispy
     :defer t
-    :hook (emacs-lisp-mode . (lambda () (lispy-mode 1))))
+    :hook ((emacs-lisp-mode . (lambda () (lispy-mode 1)))
+           (slime-mode . (lambda () (lispy-mode 1)))))
 #+end_src
 
 ** Markdown
