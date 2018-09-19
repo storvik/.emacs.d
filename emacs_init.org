@@ -240,6 +240,14 @@ Useful when upgrading between frameworks and such.
     (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 #+end_src
 
+** Typing
+How to I train them fingers?
+
+#+begin_src emacs-lisp
+  (use-package speed-type
+    :ensure t)
+#+end_src
+
 * Platform dependant
 Load config file dependant on current platform.
 
