@@ -868,6 +868,13 @@ go get -u github.com/dougm/goflymake
     ;;(exec-path-from-shell-copy-env "GOPATH")))
 #+end_src
 
+*** Go guru
+
+#+begin_src emacs-lisp
+  (use-package go-guru
+    :requires go-mode)
+#+end_src
+
 *** Company-go
 [[https://github.com/nsf/gocode/tree/master/emacs-company][Visit webpage]].
 Go support for company mode.
@@ -886,11 +893,10 @@ Go support for company mode.
 [[https://github.com/syohex/emacs-go-eldoc][Visit webpage]]
 
 #+begin_src emacs-lisp
-;;(use-package go-eldoc
-;
-;;  :defer
-;;  :init
-;;  (add-hook 'go-mode-hook 'go-eldoc-setup))
+  (use-package go-eldoc
+    :requires go-mode
+    :defer t
+    :hook (go-mode . go-eldoc-setup))
 #+end_src
 
 ** Latex
