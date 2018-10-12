@@ -43,6 +43,13 @@ Macro for setting different settings for OSX / Linux.
            (t nil)))
 #+end_src
 
+Set coding system before doing anything.
+This should maybe make Windows auto-update package smoother.
+
+#+begin_src emacs-lisp
+  (prefer-coding-system 'utf-8-unix)
+#+end_src
+
 ** Initial settings
 Set up =use-package= and add MELPA and upstream ORG Mode as archive.
 Configure load-path to include =~/.emacs.d/elisp/=.
@@ -257,7 +264,6 @@ Use Ctrl key as control modifier and Cmd as meta modifier.
 
 #+begin_src emacs-lisp
   (when (eq system-type 'windows-nt)
-    (prefer-coding-system 'utf-8-unix)
     (setq coding-system-for-read 'utf-8-unix)
     (setq coding-system-for-write 'utf-8-unix))
 #+end_src
@@ -994,6 +1000,14 @@ Nginx mode for editing Nginx config files.
 
 #+begin_src emacs-lisp
   (use-package nginx-mode)
+#+end_src
+
+** Protobufs
+Protobuf-mode to edit protobuf files.
+
+#+begin_src emacs-lisp
+  (use-package protobuf-mode
+    :ensure t)
 #+end_src
 
 ** Python
