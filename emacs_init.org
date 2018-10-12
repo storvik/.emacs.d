@@ -164,7 +164,6 @@ use-package key chord extension:
 
 #+begin_src emacs-lisp
   (use-package use-package-chords
-    :ensure t
     :config (key-chord-mode 1))
 #+end_src
 
@@ -251,8 +250,7 @@ Useful when upgrading between frameworks and such.
 How to I train them fingers?
 
 #+begin_src emacs-lisp
-  (use-package speed-type
-    :ensure t)
+  (use-package speed-type)
 #+end_src
 
 * Platform dependant
@@ -578,10 +576,11 @@ List all available bindings with =C-c p=, which is the prefix, followed by =C-h=
 #+begin_src emacs-lisp
   (use-package projectile
     :diminish projectile-mode
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
     :config
     (progn
-      (projectile-global-mode t)
-      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+      (projectile-global-mode +1)
       (setq projectile-completion-system 'ivy)))
 #+end_src
 
@@ -671,7 +670,6 @@ Seems like a faster alternative to irony, even tough i prefere irony :cry:
 #+begin_src emacs-lisp
   (use-package ycmd
     :when (string= storvik/irony-or-ycm "ycm")
-    :ensure t
     :init
     (progn
       (add-hook 'c++-mode-hook #'ycmd-mode)
@@ -685,7 +683,6 @@ Use company mode for autocompletion.
 #+begin_src emacs-lisp
   (use-package company-ycmd
     :when (string= storvik/irony-or-ycm "ycm")
-    :ensure t
     :init (company-ycmd-setup))
 #+end_src
 
@@ -1006,8 +1003,7 @@ Nginx mode for editing Nginx config files.
 Protobuf-mode to edit protobuf files.
 
 #+begin_src emacs-lisp
-  (use-package protobuf-mode
-    :ensure t)
+  (use-package protobuf-mode)
 #+end_src
 
 ** Python
