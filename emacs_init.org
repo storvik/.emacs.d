@@ -820,28 +820,6 @@ It includes on the fly function lookup and syntax validation.
     :commands flycheck-mode)
 #+end_src
 
-** Flymd
-[[https://github.com/mola-T/flymd][Visit webpage]].
-Flymd is a markdown previewer.
-
-#+begin_src emacs-lisp
-  (use-package flymd)
-#+end_src
-
-*** Define browser
-Use Safari to preview markdown, as google chrome is not supported.
-
-#+begin_src emacs-lisp
-  (defun my-flymd-browser-function (url)
-    (let ((process-environment (browse-url-process-environment)))
-      (apply 'start-process
-             (concat "safari " url)
-             nil
-             "/usr/bin/open"
-             (list "-a" "safari" url))))
-  (setq flymd-browser-open-function 'my-flymd-browser-function)
-#+end_src
-
 ** Go
 *** Go mode
 [[https://github.com/dominikh/go-mode.el][Visit webpage]].
@@ -980,7 +958,9 @@ Mode to edit markdown files more efficiently.
     :mode (("README\\.md\\'" . gfm-mode)
            ("\\.md\\'" . gfm-mode)
            ("\\.markdown\\'" . markdown-mode))
-    :init (setq markdown-command "multimarkdown"))
+    :init (setq markdown-command (concat "pandoc -f gfm --standalone --highlight-style kate --metadata title=\"MarkdownPreview\" --css "
+                                         user-emacs-directory
+                                         "pandoc.css")))
 #+end_src
 
 ** Markdown toc
@@ -989,6 +969,15 @@ Generate toc with `markdown-toc-generate-toc`.
 
 #+begin_src emacs-lisp
   (use-package markdown-toc)
+#+end_src
+
+** Markdown
+[[https://github.com/ancane/markdown-preview-mode][Visit webpage]].
+Preview markdown files, =pandoc= must be installed, with =markdown-preview=.
+
+#+begin_src emacs-lisp
+  (use-package markdown-preview-mode
+    :when (executable-find "pandoc"))
 #+end_src
 
 ** Nginx mode
