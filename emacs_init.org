@@ -266,6 +266,29 @@ Use Ctrl key as control modifier and Cmd as meta modifier.
     (setq coding-system-for-write 'utf-8-unix))
 #+end_src
 
+*** Use git bash on windows
+Use git bash on windows if git bash is found, also change path to [[https://emacs.stackexchange.com/questions/29942/projectile-indexing-wont-work-on-windows][ensure that unix tools are preferred]].
+
+#+begin_src emacs-lisp
+  (let ((git-bash-executable "C:/Program Files/Git/usr/bin/bash.exe"))
+    (when (and (eq system-type 'windows-nt)
+               (file-exists-p git-bash-executable))
+      (setq explicit-shell-file-name git-bash-executable)
+      (setq explicit-sh-args '("-login" "-i"))
+
+      ;; Make sure Unix tools are in front of `exec-path'
+      (let ((bash (executable-find "bash")))
+        (when bash
+          (push (file-name-directory bash) exec-path)))
+
+      ;; Update PATH from exec-path
+      (let ((path (mapcar 'file-truename
+                          (append exec-path
+                                  (split-string (getenv "PATH") path-separator t)))))
+        (setenv "PATH" (mapconcat 'identity (delete-dups path) path-separator)))))
+#+end_src
+
+
 ** Darwin
 *** Ctrl and cmd
 Use Ctrl key as control modifier and Cmd as meta modifier.
