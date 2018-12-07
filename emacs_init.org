@@ -483,14 +483,14 @@ This package expands region by semantic units.
 #+end_src
 
 ** Hyperlinks
-TODO: Check this in windows.
 Open hyperlinks at point. =C-c B(rowse)=.
 
 #+begin_src emacs-lisp
-  (setq browse-url-browser-function 'browse-url-generic
-        browse-url-generic-program (sys-diversification
-                                    "firefox"
-                                    "firefox"))
+  (setq browse-url-browser-function (sys-diversification
+                                      'browse-url-generic
+                                      'browse-url-default-macosx-browser
+                                      'browse-url-default-windows-browser)
+        browse-url-generic-program "firefox"))
 
   (bind-key "C-c B" 'browse-url-at-point)
 #+end_src
@@ -982,7 +982,7 @@ Mode to edit markdown files more efficiently.
            ("\\.md\\'" . gfm-mode)
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command (concat "pandoc -f gfm --standalone --highlight-style kate --metadata title=\"MarkdownPreview\" --css "
-                                         user-emacs-directory
+                                         (file-truename user-emacs-directory)
                                          "pandoc.css")))
 #+end_src
 
