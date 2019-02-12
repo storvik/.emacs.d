@@ -56,8 +56,8 @@ Configure load-path to include =~/.emacs.d/elisp/=.
 
 #+begin_src emacs-lisp
   (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
   (package-initialize)
 
   (mapc
@@ -896,13 +896,40 @@ Go support for company mode.
 #+end_src
 
 *** Eldoc
-[[https://github.com/syohex/emacs-go-eldoc][Visit webpage]]
+[[https://github.com/syohex/emacs-go-eldoc][Visit webpage]].
 
 #+begin_src emacs-lisp
   (use-package go-eldoc
     :requires go-mode
     :defer t
     :hook (go-mode . go-eldoc-setup))
+#+end_src
+
+*** Stacktrace
+[[https://github.com/samertm/go-stacktracer.el][Visit webpage]].
+Jump around go stacktrace, use =M-x=  =go-stacktracer-region=.
+
+#+begin_src emacs-lisp
+  (use-package go-stacktracer
+    :when (executable-find "go"))
+#+end_src
+
+*** Add tags
+[[https://github.com/syohex/emacs-go-add-tags][Visit webpage]].
+Lets you add json tags to structs calling =go-add-tags=.
+
+#+begin_src emacs-lisp
+  (use-package go-add-tags
+    :when (executable-find "go"))
+#+end_src
+
+*** Go test
+[[https://github.com/nlamirault/gotest.el][Visit webpage]].
+Run test files.
+
+#+begin_src emacs-lisp
+  (use-package gotest
+    :when (executable-find "go"))
 #+end_src
 
 ** Latex
