@@ -813,7 +813,9 @@ Use =emmet-expand-line= to do this.
 
 #+begin_src emacs-lisp
   (use-package emmet-mode
-    :hook (web-mode sgml-mode))
+    :hook (web-mode sgml-mode)
+    :config
+    (setq emmet-expand-jsx-className? t))
 #+end_src
 
 ** Fixme/Todo Highlights

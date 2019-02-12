@@ -1,0 +1,24 @@
+ -*- mode: snippet -*-
+# contributor: storvik
+# name: react-component
+# key: react-component
+# --
+import React from 'react';
+import PropTypes from 'prop-types';
+
+class ${1:} extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return(
+
+        )
+    }
+}
+
+$1.propTypes = {
+};
+
+export default $1;
