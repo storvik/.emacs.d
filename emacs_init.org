@@ -932,6 +932,15 @@ Run test files.
     :when (executable-find "go"))
 #+end_src
 
+*** Go debugger
+[[https://github.com/benma/go-dlv.el][Visit webpage]].
+Go debugger integration, uses delve.
+
+#+begin_src emacs-lisp
+  (use-package go-dlv
+    :when (executable-find "go"))
+#+end_src
+
 ** Latex
 Auctex is the best way editing LaTeX documents!
 
