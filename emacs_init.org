@@ -602,9 +602,13 @@ List all available bindings with =C-c p=, which is the prefix, followed by =C-h=
     :bind-keymap
     ("C-c p" . projectile-command-map)
     :config
-    (progn
-      (projectile-global-mode +1)
-      (setq projectile-completion-system 'ivy)))
+    (setq projectile-completion-system 'ivy
+          projectile-enable-caching t
+          projectile-globally-ignored-directories
+          (append '("node_modules"
+                    ".git"
+                    ".gomod")))
+    (projectile-mode))
 #+end_src
 
 * Programming
