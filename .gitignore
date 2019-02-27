@@ -20,3 +20,4 @@ bookmarks
 projectile.cache
 .last-package-update-day
 speed-type/*
+transient/
