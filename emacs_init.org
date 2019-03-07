@@ -432,6 +432,52 @@ Disable yasnippet in ansi-term.
 ;;                              (setq yas-dont-activate t)))
 #+end_src
 
+* Ivy
+[[https://github.com/abo-abo/swiper][Visit webpage]]/[[http://oremacs.com/swiper/][Documentation]].
+Ivy replaces the heavier Helm package, try it and be amazed!
+
+#+begin_src emacs-lisp
+  (use-package counsel
+    :bind
+    (("M-y" . counsel-yank-pop)
+     :map ivy-minibuffer-map
+     ("M-y" . ivy-next-line-and-call)))
+
+  (use-package swiper
+    :diminish ivy-mode
+    :config
+    (ivy-mode 1)
+    (setq ivy-height 10)
+    (setq ivy-count-format "")
+    (setq ivy-extra-directories nil)     ;; Do not show "./" and "../"
+    (setq ivy-virtual-abbreviate 'full)  ;; Show full file path
+    (setq ivy-use-virtual-buffers t)     ;; Show recently killed buffers
+    (setq ivy-use-ignore-default 'always)
+    (setq ivy-ignore-buffers '("smex-autoloads.el"
+                               "emacs.d/custom.el"))
+    (setq ivy-initial-inputs-alist nil)
+    (setq ivy-re-builders-alist
+          '((t	 . ivy--regex-ignore-order)))
+    (advice-add 'swiper :after 'recenter)
+    :bind (("C-s" . swiper)
+           ("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("C-c C-r" . ivy-resume)
+           ("C-x C-r" . counsel-recentf)
+           ("C-c i" . counsel-imenu)
+           ("C-c g" . counsel-git)
+           ("C-c j" . counsel-git-grep)
+           ("C-c k" . counsel-ag)
+           ("C-x l" . counsel-locate)))
+
+  (use-package ivy-hydra)
+#+end_src
+
+To enhance the M-x experience, smex must be installed.
+#+begin_src emacs-lisp
+  (use-package smex)
+#+end_src
+
 * Navigation
 ** Ace-window
 [[https://github.com/abo-abo/ace-window][Visit website]].
@@ -491,6 +537,22 @@ Open hyperlinks at point. =C-c B(rowse)=.
   (bind-key "C-c B" 'browse-url-at-point)
 #+end_src
 
+** [[https://github.com/emacsfodder/move-text][MoveText]]
+Move text up down with =C-c m= followed by =n= or =p=.
+Moves region if marked.
+
+#+begin_src emacs-lisp
+(use-package move-text
+  :bind ("C-c m" . hydra-move-text/body)
+  :config
+  ;; Move Text
+  (defhydra hydra-move-text ()
+    "Move text"
+    ("p" move-text-up "Up")
+    ("n" move-text-down "Down")
+    ("q" nil "Quit" :color blue)))
+#+end_src
+
 ** Winner mode
 [[http://emacswiki.org/emacs/WinnerMode][Visit website]].
 Winner mode to undo/redo window changes. Used with =C-c left/right=.
@@ -505,52 +567,6 @@ Set default ispell language to English.
 
 #+begin_src emacs-lisp
   (setq ispell-dictionary "en")
-#+end_src
-
-* Ivy
-[[https://github.com/abo-abo/swiper][Visit webpage]]/[[http://oremacs.com/swiper/][Documentation]].
-Ivy replaces the heavier Helm package, try it and be amazed!
-
-#+begin_src emacs-lisp
-  (use-package counsel
-    :bind
-    (("M-y" . counsel-yank-pop)
-     :map ivy-minibuffer-map
-     ("M-y" . ivy-next-line-and-call)))
-
-  (use-package swiper
-    :diminish ivy-mode
-    :config
-    (ivy-mode 1)
-    (setq ivy-height 10)
-    (setq ivy-count-format "")
-    (setq ivy-extra-directories nil)     ;; Do not show "./" and "../"
-    (setq ivy-virtual-abbreviate 'full)  ;; Show full file path
-    (setq ivy-use-virtual-buffers t)     ;; Show recently killed buffers
-    (setq ivy-use-ignore-default 'always)
-    (setq ivy-ignore-buffers '("smex-autoloads.el"
-                               "emacs.d/custom.el"))
-    (setq ivy-initial-inputs-alist nil)
-    (setq ivy-re-builders-alist
-          '((t	 . ivy--regex-ignore-order)))
-    (advice-add 'swiper :after 'recenter)
-    :bind (("C-s" . swiper)
-           ("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file)
-           ("C-c C-r" . ivy-resume)
-           ("C-x C-r" . counsel-recentf)
-           ("C-c i" . counsel-imenu)
-           ("C-c g" . counsel-git)
-           ("C-c j" . counsel-git-grep)
-           ("C-c k" . counsel-ag)
-           ("C-x l" . counsel-locate)))
-
-  (use-package ivy-hydra)
-#+end_src
-
-To enhance the M-x experience, smex must be installed.
-#+begin_src emacs-lisp
-  (use-package smex)
 #+end_src
 
 * Magit
@@ -1320,50 +1336,6 @@ Finds the init file and opens it.
     (find-file (expand-file-name "emacs_init.org" user-emacs-directory)))
 
   (bind-key "C-c I" 'find-init-file)
-#+end_src
-
-** Move line up/down
-Use M-up/down to move the current line up / downwards.
-
-#+begin_src emacs-lisp
-  (defun move-line-up ()
-    (interactive)
-    (transpose-lines 1)
-    (forward-line -2))
-  (defun move-line-down ()
-    (interactive)
-    (forward-line 1)
-    (transpose-lines 1)
-    (forward-line -1))
-  (bind-keys ("M-<up>" . move-line-up)
-             ("M-<down>" . move-line-down))
-#+end_src
-
-** RBUL summary
-Function that sends the summary of a meeting to the people involved.
-To use it, mark the heading for the given summary and send it using personal smtp account.
-
-#+begin_src emacs-lisp
-  (defun get-string-from-file (filePath)
-    "Return filePath's file content."
-    (with-temp-buffer
-      (insert-file-contents filePath)
-      (buffer-string)))
-
-  (defun sf-mail-ref ()
-    (interactive)
-    (org-html-export-to-html)
-    (mu4e-compose-new)
-    ;;(search-forward "To:")
-    (insert
-     (get-string-from-file "/Users/storvik/.emacs.d/sf_mail_list.txt"))
-    (search-forward "Subject:")
-    (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)"))
-    (insert " FestivalmÃ¸te")
-    (next-line)
-    (next-line)
-    (insert "Hei\n\nHer er referatet fra mÃ¸tet.\n\nLes med mÃ¥te!\n\n")
-    (mail-add-attachment "/Users/storvik/org/rbul.html"))
 #+end_src
 
 ** Reindent buffer
