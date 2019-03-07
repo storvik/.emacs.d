@@ -347,7 +347,7 @@ Trying gruvbox dark hard theme.
   (use-package gruvbox-theme
     :when window-system
     :config
-    (load-theme 'gruvbox-dark-hard t))
+    (load-theme 'gruvbox-dark-medium t))
 #+end_src
 
 ** Powerline
@@ -475,7 +475,7 @@ This package expands region by semantic units.
 
 #+begin_src emacs-lisp
   (use-package expand-region
-    :bind (("C-=" . er/expand-region)))
+    :bind ("C-." . er/expand-region))
 #+end_src
 
 ** Hyperlinks
