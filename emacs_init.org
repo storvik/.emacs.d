@@ -78,8 +78,7 @@ Configure load-path to include =~/.emacs.d/elisp/=.
   (add-to-list 'load-path (concat user-emacs-directory "elisp/"))
 #+end_src
 
-** Auto update packages
-[[https://github.com/rranelli/auto-package-update.el][Visit webpage]].
+** [[https://github.com/rranelli/auto-package-update.el][Auto update packages]]
 Automatically update packages.
 
 #+begin_src emacs-lisp
@@ -115,7 +114,7 @@ Turn off audible and visible bell.
   (setq ring-bell-function 'ignore)
 #+end_src
 
-** Path
+** [[https://github.com/purcell/exec-path-from-shell][Exec path from shell]]
 Use exec-path-from-shell on unix computers.
 
 #+begin_src emacs-lisp
@@ -125,8 +124,7 @@ Use exec-path-from-shell on unix computers.
     (exec-path-from-shell-initialize))
 #+end_src
 
-** Lastpass
-[[https://github.com/storvik/emacs-lastpass][Visit webpage]].
+** [[https://github.com/storvik/emacs-lastpass][Lastpass]]
 Package used to communicate with LastPass.
 Depends on lpass command line utility.
 
@@ -138,8 +136,7 @@ Depends on lpass command line utility.
     (lastpass-auth-source-enable))
 #+end_src
 
-** Key Chord
-[[http://emacswiki.org/emacs/key-chord.el][Visit website]].
+** [[http://emacswiki.org/emacs/key-chord.el][Key Chord]]
 Key chord, run command when two keys are pressed simultanously.
 
 #+begin_src emacs-lisp
@@ -166,8 +163,7 @@ use-package key chord extension:
     :config (key-chord-mode 1))
 #+end_src
 
-** Multiple cursors
-[[https://github.com/magnars/multiple-cursors.el][Visit website]].
+** [[https://github.com/magnars/multiple-cursors.el][Multiple cursors]]
 Multiple cursors is an awesome package thats makes editing multiple entries with similar structure a breeze.
 
 #+begin_src emacs-lisp
@@ -192,7 +188,7 @@ Number of items to be saved in recent file list.
   (setq recentf-max-saved-items 2048)
 #+end_src
 
-** Scrolling
+** [[https://github.com/aspiers/smooth-scrolling][Smooth scrolling]]
 Smoother scrolling, with a margin of 5.
 
 #+begin_src emacs-lisp
@@ -201,6 +197,7 @@ Smoother scrolling, with a margin of 5.
     (smooth-scrolling-mode 1)
     (setq smooth-scroll-margin 5))
 #+end_src
+
 ** Tramp settings
 Make tramp auto-save in another local directory.
 
@@ -210,15 +207,14 @@ Make tramp auto-save in another local directory.
   (setq tramp-auto-save-directory (concat user-emacs-directory "tramp.autosave/"))
 #+end_src
 
-** Try
-[[https://github.com/larstvei/Try][Visit webpage]].
+** [[https://github.com/larstvei/Try][Try]]
 Try allows you to try packages from melpa or a url without installing them / adding them to config.
 
 #+begin_src emacs-lisp
   (use-package try)
 #+end_src
 
-** Undo Tree
+** Undo tree
 Undo tree, visualize the undo / redo tree.
 
 #+begin_src emacs-lisp
@@ -227,6 +223,7 @@ Undo tree, visualize the undo / redo tree.
     :init
     (global-undo-tree-mode))
 #+end_src
+
 ** Whitespace
 Delete trailing whitespaces on save.
 
@@ -234,8 +231,7 @@ Delete trailing whitespaces on save.
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 
-** Ztree
-[[https://github.com/fourier/ztree][Visit website]].
+** [[https://github.com/fourier/ztree][Ztree]]
 Visualize dir trees and run Ediff on folders.
 Useful when upgrading between frameworks and such.
 
@@ -245,7 +241,7 @@ Useful when upgrading between frameworks and such.
     (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 #+end_src
 
-** Typing
+** [[https://github.com/parkouss/speed-type][Speed type]]
 How to I train them fingers?
 
 #+begin_src emacs-lisp
@@ -287,7 +283,6 @@ Use git bash on windows if git bash is found, also change path to [[https://emac
         (setenv "PATH" (mapconcat 'identity (delete-dups path) path-separator)))))
 #+end_src
 
-
 ** Darwin
 *** Ctrl and cmd
 Use Ctrl key as control modifier and Cmd as meta modifier.
@@ -309,8 +304,7 @@ Set default font and size.
                                            "Courier New-10"))
 #+End_src
 
-** Golden ratio
-[[https://github.com/roman/golden-ratio.el][Visit website]].
+** [[https://github.com/roman/golden-ratio.el][Golden ratio]]
 Resize windows so that the active window is optimized for editing.
 
 #+begin_src emacs-lisp
@@ -350,7 +344,7 @@ Trying gruvbox dark hard theme.
     (load-theme 'gruvbox-dark-medium t))
 #+end_src
 
-** Powerline
+** [[https://github.com/milkypostman/powerline][Powerline]]
 Powerline makes mode line look better.
 
 #+begin_src emacs-lisp
@@ -359,8 +353,7 @@ Powerline makes mode line look better.
     (powerline-default-theme))
 #+end_src
 
-** Smart mode line
-[[https://github.com/Malabarba/smart-mode-line][Visit website]].
+** [[https://github.com/Malabarba/smart-mode-line][Smart mode line]]
 Smart mode line looks pretty, and is actually quite helpful.
 
 #+begin_src emacs-lisp
@@ -375,7 +368,7 @@ Smart mode line looks pretty, and is actually quite helpful.
     (sml/setup))
 #+end_src
 
-** Rainbow delimiters
+** [[https://github.com/Fanael/rainbow-delimiters][Rainbow delimiters]]
 Added to `prog-mode-hook`.
 
 #+begin_src emacs-lisp
@@ -432,8 +425,7 @@ Disable yasnippet in ansi-term.
 ;;                              (setq yas-dont-activate t)))
 #+end_src
 
-* Ivy
-[[https://github.com/abo-abo/swiper][Visit webpage]]/[[http://oremacs.com/swiper/][Documentation]].
+* [[https://github.com/abo-abo/swiper][Ivy]]
 Ivy replaces the heavier Helm package, try it and be amazed!
 
 #+begin_src emacs-lisp
@@ -479,8 +471,7 @@ To enhance the M-x experience, smex must be installed.
 #+end_src
 
 * Navigation
-** Ace-window
-[[https://github.com/abo-abo/ace-window][Visit website]].
+** [[https://github.com/abo-abo/ace-window][Ace-window]]
 Easier window movement, bind it to default other-window =C-x o=.
 
 #+begin_src emacs-lisp
@@ -490,8 +481,7 @@ Easier window movement, bind it to default other-window =C-x o=.
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
 
-** Avy
-[[https://github.com/abo-abo/avy][Visit webpage]].
+** [[https://github.com/abo-abo/avy][Avy]]
 Tool for jumping to a given char on the screen.
 The following keybindings can be used:
 - =C-:= Avy goto char
@@ -515,8 +505,7 @@ The following keybindings can be used:
              ("gh" . avy-goto-word-1)))
 #+end_src
 
-** Expand region
-[[https://github.com/magnars/expand-region.el][Visit webpage]].
+** [[https://github.com/magnars/expand-region.el][Expand region]]
 This package expands region by semantic units.
 
 #+begin_src emacs-lisp
@@ -553,8 +542,7 @@ Moves region if marked.
     ("q" nil "Quit" :color blue)))
 #+end_src
 
-** Winner mode
-[[http://emacswiki.org/emacs/WinnerMode][Visit website]].
+** [[http://emacswiki.org/emacs/WinnerMode][Winner mode]]
 Winner mode to undo/redo window changes. Used with =C-c left/right=.
 
 #+begin_src emacs-lisp
@@ -569,7 +557,7 @@ Set default ispell language to English.
   (setq ispell-dictionary "en")
 #+end_src
 
-* Magit
+* [[https://magit.vc/][Magit]]
 Brilliant interface to git.
 =C-x g= to open.
 
@@ -600,8 +588,7 @@ Brilliant interface to git.
                  ("RET" . magit-checkout)))
 #+end_src
 
-* Projectile
-[[https://github.com/bbatsov/projectile][Visit webpage]].
+* [[https://github.com/bbatsov/projectile][Projectile]]
 Projectile simplifies navigation and structuring on large projects.
 Git folders are identified as projects, other projects have to have an empty =.projectile=-file to be categorized as project.
 List all available bindings with =C-c p=, which is the prefix, followed by =C-h=.
@@ -622,8 +609,49 @@ List all available bindings with =C-c p=, which is the prefix, followed by =C-h=
 #+end_src
 
 * Programming
-** Autocomplete
-[[http://company-mode.github.io/][Visit website]].
+** [[https://www.gnu.org/software/auctex/][Auctex]]
+Auctex is the best way editing LaTeX documents!
+
+#+begin_src emacs-lisp
+  (use-package tex
+    :ensure auctex
+    :config
+    (setq TeX-auto-save t)
+    (setq TeX-parse-self t)
+    (setq-default TeX-master nil)
+    (add-hook 'LaTeX-mode-hook 'flyspell-mode)      ;; Enable flyspell as default
+    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)     ;; Enable reftex as default
+    (setq reftex-plug-into-AUCTeX t)
+    (setq TeX-PDF-mode t)                           ;; Enable PDF mode
+
+    ;; Use Skim as default pdf viewer
+    ;; Skim's displayline is used for forward search (from .tex to .pdf)
+    ;; option -b highlights the current line; option -g opens Skim in the background
+    (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
+    (setq TeX-view-program-list
+          ;;(sys-diversification
+          ;; '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))
+          ;; "/usr/share/emacs/site-lisp/mu4e")))
+    '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
+
+  ;; Use aspell
+  (add-to-list 'exec-path "/usr/local/bin")
+  (setq ispell-program-name "aspell")
+  (setq ispell-list-command "--list")
+#+end_src
+
+I use LatexMk to compile my latex documents. Replace default latex command with LatexMk.
+
+#+begin_src emacs-lisp
+  (use-package auctex-latexmk
+    :config
+    (auctex-latexmk-setup)
+    (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+    (add-hook 'TeX-mode-hook '(lambda ()
+                              (setq TeX-command-default "LatexMk"))))
+#+end_src
+
+** [[http://company-mode.github.io/][Autocomplete]]
 Company mode autocomplete.
 
 #+begin_src emacs-lisp
@@ -649,8 +677,7 @@ Use either irony or ycm.
   (setq storvik/irony-or-ycm 'ycm)
 #+end_src
 
-*** Irony
-[[https://github.com/Sarcasm/irony-mode][Visit website]].
+*** [[https://github.com/Sarcasm/irony-mode][Irony]]
 Irony for C / C++ code completion.
 Depends on libclang.
 Ubuntu: =sudo apt-get install libclang-dev=.
@@ -698,8 +725,7 @@ Flycheck irony is used to interface irony and flycheck.
       '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 #+end_src
 
-*** Emacs YCMD
-[[https://github.com/abingham/emacs-ycmd][Visit webpage]].
+*** [[https://github.com/abingham/emacs-ycmd][Emacs YCMD]]
 Seems like a faster alternative to irony, even tough i prefere irony :cry:
 
 #+begin_src emacs-lisp
@@ -793,15 +819,14 @@ Look for Makefile in parent folder and change directory.
               (setq default-directory (substring (get-closest-pathname) 0 -8))))
 #+end_src
 
-** CSV files
-[[http://www.emacswiki.org/emacs/CsvMode][Visit website]].
+** [[http://www.emacswiki.org/emacs/CsvMode][CSV mode]]
 Prettify csv files.
 
 #+begin_src emacs-lisp
   (use-package csv-mode)
 #+end_src
 
-** Dockerfiles
+** [[https://github.com/spotify/dockerfile-mode][Dockerfile mode]]
 Simple syntax highlightning for Docker containers.
 
 #+begin_src emacs-lisp
@@ -809,16 +834,29 @@ Simple syntax highlightning for Docker containers.
 #+end_src
 
 ** Elisp
-*** Package lint
-[[https://github.com/purcell/package-lint][Visit webpage]].
+*** [[https://github.com/purcell/package-lint][Package lint]]
 Linter for Emacs packages meta data.
 
 #+begin_src emacs-lisp
   (use-package package-lint)
 #+end_src
 
-** Emmet moe
-[[https://github.com/smihica/emmet-mode][Visit webpage]].
+** [[https://github.com/jorgenschaefer/elpy][Elpy]]
+The following python packages must be installed by running:
+=pip install rope jedi flake8 autopep8 yapf=
+
+#+begin_src emacs-lisp
+  (use-package elpy
+    :defer t
+    :init
+    (elpy-enable)
+    (defun my-elpy-before-save-hook ()
+      (when (eq major-mode 'python-mode)
+        (elpy-format-code)))
+    (add-hook 'before-save-hook 'my-elpy-before-save-hook))
+#+end_src
+
+** [[https://github.com/smihica/emmet-mode][Emmet mode]]
 Emmet-mode to expand classes to markup.
 Use =emmet-expand-line= to do this.
 
@@ -843,8 +881,7 @@ Highlights fixme and todo in comments.
   (add-hook 'prog-mode-hook 'font-lock-comment-annotations)
 #+end_src
 
-** Flycheck
-[[https://github.com/flycheck/flycheck][Visit webpage]].
+** [[https://github.com/flycheck/flycheck][Flycheck]]
 Flycheck is a programming grammar checker.
 It includes on the fly function lookup and syntax validation.
 
@@ -857,8 +894,7 @@ It includes on the fly function lookup and syntax validation.
 #+end_src
 
 ** Go
-*** Go mode
-[[https://github.com/dominikh/go-mode.el][Visit webpage]].
+*** [[https://github.com/dominikh/go-mode.el][Go mode]]
 Major mode for go(lang).
 Must import GOPATH enviromental variable.
 
@@ -884,15 +920,7 @@ go get -u github.com/dougm/goflymake
     ;;(exec-path-from-shell-copy-env "GOPATH")))
 #+end_src
 
-*** Go guru
-
-#+begin_src emacs-lisp
-  (use-package go-guru
-    :requires go-mode)
-#+end_src
-
-*** Company-go
-[[https://github.com/nsf/gocode/tree/master/emacs-company][Visit webpage]].
+*** [[https://github.com/nsf/gocode/tree/master/emacs-company][Company-go]]
 Go support for company mode.
 
 #+begin_src emacs-lisp
@@ -905,8 +933,23 @@ Go support for company mode.
     (add-to-list 'company-backends 'company-go)))
 #+end_src
 
-*** Eldoc
-[[https://github.com/syohex/emacs-go-eldoc][Visit webpage]].
+*** [[https://github.com/syohex/emacs-go-add-tags][Go add tags]]
+Lets you add json tags to structs calling =go-add-tags=.
+
+#+begin_src emacs-lisp
+  (use-package go-add-tags
+    :when (executable-find "go"))
+#+end_src
+
+*** [[https://github.com/benma/go-dlv.el][Go dlv]]
+Go debugger integration, uses delve.
+
+#+begin_src emacs-lisp
+  (use-package go-dlv
+    :when (executable-find "go"))
+#+end_src
+
+*** [[https://github.com/syohex/emacs-go-eldoc][Go eldoc]]
 
 #+begin_src emacs-lisp
   (use-package go-eldoc
@@ -915,8 +958,14 @@ Go support for company mode.
     :hook (go-mode . go-eldoc-setup))
 #+end_src
 
-*** Stacktrace
-[[https://github.com/samertm/go-stacktracer.el][Visit webpage]].
+*** [[https://github.com/dominikh/go-mode.el][Go guru]]
+
+#+begin_src emacs-lisp
+  (use-package go-guru
+    :requires go-mode)
+#+end_src
+
+*** [[https://github.com/samertm/go-stacktracer.el][Go stacktrace]]
 Jump around go stacktrace, use =M-x=  =go-stacktracer-region=.
 
 #+begin_src emacs-lisp
@@ -924,17 +973,7 @@ Jump around go stacktrace, use =M-x=  =go-stacktracer-region=.
     :when (executable-find "go"))
 #+end_src
 
-*** Add tags
-[[https://github.com/syohex/emacs-go-add-tags][Visit webpage]].
-Lets you add json tags to structs calling =go-add-tags=.
-
-#+begin_src emacs-lisp
-  (use-package go-add-tags
-    :when (executable-find "go"))
-#+end_src
-
-*** Go test
-[[https://github.com/nlamirault/gotest.el][Visit webpage]].
+*** [[https://github.com/nlamirault/gotest.el][Gotest]]
 Run test files.
 
 #+begin_src emacs-lisp
@@ -942,71 +981,7 @@ Run test files.
     :when (executable-find "go"))
 #+end_src
 
-*** Go debugger
-[[https://github.com/benma/go-dlv.el][Visit webpage]].
-Go debugger integration, uses delve.
-
-#+begin_src emacs-lisp
-  (use-package go-dlv
-    :when (executable-find "go"))
-#+end_src
-
-** Latex
-Auctex is the best way editing LaTeX documents!
-
-#+begin_src emacs-lisp
-  (use-package tex
-    :ensure auctex
-    :config
-    (setq TeX-auto-save t)
-    (setq TeX-parse-self t)
-    (setq-default TeX-master nil)
-    (add-hook 'LaTeX-mode-hook 'flyspell-mode)      ;; Enable flyspell as default
-    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)     ;; Enable reftex as default
-    (setq reftex-plug-into-AUCTeX t)
-    (setq TeX-PDF-mode t)                           ;; Enable PDF mode
-
-    ;; Use Skim as default pdf viewer
-    ;; Skim's displayline is used for forward search (from .tex to .pdf)
-    ;; option -b highlights the current line; option -g opens Skim in the background
-    (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
-    (setq TeX-view-program-list
-          ;;(sys-diversification
-          ;; '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))
-          ;; "/usr/share/emacs/site-lisp/mu4e")))
-    '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
-
-  ;; Use aspell
-  (add-to-list 'exec-path "/usr/local/bin")
-  (setq ispell-program-name "aspell")
-  (setq ispell-list-command "--list")
-#+end_src
-
-I use LatexMk to compile my latex documents. Replace default latex command with LatexMk.
-
-#+begin_src emacs-lisp
-  (use-package auctex-latexmk
-    :config
-    (auctex-latexmk-setup)
-    (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-    (add-hook 'TeX-mode-hook '(lambda ()
-                              (setq TeX-command-default "LatexMk"))))
-#+end_src
-
-** Lisp
-[[https://github.com/slime/slime][Visit webpage]].
-Using SLIME, the superior lisp mode.
-
-#+begin_src emacs-lisp
-  (use-package slime
-    :when (executable-find "sbcl")
-    :init
-    (setq inferior-lisp-program "/usr/bin/sbcl")
-    (setq slime-contribs '(slime-fancy)))
-#+end_src
-
-** Lispy
-[[https://github.com/abo-abo/lispy][Visit webpage]].
+** [[https://github.com/abo-abo/lispy][Lispy]]
 Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
 
 #+begin_src emacs-lisp
@@ -1016,8 +991,7 @@ Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
            (slime-mode . (lambda () (lispy-mode 1)))))
 #+end_src
 
-** Markdown
-[[http://jblevins.org/projects/markdown-mode/][Visit webpage]].
+** [[http://jblevins.org/projects/markdown-mode/][Markdown mode]]
 Mode to edit markdown files more efficiently.
 
 #+begin_src emacs-lisp
@@ -1031,16 +1005,14 @@ Mode to edit markdown files more efficiently.
                                          "pandoc.css")))
 #+end_src
 
-** Markdown toc
-[[https://github.com/ardumont/markdown-toc][Visit webpage]].
+** [[https://github.com/ardumont/markdown-toc][Markdown toc]]
 Generate toc with `markdown-toc-generate-toc`.
 
 #+begin_src emacs-lisp
   (use-package markdown-toc)
 #+end_src
 
-** Markdown
-[[https://github.com/ancane/markdown-preview-mode][Visit webpage]].
+** [[https://github.com/ancane/markdown-preview-mode][Markdown preview]]
 Preview markdown files, =pandoc= must be installed, with =markdown-preview=.
 
 #+begin_src emacs-lisp
@@ -1048,37 +1020,32 @@ Preview markdown files, =pandoc= must be installed, with =markdown-preview=.
     :when (executable-find "pandoc"))
 #+end_src
 
-** Nginx mode
-[[https://github.com/ajc/nginx-mode][Visit webpage]].
+** [[https://github.com/ajc/nginx-mode][Nginx mode]]
 Nginx mode for editing Nginx config files.
 
 #+begin_src emacs-lisp
   (use-package nginx-mode)
 #+end_src
 
-** Protobufs
+** [[https://github.com/protocolbuffers/protobuf][Protobuf mode]]
 Protobuf-mode to edit protobuf files.
 
 #+begin_src emacs-lisp
   (use-package protobuf-mode)
 #+end_src
 
-** Python
-The following python packages must be installed by running:
-=pip install rope jedi flake8 autopep8 yapf=
+** [[https://github.com/slime/slime][Slime]]
+Using SLIME, the superior lisp mode.
 
 #+begin_src emacs-lisp
-  (use-package elpy
-    :defer t
+  (use-package slime
+    :when (executable-find "sbcl")
     :init
-    (elpy-enable)
-    (defun my-elpy-before-save-hook ()
-      (when (eq major-mode 'python-mode)
-        (elpy-format-code)))
-    (add-hook 'before-save-hook 'my-elpy-before-save-hook))
+    (setq inferior-lisp-program "/usr/bin/sbcl")
+    (setq slime-contribs '(slime-fancy)))
 #+end_src
 
-** SQL Mode
+** SQL mode
 Bind file extentions to sql mode.
 
 #+begin_src emacs-lisp
@@ -1111,16 +1078,14 @@ Function to capitalize SQL keywords
   ;;            (add-hook 'before-save-hook 'my-upcase-all-sql-keywords nil 'make-it-local)))
 #+end_src
 
-** Systemd mode
-[[https://github.com/holomorph/systemd-mode][Visit webpage]].
+** [[https://github.com/holomorph/systemd-mode][Systemd mode]]
 Edit systemd files with syntax highlightning.
 
 #+begin_src emacs-lisp
   (use-package systemd)
 #+end_src
 
-** Web mode
-[[http://web-mode.org/][Visit webpage]].
+** [[http://web-mode.org/][Web mode]]
 Works with php files with html and js.
 
 #+begin_src emacs-lisp
@@ -1142,15 +1107,14 @@ Works with php files with html and js.
     (setq web-mode-enable-current-column-highlight t))
 #+end_src
 
-** YAML mode
+** [[https://github.com/yoshiki/yaml-mode][YAML mode]]
 YAML editing improved.
 
 #+begin_src emacs-lisp
   (use-package yaml-mode)
 #+end_src
 
-** Yasnippet
-[[https://github.com/joaotavora/yasnippet][Visit webpage]].
+** [[https://github.com/joaotavora/yasnippet][Yasnippet]]
 Expand snippets, making your life easier.
 
 #+begin_src emacs-lisp
