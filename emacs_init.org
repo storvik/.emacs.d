@@ -377,6 +377,13 @@ Added to `prog-mode-hook`.
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+end_src
 
+** [[https://www.emacswiki.org/emacs/ShowParenMode][Show paren]]
+Show paren mode highlights the mathing pair of parentheses.
+
+#+begin_src emacs-lisp
+  (show-paren-mode 1)
+#+end_src
+
 ** Tab width
 Use tabs, set default tab width to 4.
 
