@@ -520,6 +520,27 @@ This package expands region by semantic units.
     :bind ("C-." . er/expand-region))
 #+end_src
 
+** [[https://github.com/jacktasia/dumb-jump][Dumb jump]]
+Used to jump between definitions in almost every language.
+Install [[https://github.com/ggreer/the_silver_searcher][thesilversearcher-ag]] on Ubuntu with =apt-get install silversearcher-ag=.
+
+#+begin_src emacs-lisp
+  (use-package dumb-jump
+    :bind ("C-M-g" . hydra-dumb-jump/body)
+    :config
+      (setq dumb-jump-selector 'ivy)
+      (defhydra hydra-dumb-jump (:columns 3)
+        "Dumb Jump"
+        ("j" dumb-jump-go "Go")
+        ("o" dumb-jump-go-other-window "Other window")
+        ("e" dumb-jump-go-prefer-external "Go external")
+        ("x" dumb-jump-go-prefer-external-other-window "Go external other window")
+        ("i" dumb-jump-go-prompt "Prompt")
+        ("l" dumb-jump-quick-look "Quick look")
+        ("b" dumb-jump-back "Back")
+        ("q" nil "Quit" :color blue)))
+#+end_src
+
 ** Hyperlinks
 Open hyperlinks at point. =C-c B(rowse)=.
 
