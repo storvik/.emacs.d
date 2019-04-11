@@ -637,6 +637,58 @@ List all available bindings with =C-c p=, which is the prefix, followed by =C-h=
 #+end_src
 
 * Programming
+** [[http://company-mode.github.io/][Autocomplete]]
+Company mode autocomplete.
+
+#+begin_src emacs-lisp
+  (use-package company
+    :defer t
+    :diminish company-mode
+    :init
+    (global-company-mode t)
+    :config
+    (setq company-idle-delay              nil
+          company-minimum-prefix-length   1
+          company-show-numbers            t
+          company-tooltip-limit           20
+          company-dabbrev-downcase        nil)
+    :bind
+    ("C-;" . company-complete-common))
+#+end_src
+
+** [[https://github.com/flycheck/flycheck][Flycheck]]
+Flycheck is a programming grammar checker.
+It includes on the fly function lookup and syntax validation.
+
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :defer t
+    :init
+    ;;(add-hook 'prog-mode-hook #'flycheck-mode)
+    :commands flycheck-mode)
+#+end_src
+
+** [[https://github.com/emacs-lsp/lsp-mode][Language Server Protocol]]
+Initial language server protocol sypport.
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :init
+    (setq lsp-print-io t
+          lsp-prefer-flymake nil
+          lsp-auto-execute-action nil))
+
+  ;; dont use lsp ui as its kinda annoying
+  (use-package lsp-ui
+    :commands lsp-ui-mode)
+
+  (use-package company-lsp
+    :commands company-lsp
+    :config
+    (push 'company-lsp company-backends)
+    (add-to-list 'company-lsp-filter-candidates '(gopls . nil)))
+#+end_src
+
 ** [[https://www.gnu.org/software/auctex/][Auctex]]
 Auctex is the best way editing LaTeX documents!
 
@@ -679,113 +731,14 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
                               (setq TeX-command-default "LatexMk"))))
 #+end_src
 
-** [[http://company-mode.github.io/][Autocomplete]]
-Company mode autocomplete.
-
-#+begin_src emacs-lisp
-  (use-package company
-    :defer t
-    :diminish company-mode
-    :init
-    (global-company-mode t)
-    :config
-    (setq company-idle-delay              nil
-          company-minimum-prefix-length   2
-          company-show-numbers            t
-          company-tooltip-limit           20
-          company-dabbrev-downcase        nil)
-    :bind
-    ("C-;" . company-complete-common))
-#+end_src
-
 ** C/C++
-
-Use either irony or ycm.
-#+begin_src emacs-lisp
-  (setq storvik/irony-or-ycm 'ycm)
-#+end_src
-
-*** [[https://github.com/Sarcasm/irony-mode][Irony]]
-Irony for C / C++ code completion.
-Depends on libclang.
-Ubuntu: =sudo apt-get install libclang-dev=.
-
-Generate cmake completion database, use =cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .=
+Setup =lsp= =clangd= support and add hooks.
 
 #+begin_src emacs-lisp
-  (use-package irony
-    :when (string= storvik/irony-or-ycm "irony")
-    :defer t
-    :init
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'c-mode-hook 'irony-mode)
-    (add-hook 'objc-mode-hook 'irony-mode)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-    :config
-    (defun my-irony-mode-hook ()
-      (define-key irony-mode-map
-        [remap completion-at-point] 'counsel-irony)
-      (define-key irony-mode-map
-        [remap complete-symbol] 'counsel-irony))
-    (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-#+end_src
+  (setq lsp-clients-clangd-executable (sys-diversification "/usr/bin/clangd-7"))
 
-Company irony is used to interface irony and company.
-
-#+begin_src emacs-lisp
-  (use-package company-irony
-    :when (string= storvik/irony-or-ycm "irony")
-    :defer t
-    :init
-    (eval-after-load 'company
-      '(add-to-list 'company-backends 'company-irony)))
-#+end_src
-
-Flycheck irony is used to interface irony and flycheck.
-
-#+begin_src emacs-lisp
-  (use-package flycheck-irony
-    :when (string= storvik/irony-or-ycm "irony")
-    :defer t
-    :init
-    (eval-after-load 'flycheck
-      '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
-#+end_src
-
-*** [[https://github.com/abingham/emacs-ycmd][Emacs YCMD]]
-Seems like a faster alternative to irony, even tough i prefere irony :cry:
-
-#+begin_src emacs-lisp
-  (use-package ycmd
-    :when (string= storvik/irony-or-ycm "ycm")
-    :init
-    (add-hook 'c++-mode-hook #'ycmd-mode)
-    (add-hook 'c-mode-hook 'irony-mode)
-    :config
-    (set-variable 'ycmd-server-command '("python3" "/home/storvik/ycmd/ycmd")))
-#+end_src
-
-Use company mode for autocompletion.
-
-#+begin_src emacs-lisp
-  (use-package company-ycmd
-    :when (string= storvik/irony-or-ycm "ycm")
-    :init (company-ycmd-setup))
-#+end_src
-
-Flycheck used to check for errors on the fly.
-
-#+begin_src emacs-lisp
-  (use-package flycheck-ycmd
-    :when (string= storvik/irony-or-ycm "ycm")
-    :commands (flycheck-ycmd-setup)
-    :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup))
-#+end_src
-
-#+begin_src emacs-lisp
-  (when (string= storvik/irony-or-ycm "ycm")
-    (add-hook 'ycmd-mode-hook 'ycmd-eldoc-mode))
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
 #+end_src
 
 *** Compile key
@@ -909,18 +862,6 @@ Highlights fixme and todo in comments.
   (add-hook 'prog-mode-hook 'font-lock-comment-annotations)
 #+end_src
 
-** [[https://github.com/flycheck/flycheck][Flycheck]]
-Flycheck is a programming grammar checker.
-It includes on the fly function lookup and syntax validation.
-
-#+begin_src emacs-lisp
-  (use-package flycheck
-    :defer t
-    :init
-    (add-hook 'prog-mode-hook #'flycheck-mode)
-    :commands flycheck-mode)
-#+end_src
-
 ** Go
 *** [[https://github.com/dominikh/go-mode.el][Go mode]]
 Major mode for go(lang).
@@ -948,17 +889,12 @@ go get -u github.com/dougm/goflymake
     ;;(exec-path-from-shell-copy-env "GOPATH")))
 #+end_src
 
-*** [[https://github.com/nsf/gocode/tree/master/emacs-company][Company-go]]
-Go support for company mode.
+*** LSP
+To install lsp support for Go gopls must be installed:
+=go get -u golang.org/x/tools/cmd/gopls=
 
 #+begin_src emacs-lisp
-  (use-package company-go
-    :when (executable-find "go")
-    :requires go-mode
-    :defer t
-    :init
-    (with-eval-after-load 'company
-    (add-to-list 'company-backends 'company-go)))
+  (add-hook 'go-mode-hook 'lsp)
 #+end_src
 
 *** [[https://github.com/syohex/emacs-go-add-tags][Go add tags]]
@@ -975,15 +911,6 @@ Go debugger integration, uses delve.
 #+begin_src emacs-lisp
   (use-package go-dlv
     :when (executable-find "go"))
-#+end_src
-
-*** [[https://github.com/syohex/emacs-go-eldoc][Go eldoc]]
-
-#+begin_src emacs-lisp
-  (use-package go-eldoc
-    :requires go-mode
-    :defer t
-    :hook (go-mode . go-eldoc-setup))
 #+end_src
 
 *** [[https://github.com/dominikh/go-mode.el][Go guru]]
@@ -1085,21 +1012,21 @@ Bind file extentions to sql mode.
 Function to capitalize SQL keywords
 
 #+begin_src emacs-lisp
-    (defun point-in-comment ()
-      (let ((syn (syntax-ppss)))
-        (and (nth 8 syn)
-             (not (nth 3 syn)))))
+  (defun point-in-comment ()
+    (let ((syn (syntax-ppss)))
+      (and (nth 8 syn)
+           (not (nth 3 syn)))))
 
-    (defun my-upcase-all-sql-keywords ()
-      (interactive)
-      (require 'sql)
-      (save-excursion
-        (dolist (keywords sql-mode-mysql-font-lock-keywords)
-          (goto-char (point-min))
-          (while (re-search-forward (car keywords) nil t)
-            (unless (point-in-comment)
-              (goto-char (match-beginning 0))
-              (upcase-word 1))))))
+  (defun my-upcase-all-sql-keywords ()
+    (interactive)
+    (require 'sql)
+    (save-excursion
+      (dolist (keywords sql-mode-mysql-font-lock-keywords)
+        (goto-char (point-min))
+        (while (re-search-forward (car keywords) nil t)
+          (unless (point-in-comment)
+            (goto-char (match-beginning 0))
+            (upcase-word 1))))))
 
   ;;(add-hook 'sql-mode-hook
   ;;          (lambda ()
