@@ -883,10 +883,13 @@ go get -u github.com/dougm/goflymake
     :init
     (setq gofmt-command "goimports")
     (add-hook 'before-save-hook 'gofmt-before-save)
-    (bind-key [remap find-tag] #'godef-jump)
-    (bind-key (kbd "C-c C-r") #'go-remove-unused-imports))
-    ;;:config
-    ;;(exec-path-from-shell-copy-env "GOPATH")))
+    :hook
+    (go-mode . (lambda ()
+      (set (make-local-variable 'compile-command)
+        (format "make -k" (get-closest-pathname))) ;;add %s to output the string
+        (setq default-directory (substring (get-closest-pathname) 0 -8))))
+    :bind
+    ("C-c C-c" . compile))
 #+end_src
 
 *** LSP
@@ -1197,27 +1200,6 @@ Uncomment this to load mu4e configs
 #+end_src
 
 * Functions
-** Close compilation buffer
-Function that closes the compilation buffer if compilation is successful.
-
-#+begin_src emacs-lisp
-  (defun bury-compile-buffer-if-successful (buffer string)
-    "Bury a compilation buffer if succeeded without warnings "
-    (if (and
-         (string-match "compilation" (buffer-name buffer))
-         (string-match "finished" string)
-         (not
-          (with-current-buffer buffer
-            (search-forward "warning" nil t))))
-        (progn
-          (run-at-time "2 sec" nil 'winner-undo)
-          (message "Build succesful."))
-      (progn
-        (message "There were warnings or errors."))))
-
-  (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
-#+end_src
-
 ** Copy file path to clipboard
 Copy path of current file to clipboard.
 
