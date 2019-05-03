@@ -801,6 +801,14 @@ Look for Makefile in parent folder and change directory.
               (setq default-directory (substring (get-closest-pathname) 0 -8))))
 #+end_src
 
+** [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][CMake mode]]
+CMake mode to edit files related to cmake.
+
+#+begin_src emacs-lisp
+  (use-package cmake-mode
+    :when (executable-find "cmake"))
+#+end_src
+
 ** [[http://www.emacswiki.org/emacs/CsvMode][CSV mode]]
 Prettify csv files.
 
