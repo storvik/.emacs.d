@@ -732,13 +732,14 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
 #+end_src
 
 ** C/C++
-Setup =lsp= =clangd= support and add hooks.
+Setup =lsp= =ccls= support and add hooks.
 
 #+begin_src emacs-lisp
-  (setq lsp-clients-clangd-executable (sys-diversification "/usr/bin/clangd-7"))
-
-  (add-hook 'c-mode-hook 'lsp)
-  (add-hook 'c++-mode-hook 'lsp)
+  (use-package ccls
+    :when (file-exists-p "~/developer/ccls/Release/ccls")
+    :hook ((c-mode c++-mode objc-mode) .
+           (lambda () (require 'ccls) (lsp)))
+    :config (setq ccls-executable "~/developer/ccls/Release/ccls"))
 #+end_src
 
 *** Compile key
