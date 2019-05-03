@@ -676,7 +676,8 @@ Initial language server protocol sypport.
     :init
     (setq lsp-print-io t
           lsp-prefer-flymake nil
-          lsp-auto-execute-action nil))
+          lsp-auto-execute-action nil
+          lsp-enable-indentation nil))
 
   ;; dont use lsp ui as its kinda annoying
   (use-package lsp-ui
@@ -685,8 +686,7 @@ Initial language server protocol sypport.
   (use-package company-lsp
     :commands company-lsp
     :config
-    (push 'company-lsp company-backends)
-    (add-to-list 'company-lsp-filter-candidates '(gopls . nil)))
+    (push 'company-lsp company-backends))
 #+end_src
 
 ** [[https://www.gnu.org/software/auctex/][Auctex]]
