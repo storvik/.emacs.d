@@ -652,6 +652,7 @@ Company mode autocomplete.
           company-show-numbers            t
           company-tooltip-limit           20
           company-dabbrev-downcase        nil)
+    (setq company-backends (delete 'company-clang company-backends))
     :bind
     ("C-;" . company-complete-common))
 #+end_src
@@ -684,9 +685,7 @@ Initial language server protocol sypport.
     :commands lsp-ui-mode)
 
   (use-package company-lsp
-    :commands company-lsp
-    :config
-    (push 'company-lsp company-backends))
+    :commands company-lsp)
 #+end_src
 
 ** [[https://www.gnu.org/software/auctex/][Auctex]]
@@ -735,12 +734,41 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
 Setup =lsp= =ccls= support and add hooks.
 
 #+begin_src emacs-lisp
-  (use-package ccls
-    :when (file-exists-p "~/developer/ccls/Release/ccls")
-    :hook ((c-mode c++-mode objc-mode) .
-           (lambda () (require 'ccls) (lsp)))
-    :config (setq ccls-executable "~/developer/ccls/Release/ccls"))
+  (let ((storvik/ccls-exec (sys-diversification "~/developer/ccls/Release/ccls"
+                                                "~/developer/ccls/Release/ccls"
+                                                "~/../../developer/ccls/Release/ccls.exe")))
+    (use-package ccls
+      :when (file-exists-p storvik/ccls-exec)
+      :hook ((c-mode c++-mode objc-mode) .
+             (lambda () (require 'ccls) (lsp)))
+      :config (setq ccls-executable storvik/ccls-exec)))
 #+end_src
+
+*** [[https://github.com/MaskRay/ccls][ccls installation]]
+
+Windows installation using git bash, ninja and mingw64 with gcc 7.3.0-posix-seh-rev0 was done my running the following:
+
+#+begin_src shell
+  git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+  cd ccls
+
+  git clone https://git.llvm.org/git/llvm.git
+  git clone https://git.llvm.org/git/clang.git llvm/tools/clang
+  cd llvm
+
+  cmake -H. -BRelease -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DLLVM_TARGETS_TO_BUILD=X86
+  ninja -C Release clang clangFormat clangFrontendTool clangIndex clangTooling cxx
+
+  cd ../
+  make -H. -BRelease -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ \
+       -DCMAKE_PREFIX_PATH="$PWD/llvm/Release;$PWD/llvm/Release/tools/clang;$PWD/llvm;$PWD/llvm/tools/clang" \
+       -DCMAKE_CXX_FLAGS="-target x86_64-pc-windows-gnu" \
+       -DCMAKE_CXX_FLAGS=-D__STDC_FORMAT_MACROS
+  ninja -C Release
+#+end_src
+
+- =-target x86_64-pc-windows-gnu= makes clang use gcc headers instead of visual studio headers
+- =-D__STDC_FORMAT_MACROS= is to make mingw define =PRIu64=
 
 *** Compile key
 Change compile key binding to =C-c C-c=.
