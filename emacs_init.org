@@ -624,15 +624,15 @@ List all available bindings with =C-c p=, which is the prefix, followed by =C-h=
 #+begin_src emacs-lisp
   (use-package projectile
     :diminish projectile-mode
-    :bind-keymap
-    ("C-c p" . projectile-command-map)
+    :bind-keymap ("C-c p" . projectile-command-map)
+    :commands (projectile-project-p)
     :config
     (setq projectile-completion-system 'ivy
           projectile-enable-caching t
-          projectile-globally-ignored-directories
-          (append '("node_modules"
-                    ".git"
-                    ".gomod")))
+          projectile-globally-ignored-directories (append '("node_modules"
+                                                            ".git"
+                                                            ".gomod"
+                                                            ".ccls-cache")))
     (projectile-mode))
 #+end_src
 
@@ -731,6 +731,7 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
 #+end_src
 
 ** C/C++
+*** [[https://github.com/MaskRay/ccls][LSP server ccls]]
 Setup =lsp= =ccls= support and add hooks.
 
 #+begin_src emacs-lisp
@@ -744,7 +745,7 @@ Setup =lsp= =ccls= support and add hooks.
       :config (setq ccls-executable storvik/ccls-exec)))
 #+end_src
 
-*** [[https://github.com/MaskRay/ccls][ccls installation]]
+**** Windows installation
 
 Windows installation using git bash, ninja and mingw64 with gcc 7.3.0-posix-seh-rev0 was done my running the following:
 
@@ -770,16 +771,7 @@ Windows installation using git bash, ninja and mingw64 with gcc 7.3.0-posix-seh-
 - =-target x86_64-pc-windows-gnu= makes clang use gcc headers instead of visual studio headers
 - =-D__STDC_FORMAT_MACROS= is to make mingw define =PRIu64=
 
-*** Compile key
-Change compile key binding to =C-c C-c=.
-
-#+begin_src emacs-lisp
-  (add-hook 'c-mode-common-hook
-            '(lambda ()
-               (local-set-key "\C-c\C-c" 'compile)))
-#+end_src
-
-*** CUDA
+*** CUDA files
 Associate .cu files with c-mode
 
 #+begin_src emacs-lisp
@@ -797,36 +789,42 @@ Set default indentation to 4.
       (setq c-indent-level 4)
       (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
       (setq tab-width 4))
-(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+  (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 #+end_src
 
-*** Look for Makefile
-Look for Makefile in parent folder and change directory.
+*** Custom compile command
+This custom compile command setup detects wether to use cmake or make.
+When using cmake it prompts for cmake, ninja or any other self written command.
+cmake and ninja are run in =build/= dir.
 
 #+begin_src emacs-lisp
-  (require 'cl) ;; If you don't have it already
-  (defun* get-closest-pathname (&optional (file "Makefile"))
-    (let ((root (expand-file-name "/"))) ;; the win32 builds should translate this correctly
-      (expand-file-name file
-                        (loop
-                         for d = default-directory then (expand-file-name ".." d)
-                         if (file-exists-p (expand-file-name file d))
-                         return d
-                         if (equal d root)
-                         return nil))))
+  (defvar storvik/compile-history '()
+    "List containing compile history.")
 
-  ;; Use make command and change default-directory to the one with the makefile
-  (require 'compile)
-  (add-hook 'c-mode-hook
-            (lambda ()
-              (set (make-local-variable 'compile-command)
-                   (format "make -k" (get-closest-pathname))) ;;add %s to output the string
-              (setq default-directory (substring (get-closest-pathname) 0 -8))))
-  (add-hook 'c++-mode-hook
-            (lambda ()
-              (set (make-local-variable 'compile-command)
-                   (format "make -k" (get-closest-pathname)))
-              (setq default-directory (substring (get-closest-pathname) 0 -8))))
+  (defun storvik/cmake-compile ()
+    (let ((compile-cmd (completing-read "Run cmake or ninja: " (append storvik/compile-history '(ninja cmake)) nil nil)))
+      (with-temp-buffer
+      (cond ((string= compile-cmd "cmake")
+             (let ((default-directory  (projectile-project-root)))
+               (compile "cmake -G Ninja -B build .")))
+             ((string= compile-cmd "ninja")
+              (let ((default-directory (concat (projectile-project-root) "/build/")))
+                (compile "ninja")))
+             (t (let ((default-directory (projectile-project-root)))
+               (add-to-list 'storvik/compile-history compile-cmd)
+               (compile compile-cmd)))))))
+
+  (defun storvik/c-mode-compile-setup ()
+    (when (projectile-project-p)
+      (let ((default-directory (projectile-project-root)))
+        (if (file-exists-p "CMakeLists.txt")
+            ;; Cmake project run cmake compile function
+            (set (make-local-variable 'compile-command) `(storvik/cmake-compile))
+          ;; Not a cmake project, use `make all`
+          (set (make-local-variable 'compile-command) "make all")))))
+
+  (add-hook 'c-mode-hook 'storvik/c-mode-compile-setup)
+  (add-hook 'c++-mode-hook 'storvik/c-mode-compile-setup)
 #+end_src
 
 ** [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][CMake mode]]
