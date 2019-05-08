@@ -899,32 +899,22 @@ Highlights fixme and todo in comments.
 
 ** Go
 *** [[https://github.com/dominikh/go-mode.el][Go mode]]
-Major mode for go(lang).
-Must import GOPATH enviromental variable.
+Major mode for Go.
 
-The following packages must be installed:
-#+begin_src bash
-go get -u golang.org/x/tools/cmd/...
-go get -u github.com/rogpeppe/godef/...
-go get -u github.com/nsf/gocode
-go get -u golang.org/x/tools/cmd/goimports
-go get -u golang.org/x/tools/cmd/guru
-go get -u github.com/dougm/goflymake
+Install dependencies and useful go stuff by running:
+#+begin_src shell
+  go get -u golang.org/x/lint/golint && \
+	go get -u golang.org/x/tools/cmd/... && \
+	go get -u github.com/kisielk/errcheck
 #+end_src
+
 
 #+begin_src emacs-lisp
   (use-package go-mode
     :when (executable-find "go")
     :init
     (setq gofmt-command "goimports")
-    (add-hook 'before-save-hook 'gofmt-before-save)
-    :hook
-    (go-mode . (lambda ()
-      (set (make-local-variable 'compile-command)
-        (format "make -k" (get-closest-pathname))) ;;add %s to output the string
-        (setq default-directory (substring (get-closest-pathname) 0 -8))))
-    :bind
-    ("C-c C-c" . compile))
+    (add-hook 'before-save-hook 'gofmt-before-save))
 #+end_src
 
 *** LSP
