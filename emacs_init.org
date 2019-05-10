@@ -758,16 +758,16 @@ Windows installation using git bash, ninja and mingw64 with gcc 7.3.0-posix-seh-
   cd llvm
 
   cmake -H. -BRelease -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DLLVM_TARGETS_TO_BUILD=X86
-  ninja -C Release clang clangFormat clangFrontendTool clangIndex clangTooling cxx
+  ninja -C Release clang clangFormat clangFrontendTool clangIndex clangTooling
 
   cd ../
-  make -H. -BRelease -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ \
-       -DCMAKE_PREFIX_PATH="$PWD/llvm/Release;$PWD/llvm/Release/tools/clang;$PWD/llvm;$PWD/llvm/tools/clang" \
+  cmake -H. -BRelease -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ \
+       -DCMAKE_PREFIX_PATH="$pwd/llvm/Release;$pwd/llvm/Release/tools/clang;$pwd/llvm;$pwd/llvm/tools/clang" \
        -DCMAKE_CXX_FLAGS="-target x86_64-pc-windows-gnu" \
        -DCMAKE_CXX_FLAGS=-D__STDC_FORMAT_MACROS
   ninja -C Release
 #+end_src
-
+- =$pwd= should be path to current dir, seems like ut must start with =C:/= and not msys style =/c/=
 - =-target x86_64-pc-windows-gnu= makes clang use gcc headers instead of visual studio headers
 - =-D__STDC_FORMAT_MACROS= is to make mingw define =PRIu64=
 
