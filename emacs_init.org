@@ -335,13 +335,18 @@ Turn off splash screen and startup message.
 #+end_src
 
 ** Theme
-Trying gruvbox dark hard theme.
+Checks for file =custom_theme.el= and loads file if available.
+If not default theme used is =doom-theme-one=.
 
 #+begin_src emacs-lisp
-  (use-package gruvbox-theme
-    :when window-system
-    :config
-    (load-theme 'gruvbox-dark-medium t))
+  (let ((storvik/custom-theme-file (concat user-emacs-directory "custom_theme.el")))
+    (if (file-exists-p storvik/custom-theme-file)
+        (load storvik/custom-theme-file)
+      (use-package doom-themes
+        :when window-system
+        :config
+        (load-theme 'doom-one t)
+        (doom-themes-visual-bell-config))))
 #+end_src
 
 ** [[https://github.com/milkypostman/powerline][Powerline]]
@@ -362,7 +367,6 @@ Smart mode line looks pretty, and is actually quite helpful.
     (setq sml/no-confirm-load-theme t)
     (add-to-list 'sml/replacer-regexp-list '("^~/developer/" ":dev:"))
     (add-to-list 'sml/replacer-regexp-list '("^:dev:golang/" ":go:") t)
-    (add-to-list 'sml/replacer-regexp-list '("^:dev:rpi/" ":rpi:") t)
     (add-to-list 'sml/replacer-regexp-list '("^:dev:elisp/" ":elisp:") t)
     (add-to-list 'sml/replacer-regexp-list '("^:dev:www/" ":web:") t)
     (sml/setup))
