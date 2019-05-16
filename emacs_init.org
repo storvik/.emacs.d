@@ -809,8 +809,13 @@ cmake and ninja are run in =build/= dir.
     (let ((compile-cmd (completing-read "Run cmake or ninja: " (append storvik/compile-history '(ninja cmake)) nil nil)))
       (with-temp-buffer
       (cond ((string= compile-cmd "cmake")
-             (let ((default-directory  (projectile-project-root)))
-               (compile "cmake -G Ninja -B build .")))
+             (let ((default-directory
+                     (if sys-unix-p
+                         (projectile-project-root)
+                       (concat (projectile-project-root) "/build/"))))
+               (compile (if sys-unix-p
+                            "cmake -G Ninja -B build ."
+                          "cmake -G Ninja .."))))
              ((string= compile-cmd "ninja")
               (let ((default-directory (concat (projectile-project-root) "/build/")))
                 (compile "ninja")))
