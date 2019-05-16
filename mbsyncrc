@@ -44,8 +44,8 @@ IMAPStore gmail-remote
 Account gmail
 
 MaildirStore gmail-local
-Path ~/Maildir/petterstorvik@gmail.com/
-Inbox ~/Maildir/petterstorvik@gmail.com/Inbox
+Path ~/maildir/petterstorvik@gmail.com/
+Inbox ~/maildir/petterstorvik@gmail.com/Inbox
 
 # Helper to list all folders, run "mbsync -l gmail-all-folders"
 Channel gmail-all-folders
@@ -122,8 +122,8 @@ Account avantieng
 
 MaildirStore avantieng-local
 Subfolders Verbatim
-Path ~/Maildir/petter.storvik@avantieng.no/
-Inbox ~/Maildir/petter.storvik@avantieng.no/Inbox
+Path ~/maildir/petter.storvik@avantieng.no/
+Inbox ~/maildir/petter.storvik@avantieng.no/Inbox
 
 # Helper to list all folders, run "mbsync -l avantieng-all-folders"
 Channel avantieng-all-folders
