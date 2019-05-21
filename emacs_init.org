@@ -349,27 +349,12 @@ If not default theme used is =doom-theme-one=.
         (doom-themes-visual-bell-config))))
 #+end_src
 
-** [[https://github.com/milkypostman/powerline][Powerline]]
-Powerline makes mode line look better.
+** [[https://github.com/seagle0128/doom-modeline][Doom modeline]]
+To have icons one must run =M-x all-the-icons-install-fonts=.
 
 #+begin_src emacs-lisp
-  (use-package powerline
-    :config
-    (powerline-default-theme))
-#+end_src
-
-** [[https://github.com/Malabarba/smart-mode-line][Smart mode line]]
-Smart mode line looks pretty, and is actually quite helpful.
-
-#+begin_src emacs-lisp
-  (use-package smart-mode-line
-    :config
-    (setq sml/no-confirm-load-theme t)
-    (add-to-list 'sml/replacer-regexp-list '("^~/developer/" ":dev:"))
-    (add-to-list 'sml/replacer-regexp-list '("^:dev:golang/" ":go:") t)
-    (add-to-list 'sml/replacer-regexp-list '("^:dev:elisp/" ":elisp:") t)
-    (add-to-list 'sml/replacer-regexp-list '("^:dev:www/" ":web:") t)
-    (sml/setup))
+  (use-package doom-modeline
+    :hook (after-init . doom-modeline-mode))
 #+end_src
 
 ** [[https://github.com/Fanael/rainbow-delimiters][Rainbow delimiters]]
