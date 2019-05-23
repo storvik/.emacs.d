@@ -304,19 +304,6 @@ Set default font and size.
                                            "Courier New-10"))
 #+End_src
 
-** [[https://github.com/roman/golden-ratio.el][Golden ratio]]
-Resize windows so that the active window is optimized for editing.
-
-#+begin_src emacs-lisp
-  (use-package golden-ratio
-    :diminish golden-ratio-mode
-    :init
-    (golden-ratio-mode 1)
-    (setq golden-ratio-auto-scale t)
-    :config
-    (add-to-list 'golden-ratio-extra-commands 'ace-window))
-#+end_src
-
 ** Highlight line mode
 Highlight current line.
 
@@ -557,6 +544,42 @@ Moves region if marked.
     ("p" move-text-up "Up")
     ("n" move-text-down "Down")
     ("q" nil "Quit" :color blue)))
+#+end_src
+
+** [[https://github.com/Alexander-Miller/treemacs][Treemacs]]
+Treemacs is useful for navigating projects.
+
+#+begin_src emacs-lisp
+(use-package treemacs
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode t)
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null (executable-find "python3"))))
+      (`(t . t)
+       (treemacs-git-mode 'deferred))
+      (`(t . _)
+       (treemacs-git-mode 'simple))))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+
+(use-package treemacs-projectile
+  :after treemacs projectile)
+
+(use-package treemacs-magit
+  :after treemacs magit)
 #+end_src
 
 ** [[http://emacswiki.org/emacs/WinnerMode][Winner mode]]
