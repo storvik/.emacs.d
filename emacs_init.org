@@ -326,14 +326,16 @@ Checks for file =custom_theme.el= and loads file if available.
 If not default theme used is =doom-theme-one=.
 
 #+begin_src emacs-lisp
-  (let ((storvik/custom-theme-file (concat user-emacs-directory "custom_theme.el")))
-    (if (file-exists-p storvik/custom-theme-file)
-        (load storvik/custom-theme-file)
-      (use-package doom-themes
-        :when window-system
-        :config
-        (load-theme 'doom-one t)
-        (doom-themes-visual-bell-config))))
+    (let ((storvik/custom-theme-file (concat user-emacs-directory "custom_theme.el")))
+      (if (file-exists-p storvik/custom-theme-file)
+          (load storvik/custom-theme-file)
+        (use-package doom-themes
+          :when window-system
+          :config
+          (load-theme 'doom-one t)
+          (doom-themes-visual-bell-config)
+          (doom-themes-treemacs-config)
+          (doom-themes-org-config))))
 #+end_src
 
 ** [[https://github.com/seagle0128/doom-modeline][Doom modeline]]

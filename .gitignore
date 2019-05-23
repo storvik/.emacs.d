@@ -22,3 +22,4 @@ projectile.cache
 speed-type/*
 transient/
 .lsp-session*
+.cache/
