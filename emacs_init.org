@@ -333,7 +333,7 @@ If not default theme used is =doom-theme-one=.
           :when window-system
           :config
           (load-theme 'doom-one t)
-          (doom-themes-visual-bell-config)
+          ;; (doom-themes-visual-bell-config) Removed due to color issued in modeline
           (doom-themes-treemacs-config)
           (doom-themes-org-config))))
 #+end_src
@@ -1194,6 +1194,8 @@ Templates for capturing stuff. Same as the todo states defined above.
   (setq org-capture-templates
         (quote (("t" "Todo" entry (file "~/org/refile.org")
                  "* TODO %?\n")
+                ("c" "Todo code" entry (file "~/org/refile.org")
+                 "* TODO %?\n%l\n")
                 ("n" "Note" entry (file "~/org/refile.org")
                  "* %? :NOTE:\n")
                 ("m" "Meeting" entry (file "~/org/refile.org")
@@ -1233,6 +1235,15 @@ This defines different colors for different states.
                 ("CANCELLED" :foreground "forest green" :weight bold)
                 ("MEETING" :foreground "forest green" :weight bold)
                 ("PHONE" :foreground "forest green" :weight bold))))
+#+end_src
+
+** [[https://orgmode.org/worg/exporters/koma-letter-export.html][Koma letter]]
+Use org-mode to write letters.
+
+#+begin_src emacs-lisp
+  (eval-after-load 'ox '(require 'ox-koma-letter))
+  (eval-after-load 'ox-latex
+    '(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t) t))
 #+end_src
 
 * Email
