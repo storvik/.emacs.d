@@ -979,7 +979,7 @@ Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
   (use-package lispy
     :defer t
     :hook ((emacs-lisp-mode . (lambda () (lispy-mode 1)))
-           (slime-mode . (lambda () (lispy-mode 1)))))
+           (sly-mode . (lambda () (lispy-mode 1)))))
 #+end_src
 
 ** [[http://jblevins.org/projects/markdown-mode/][Markdown mode]]
@@ -1025,15 +1025,14 @@ Protobuf-mode to edit protobuf files.
   (use-package protobuf-mode)
 #+end_src
 
-** [[https://github.com/slime/slime][Slime]]
-Using SLIME, the superior lisp mode.
+** [[https://github.com/joaotavora/sly][SLY]]
+SLY is a [[https://github.com/slime/slime][Slime]] fork with lots of improvements!
 
 #+begin_src emacs-lisp
-  (use-package slime
+  (use-package sly
     :when (executable-find "sbcl")
     :init
-    (setq inferior-lisp-program "sbcl")
-    (setq slime-contribs '(slime-fancy)))
+    (setq inferior-lisp-program "sbcl --noinform"))
 #+end_src
 
 ** SQL mode
