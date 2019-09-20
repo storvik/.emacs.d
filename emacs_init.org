@@ -55,26 +55,31 @@ Set up =use-package= and add MELPA and upstream ORG Mode as archive.
 Configure load-path to include =~/.emacs.d/elisp/=.
 
 #+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  ;; Make use-package use straight and ensure packages are installed
+  (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t)
+
+  ;; Add melpa, not needed for straight.
   (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-  (package-initialize)
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/"))
+#+end_src
 
-  (mapc
-   (lambda (package)
-     (if (not (package-installed-p package))
-         (progn
-           (package-refresh-contents)
-           (package-install package))))
-   '(use-package diminish bind-key))
-
-  (eval-when-compile
-    (require 'use-package))
-  (require 'diminish)
-  (require 'bind-key)
-  (setq use-package-always-ensure t)
-  ;;(package-refresh-contents)
-
+Load elisp directory.
+#+begin_src emacs-lisp
   (add-to-list 'load-path (concat user-emacs-directory "elisp/"))
 #+end_src
 
@@ -734,10 +739,9 @@ Initial language server protocol sypport.
 
 ** [[https://www.gnu.org/software/auctex/][Auctex]]
 Auctex is the best way editing LaTeX documents!
-
 #+begin_src emacs-lisp
   (use-package tex
-    :ensure auctex
+    :straight auctex
     :config
     (setq TeX-auto-save t)
     (setq TeX-parse-self t)
@@ -755,7 +759,7 @@ Auctex is the best way editing LaTeX documents!
           ;;(sys-diversification
           ;; '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))
           ;; "/usr/share/emacs/site-lisp/mu4e")))
-    '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
+          '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
 
   ;; Use aspell
   (add-to-list 'exec-path "/usr/local/bin")
@@ -1166,9 +1170,8 @@ As yasnippet doesn't contain any snippets, [[https://github.com/AndreaCrotti/yas
 Install org mode package
 
 #+begin_src emacs-lisp
-  (use-package org
+  (use-package org-plus-contrib
     :mode (("\\.org$" . org-mode))
-    :ensure org-plus-contrib
     :bind (("C-c l" . org-store-link)
            ("C-c a" . org-agenda)
            ("C-c b" . org-iswitchb)
@@ -1194,7 +1197,7 @@ Install org mode package
     (setq org-outline-path-complete-in-steps nil)
     (setq org-refile-allow-creating-parent-nodes (quote confirm))
     (setq org-refile-targets (quote ((nil :maxlevel . 9)
-                                       (org-agenda-files :maxlevel . 9))))
+                                     (org-agenda-files :maxlevel . 9))))
 
     ;; Clock
     (setq org-clock-persist 'history)

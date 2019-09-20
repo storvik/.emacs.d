@@ -23,3 +23,4 @@ speed-type/*
 transient/
 .lsp-session*
 .cache/
+straight/*
