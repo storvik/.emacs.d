@@ -246,15 +246,6 @@ How to I train them fingers?
 Load config file dependant on current platform.
 
 ** Windows
-*** Ctrl and cmd
-Use Ctrl key as control modifier and Cmd as meta modifier.
-
-#+begin_src emacs-lisp
-  (when (eq system-type 'windows-nt)
-    (setq coding-system-for-read 'utf-8-unix)
-    (setq coding-system-for-write 'utf-8-unix))
-#+end_src
-
 *** Use git bash on windows
 Use git bash on windows if git bash is found, also change path to [[https://emacs.stackexchange.com/questions/29942/projectile-indexing-wont-work-on-windows][ensure that unix tools are preferred]].
 
