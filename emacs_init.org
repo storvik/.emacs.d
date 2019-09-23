@@ -75,11 +75,6 @@ Configure load-path to include =~/.emacs.d/elisp/=.
   ;; Make use-package use straight and ensure packages are installed
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
-
-  ;; Add melpa, not needed for straight.
-  (require 'package)
-  (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/"))
 #+end_src
 
 Load elisp directory.
@@ -203,13 +198,6 @@ Make tramp auto-save in another local directory.
   (require 'tramp)
   (setq tramp-default-method "scp")
   (setq tramp-auto-save-directory (concat user-emacs-directory "tramp.autosave/"))
-#+end_src
-
-** [[https://github.com/larstvei/Try][Try]]
-Try allows you to try packages from melpa or a url without installing them / adding them to config.
-
-#+begin_src emacs-lisp
-  (use-package try)
 #+end_src
 
 ** Undo tree
