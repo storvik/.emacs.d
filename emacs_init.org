@@ -920,6 +920,13 @@ Use =emmet-expand-line= to do this.
     (setq emmet-expand-jsx-className? t))
 #+end_src
 
+** [[https://github.com/wwwjfy/emacs-fish/][Fish mode]]
+   Edit fish shell files.
+
+#+begin_src emacs-lisp
+  (use-package fish-mode)
+#+end_src
+
 ** Fixme/Todo Highlights
 Highlights fixme and todo in comments.
 
