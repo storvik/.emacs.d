@@ -93,7 +93,6 @@ Multiple contexts equals multiple accounts.
           :enter-func (lambda () (mu4e-message "Entering avantieng context"))
           :leave-func (lambda () (mu4e-message "Leaving avantieng context"))
           ;; we match based on the maildir of the message
-          ;; this matches maildir /Arkham and its sub-directories
           :match-func (lambda (msg)
                         (when msg
                             (string-match-p "^/petter.storvik@avantieng.no" (mu4e-message-field msg :maildir))))
@@ -179,19 +178,19 @@ Shortcuts to maildirs goes here
 Add some useful bookmarks.
 
 #+begin_src emacs-lisp
-(add-to-list 'mu4e-bookmarks
-            '((concat
-                "flag:unread AND "
-                "NOT flag:trashed AND "
-                "NOT (maildir:/petterstorvik@gmail.com/Trash OR maildir:/petter.storvik@avantieng.no/Trash)") "Unread in inbox" ?i))
   (add-to-list 'mu4e-bookmarks
-              '((concat
-                "maildir:/petterstorvik@gmail.com/Inbox AND "
-                "to:petter@svartisenfestivalen.no") "Svartisenfestivalen Inbox" ?3))
+               '((concat
+                  "flag:unread AND "
+                  "NOT flag:trashed AND "
+                  "NOT (maildir:/petterstorvik@gmail.com/Trash OR maildir:/petter.storvik@avantieng.no/Trash)") "Unread in inbox" ?i))
   (add-to-list 'mu4e-bookmarks
-              '("maildir:/petter.storvik@avantieng.no/Inbox" "Avantieng Inbox" ?2))
+               '((concat
+                  "maildir:/petterstorvik@gmail.com/Inbox AND "
+                  "to:petter@svartisenfestivalen.no") "Svartisenfestivalen Inbox" ?3))
   (add-to-list 'mu4e-bookmarks
-              '("maildir:/petterstorvik@gmail.com/Inbox" "Gmail Inbox" ?1))
+               '("maildir:/petter.storvik@avantieng.no/Inbox" "Avantieng Inbox" ?2))
+  (add-to-list 'mu4e-bookmarks
+               '("maildir:/petterstorvik@gmail.com/Inbox" "Gmail Inbox" ?1))
 #+end_src
 
 * Headers view
@@ -216,6 +215,9 @@ Headers view customizations.
                  (length (mu4e-message-field msg :cc))))))))
   (add-to-list 'mu4e-view-fields :recipnum)
   (add-to-list 'mu4e-headers-fields '(:recipnum))
+
+  ;; Make date field wider
+  (add-to-list 'mu4e-headers-fields '(:human-date . 17))
 #+end_src
 
 * Message setting
@@ -265,6 +267,6 @@ Can also be used to show system notifications on Mac Os X and Linux.
 Make org capture templates with =%a= include link to selected email in mu4e.
 
 #+begin_src emacs-lisp
-(require 'org-mu4e)
-(setq org-mu4e-link-query-in-headers-mode nil)
+  (require 'org-mu4e)
+  (setq org-mu4e-link-query-in-headers-mode nil)
 #+end_src
