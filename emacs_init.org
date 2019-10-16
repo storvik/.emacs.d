@@ -55,29 +55,8 @@ This is taken from [[https://www.masteringemacs.org/article/working-coding-syste
 #+end_src
 
 ** Initial settings
-Set up =use-package= and add MELPA and upstream ORG Mode as archive.
 Configure load-path to include =~/.emacs.d/elisp/=.
 
-#+begin_src emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-
-  ;; Make use-package use straight and ensure packages are installed
-  (straight-use-package 'use-package)
-  (setq straight-use-package-by-default t)
-#+end_src
-
-Load elisp directory.
 #+begin_src emacs-lisp
   (add-to-list 'load-path (concat user-emacs-directory "elisp/"))
 #+end_src
@@ -1161,45 +1140,40 @@ As yasnippet doesn't contain any snippets, [[https://github.com/AndreaCrotti/yas
 Install org mode package
 
 #+begin_src emacs-lisp
-  (use-package org-plus-contrib
-    :mode (("\\.org$" . org-mode))
-    :bind (("C-c l" . org-store-link)
-           ("C-c a" . org-agenda)
-           ("C-c b" . org-iswitchb)
-           ("C-c c" . org-capture))
-    :config
-    ;; Agenda view
-    (setq org-agenda-files (quote ("~/org")))
 
-    ;; Archive location
-    (setq org-archive-location "archive/%s_archive::")
+  ;; Agenda view
+  (setq org-agenda-files (quote ("~/org")))
 
-    ;; Indentation
-    (setq org-startup-indented t)
-    (setq org-indent-mode t)
-    (setq org-catch-invisible-edit 'nil)
+  ;; Archive location
+  (setq org-archive-location "archive/%s_archive::")
 
-    ;; File locations
-    (setq org-directory "~/org")
-    (setq org-default-notes-file "~/org/refile.org")
+  ;; Indentation
+  (setq org-startup-indented t)
+  (setq org-indent-mode t)
+  (setq org-adapt-indentation t)
+  (setq org-catch-invisible-edit 'nil)
 
-    ;; Refile
-    (setq org-refile-use-outline-path t)
-    (setq org-outline-path-complete-in-steps nil)
-    (setq org-refile-allow-creating-parent-nodes (quote confirm))
-    (setq org-refile-targets (quote ((nil :maxlevel . 9)
-                                     (org-agenda-files :maxlevel . 9))))
+  ;; File locations
+  (setq org-directory "~/org")
+  (setq org-default-notes-file "~/org/refile.org")
 
-    ;; Clock
-    (setq org-clock-persist 'history)
-    (org-clock-persistence-insinuate)
-    (setq org-clock-out-remove-zero-time-clocks t)
-    (setq org-log-into-drawer "LOGBOOK")
-    (setq org-clock-into-drawer 1)
-    (setq org-log-done 'time)
+  ;; Refile
+  (setq org-refile-use-outline-path t)
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-allow-creating-parent-nodes (quote confirm))
+  (setq org-refile-targets (quote ((nil :maxlevel . 9)
+  (org-agenda-files :maxlevel . 9))))
 
-    ;; Todo
-    (setq org-clock-in-switch-to-state "STARTED"))
+  ;; Clock
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+  (setq org-clock-out-remove-zero-time-clocks t)
+  (setq org-log-into-drawer "LOGBOOK")
+  (setq org-clock-into-drawer 1)
+  (setq org-log-done 'time)
+
+  ;; Todo
+  (setq org-clock-in-switch-to-state "STARTED")
 #+end_src
 
 ** Capture

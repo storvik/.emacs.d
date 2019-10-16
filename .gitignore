@@ -24,3 +24,4 @@ transient/
 .lsp-session*
 .cache/
 straight/*
+srecode-map.el
