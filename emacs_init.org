@@ -698,6 +698,10 @@ Initial language server protocol sypport.
 
   (use-package company-lsp
     :commands company-lsp)
+
+  (use-package lsp-treemacs
+    :after treemacs lsp
+    :commands lsp-treemacs-errors-list)
 #+end_src
 
 ** [[https://www.gnu.org/software/auctex/][Auctex]]
@@ -1038,6 +1042,14 @@ Protobuf-mode to edit protobuf files.
 
 #+begin_src emacs-lisp
   (use-package protobuf-mode)
+#+end_src
+
+** Python
+
+[[https://github.com/jorgenschaefer/pyvenv][pyvenv.el]] handles virtual environments in Emacs.
+Use =M-x pyvenv-activate= to activate environment.
+#+begin_src emacs-lisp
+  (use-package pyvenv)
 #+end_src
 
 ** [[https://github.com/joaotavora/sly][SLY]]
