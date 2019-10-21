@@ -1001,7 +1001,16 @@ Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
            (sly-mode . (lambda () (lispy-mode 1)))))
 #+end_src
 
-** [[http://jblevins.org/projects/markdown-mode/][Markdown mode]]
+** [[https://sourceforge.net/projects/matlab-emacs/][Matlab]]
+Major mode for editing matlab `.m` files.
+
+#+begin_src emacs-lisp
+  (use-package matlab
+    :straight matlab-mode)
+#+end_src
+
+** Markdown
+*** [[http://jblevins.org/projects/markdown-mode/][Markdown mode]]
 Mode to edit markdown files more efficiently.
 
 #+begin_src emacs-lisp
@@ -1015,14 +1024,14 @@ Mode to edit markdown files more efficiently.
                                          "pandoc.css")))
 #+end_src
 
-** [[https://github.com/ardumont/markdown-toc][Markdown toc]]
+*** [[https://github.com/ardumont/markdown-toc][Markdown toc]]
 Generate toc with `markdown-toc-generate-toc`.
 
 #+begin_src emacs-lisp
   (use-package markdown-toc)
 #+end_src
 
-** [[https://github.com/ancane/markdown-preview-mode][Markdown preview]]
+*** [[https://github.com/ancane/markdown-preview-mode][Markdown preview]]
 Preview markdown files, =pandoc= must be installed, with =markdown-preview=.
 
 #+begin_src emacs-lisp
