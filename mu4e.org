@@ -10,12 +10,12 @@ MU4E is used together with mbsync to receive mail.
 #+begin_src emacs-lisp
   ;; Load path to mu4e, platform dependent.
   (add-to-list 'load-path (expand-file-name
-                            (sys-diversification
-                              "/usr/share/emacs/site-lisp/mu4e"
-                              "/usr/local/Cellar/mu/0.9.18_1/share/emacs/site-lisp/mu/mu4e")))
+                           (sys-diversification
+                            "/usr/local/share/emacs/site-lisp/mu4e"
+                            "/usr/local/Cellar/mu/0.9.18_1/share/emacs/site-lisp/mu/mu4e")))
 
   (require 'mu4e)
-  (setq mu4e-maildir "~/maildir")
+  (setq mu4e-maildir "~/Maildir")
   (setq mu4e-get-mail-command "mbsync gmail avantieng")
 
   ;; MU4E key-chord
@@ -52,10 +52,13 @@ MU4E is used together with mbsync to receive mail.
   (setq message-kill-buffer-on-exit t)
 
   ;; Turn off auto-fill
-  (defun no-auto-fill ()
-    "Turn off auto-fill-mode."
-    (auto-fill-mode -1))
-  (add-hook 'mu4e-compose-mode-hook 'no-auto-fill)
+  ;; (defun no-auto-fill ()
+  ;;   "Turn off auto-fill-mode."
+  ;;   (auto-fill-mode -1))
+  ;; (add-hook 'mu4e-compose-mode-hook #'no-auto-fill)
+
+  (setq mu4e-compose-format-flowed t)
+
 #+end_src
 
 * Contexts
@@ -226,6 +229,25 @@ Use org mode tables and structure in message mode.
 #+begin_src emacs-lisp
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+#+end_src
+
+* Compose setting
+Message compose section.
+
+#+begin_src emacs-lisp
+  ;; Remove automatic newlines
+  (setq mu4e-compose-format-flowed t)
+
+  ;; Attach files to bottom to avoid exchange bug
+  (defun storvik/attach-file ()
+    (interactive)
+    (with-current-buffer (current-buffer)
+      (let ((pos (point-marker)))
+        (goto-char (point-max))
+        (call-interactively 'mail-add-attachment)
+        (goto-char pos))))
+
+  (define-key mu4e-compose-mode-map (kbd "C-c C-a") 'storvik/attach-file)
 #+end_src
 
 * SMTP settings

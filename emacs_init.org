@@ -694,10 +694,15 @@ Initial language server protocol sypport.
 
   ;; dont use lsp ui as its kinda annoying
   (use-package lsp-ui
-    :commands lsp-ui-mode)
+    :commands lsp-ui-mode
+    :init
+    (setq lsp-ui-doc-position 'top))
 
   (use-package company-lsp
     :commands company-lsp)
+
+  (use-package lsp-ivy
+    :commands lsp-ivy-workspace-symbol)
 
   (use-package lsp-treemacs
     :after treemacs lsp
