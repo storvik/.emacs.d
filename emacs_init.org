@@ -179,16 +179,6 @@ Make tramp auto-save in another local directory.
   (setq tramp-auto-save-directory (concat user-emacs-directory "tramp.autosave/"))
 #+end_src
 
-** Undo tree
-Undo tree, visualize the undo / redo tree.
-
-#+begin_src emacs-lisp
-  (use-package undo-tree
-    :diminish undo-tree-mode
-    :init
-    (global-undo-tree-mode))
-#+end_src
-
 ** Whitespace
 Delete trailing whitespaces on save.
 
@@ -391,7 +381,6 @@ Ivy replaces the heavier Helm package, try it and be amazed!
     (setq ivy-initial-inputs-alist nil)
     (setq ivy-re-builders-alist
           '((t	 . ivy--regex-ignore-order)))
-    (advice-add 'swiper :after 'recenter)
     :bind (("C-s" . swiper)
            ("M-x" . counsel-M-x)
            ("C-x C-f" . counsel-find-file)
@@ -659,7 +648,7 @@ Company mode autocomplete.
     :init
     (global-company-mode t)
     :config
-    (setq company-idle-delay              0.1
+    (setq company-idle-delay              0.0
           company-minimum-prefix-length   1
           company-show-numbers            t
           company-tooltip-limit           20
@@ -682,12 +671,20 @@ It includes on the fly function lookup and syntax validation.
 #+end_src
 
 ** [[https://github.com/emacs-lsp/lsp-mode][Language Server Protocol]]
-Initial language server protocol sypport.
+Language server protocol support.
+
+Some performance enhancing settings, see lsp-mode README.md for details.
+
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+#+end_src
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :init
-    (setq lsp-print-io t
+    (setq lsp-keymap-prefix "C-c l"
+          lsp-prefer-capf t ;; for performance, see lsp-mode readme
           lsp-prefer-flymake nil
           lsp-auto-execute-action nil
           lsp-enable-indentation nil))
@@ -698,8 +695,8 @@ Initial language server protocol sypport.
     :init
     (setq lsp-ui-doc-position 'top))
 
-  (use-package company-lsp
-    :commands company-lsp)
+  ;;(use-package company-lsp
+  ;;  :commands company-lsp)
 
   (use-package lsp-ivy
     :commands lsp-ivy-workspace-symbol)
