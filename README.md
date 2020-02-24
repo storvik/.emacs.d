@@ -15,3 +15,17 @@ Windows Git Bash: `cd && cd AppData/Roaming && git clone https://github.com/stor
 ## Caps lock and Ctrl
 
 Remap caps lock to ctrl in windows by running `remapcapslock.reg`.
+
+## Emacs 27
+
+Build Emacs 27 in Ubuntu by running:
+
+``` shell
+git clone --branch emacs-27 --depth=1 https://github.com/emacs-mirror/emacs.git
+cd emacs/
+sudo apt-get build-dep emacs26
+./autogen.sh
+./configure
+make
+sudo make install
+```
