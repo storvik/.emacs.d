@@ -1067,10 +1067,19 @@ Use =M-x pyvenv-activate= to activate environment.
 SLY is a [[https://github.com/slime/slime][Slime]] fork with lots of improvements!
 
 #+begin_src emacs-lisp
-  (use-package sly
-    :when (executable-find "sbcl")
-    :init
-    (setq inferior-lisp-program "sbcl --noinform"))
+    (use-package sly
+      :when (executable-find "sbcl")
+      :init
+      (setq inferior-lisp-program "sbcl --noinform")
+      (add-hook 'sly-mode-hook
+                (lambda ()
+                  (setq-local lispy-no-space t))))
+
+    (use-package sly-quicklisp
+      :requires sly)
+
+    (use-package sly-asdf
+      :requires sly)
 #+end_src
 
 ** SQL mode
