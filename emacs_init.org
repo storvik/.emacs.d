@@ -948,7 +948,7 @@ Install dependencies and useful go stuff by running:
 
 *** LSP
 To install lsp support for Go gopls must be installed:
-=go get -u golang.org/x/tools/cmd/gopls=
+=GO111MODULE=on go get golang.org/x/tools/gopls@latest=
 
 #+begin_src emacs-lisp
   (add-hook 'go-mode-hook 'lsp)
