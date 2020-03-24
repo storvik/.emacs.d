@@ -378,7 +378,7 @@ Ivy replaces the heavier Helm package, try it and be amazed!
     (setq ivy-use-ignore-default 'always)
     (setq ivy-ignore-buffers '("smex-autoloads.el"
                                "emacs.d/custom.el"))
-    (setq ivy-initial-inputs-alist nil)
+    (setq ivy-initial-inputs-alist ())
     (setq ivy-re-builders-alist
           '((t	 . ivy--regex-ignore-order)))
     :bind (("C-s" . swiper)
@@ -1319,8 +1319,6 @@ Finds the init file and opens it.
     "Edit main init file, emacs_init.org."
     (interactive)
     (find-file (expand-file-name "emacs_init.org" user-emacs-directory)))
-
-  (bind-key "C-c I" 'find-init-file)
 #+end_src
 
 ** Reindent buffer
