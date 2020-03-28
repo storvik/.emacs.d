@@ -968,6 +968,7 @@ Lets you add json tags to structs calling =go-add-tags=.
 
 #+begin_src emacs-lisp
   (use-package go-add-tags
+    :requires go-mode
     :when (executable-find "go"))
 #+end_src
 
@@ -976,6 +977,7 @@ Go debugger integration, uses delve.
 
 #+begin_src emacs-lisp
   (use-package go-dlv
+    :requires go-mode
     :when (executable-find "go"))
 #+end_src
 
@@ -991,7 +993,7 @@ Jump around go stacktrace, use =M-x=  =go-stacktracer-region=.
 
 #+begin_src emacs-lisp
   (use-package go-stacktracer
-    :when (executable-find "go"))
+    :requires go-mode)
 #+end_src
 
 *** [[https://github.com/nlamirault/gotest.el][Gotest]]
@@ -999,7 +1001,16 @@ Run test files.
 
 #+begin_src emacs-lisp
   (use-package gotest
-    :when (executable-find "go"))
+    :requires go-mode)
+#+end_src
+
+*** [[https://github.com/storvik/gomacro-mode][gomacro-mode]]
+Mode for interacting with gomacro REPL.
+
+#+begin_src emacs-lisp
+  (use-package gomacro-mode
+    :requires go-mode
+    :hook (go-mode . gomacro-mode))
 #+end_src
 
 ** [[https://github.com/abo-abo/lispy][Lispy]]
