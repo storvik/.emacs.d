@@ -849,6 +849,15 @@ cmake and ninja are run in =build/= dir.
   (add-hook 'c++-mode-hook 'storvik/c-mode-compile-setup)
 #+end_src
 
+*** [[https://github.com/storvik/emacs-astyle][Astyle]]
+Run astyle on save, this should be changed when package is in MELPA.
+
+#+begin_src emacs-lisp
+  (use-package astyle
+    :when (executable-find "astyle")
+    :hook (c-mode-common . astyle-on-save-mode))
+#+end_src
+
 ** [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][CMake mode]]
 CMake mode to edit files related to cmake.
 
