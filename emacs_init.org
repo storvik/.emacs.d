@@ -79,7 +79,7 @@ Key bindings not related to external packages or functions.
   (global-set-key (kbd "RET") 'newline-and-indent)
 #+end_src
 
-** Turn off alarm
+** Turn off audible bell
 Turn off audible and visible bell.
 
 #+begin_src emacs-lisp
@@ -98,7 +98,7 @@ Use exec-path-from-shell on unix computers.
 
 ** [[https://github.com/storvik/emacs-lastpass][Lastpass]]
 Package used to communicate with LastPass.
-Depends on lpass command line utility.
+Depends on =lpass= command line utility.
 
 #+begin_src emacs-lisp
   (use-package lastpass
@@ -197,7 +197,7 @@ Useful when upgrading between frameworks and such.
 #+end_src
 
 ** [[https://github.com/parkouss/speed-type][Speed type]]
-How to I train them fingers?
+How do I train them fingers?
 
 #+begin_src emacs-lisp
   (use-package speed-type)
@@ -346,14 +346,6 @@ Enable mouse clicks in terminal.
 #+begin_src emacs-lisp
   (when (not (window-system))
     (xterm-mouse-mode +1))
-#+end_src
-
-** Disable yasnippet
-Disable yasnippet in ansi-term.
-
-#+begin_src emacs-lisp
-;;  (add-hook 'term-mode-hook (lambda()
-;;                              (setq yas-dont-activate t)))
 #+end_src
 
 * [[https://github.com/abo-abo/swiper][Ivy]]
