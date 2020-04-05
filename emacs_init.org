@@ -575,12 +575,12 @@ Treemacs is useful for navigating projects.
   :after treemacs magit)
 #+end_src
 
-** [[http://emacswiki.org/emacs/WinnerMode][Winner mode]]
-Winner mode to undo/redo window changes. Used with =C-c left/right=.
+** [[https://github.com/justbur/emacs-which-key][Which key mode]]
 
 #+begin_src emacs-lisp
-  (use-package winner
-    :init (winner-mode))
+  (use-package which-key
+    :config
+    (which-key-mode))
 #+end_src
 
 * Language
