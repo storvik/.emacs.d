@@ -440,8 +440,12 @@ This package expands region by semantic units.
 
 #+begin_src emacs-lisp
   (use-package expand-region
-    :bind ("C-c e" . er/expand-region)
-    :chords ("ex" . er/expand-region))
+    :bind ("C-c e" . hydra-expand-region/body)
+    :config
+    (defhydra hydra-expand-region (:columns 1 :body-pre (er/expand-region 1))
+      ("e" er/expand-region "Expand")
+      ("c" er/contract-region "Contract")
+      ("q" nil "Quit" :color blue)))
 #+end_src
 
 ** [[https://github.com/jacktasia/dumb-jump][Dumb jump]]
