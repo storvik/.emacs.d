@@ -25,3 +25,5 @@ transient/
 .cache/
 straight/*
 srecode-map.el
+elpy/
+emojis/

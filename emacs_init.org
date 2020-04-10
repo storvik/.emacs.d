@@ -339,6 +339,14 @@ Helps differentiating between buffers with similar / same name.
   (require 'uniquify)
 #+end_src
 
+** [[https://github.com/iqbalansari/emacs-emojify][Emojify]]
+Display emojis in Emacs!
+
+#+begin_src emacs-lisp
+  (use-package emojify
+    :hook (after-init . global-emojify-mode))
+#+end_src
+
 * Terminal specific
 ** Mouse clicks
 Enable mouse clicks in terminal.
