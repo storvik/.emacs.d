@@ -3,19 +3,6 @@
 #+EMAIL: petterstorvik@gmail.com
 #+PROPERTY: header-args    :results silent
 
-* Notes
-This emacs configuration aims to provide usable emacs environments that are platform independant.
-
-** Add to workflow
-- Get help with =C-h i= (manuals) and =C-h a= (apropos, search for commands containing search string).
-- =C-h f= to describe function and =C-h v= to describe variables. Should be exchanged with counsel describe.
-- Keep buffers around, using =C-x s= to save all.
-- Use =C-M-f/b= to move by s-expression. From start paren to end paren and such.
-- Use =C-M-= (d)own into list, (u)p out of list. Move into the nearest balanced expression.
-- Use =C-M-= (n)ext list, (p)revious list.
-- Move by defun with =C-M-a/e=.
-- Ivy-hydra =C-o= when in ivy minibuffer.
-
 * Personal information
 Add name and E-mail.
 
