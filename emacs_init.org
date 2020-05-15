@@ -12,7 +12,7 @@ Add name and E-mail.
 #+end_src
 
 * General settings
-** System
+** System type
 Macro for setting different settings for OSX / Linux.
 [[https://gist.github.com/beyeran/4118401][Thanks to beyeran]].
 
@@ -30,6 +30,13 @@ Macro for setting different settings for OSX / Linux.
            (t nil)))
 #+end_src
 
+** Initial settings
+Configure load-path to include =~/.emacs.d/elisp/=.
+
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (concat user-emacs-directory "elisp/"))
+#+end_src
+
 ** Coding system
 Set coding system before doing anything.
 This is taken from [[https://www.masteringemacs.org/article/working-coding-systems-unicode-emacs][MasteringEmacs]] website.
@@ -39,13 +46,6 @@ This is taken from [[https://www.masteringemacs.org/article/working-coding-syste
   (set-default-coding-systems 'utf-8-unix)
   (set-terminal-coding-system 'utf-8-unix)
   (set-keyboard-coding-system 'utf-8-unix)
-#+end_src
-
-** Initial settings
-Configure load-path to include =~/.emacs.d/elisp/=.
-
-#+begin_src emacs-lisp
-  (add-to-list 'load-path (concat user-emacs-directory "elisp/"))
 #+end_src
 
 ** Backup
@@ -58,72 +58,6 @@ Change backup location to common dir, =~/.emacs.saves= in emacs directory.
         `((".*" ,(concat user-emacs-directory "emacs.saves/") t)))
  #+end_src
 
-** Keybindings
-All overrides are [[https://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][placed in a minor mode]].
-This way it's easy to completely disable all overrides if default behaviour is needed.
-Other custom keybindings are placed behind a prefix map, making it easy to maintain and discover using whick-key.
-
-Adding keybindings to map can be done the following ways:
-
-: (bind-key "m w" #'function-name my-map)
-
-or
-
-: (bind-keys
-:  :map my-map
-:  ("f" . function-name))
-
-or
-
-: (use-package example-package
-:   :bind (:map map-name
-:         ("f" . function-name)))
-
-*** My key overrides minor mode
-
-#+begin_src emacs-lisp
-  (defvar my-overrides-minor-mode-map
-    (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "M-o") 'other-window)
-      (define-key map (kbd "RET") 'newline-and-indent)
-      map)
-    "my-overrides-minor-mode keymap.")
-
-  (define-minor-mode my-overrides-minor-mode
-    "A minor mode so that my key settings override major modes."
-    :init-value t
-    :lighter " my-overrides")
-
-  ;; Enable minor mode, maybe it should
-  (my-overrides-minor-mode 1)
-
-  ;; Disable overrides minor mode in minibuffer
-  (defun my-overrides-minibuffer-setup-hook ()
-    (my-overrides-minor-mode 0))
-
-  (add-hook 'minibuffer-setup-hook 'my-overrides-minibuffer-setup-hook)
-#+end_src
-
-*** My keymap
-
-#+begin_src emacs-lisp
-  (global-unset-key (kbd "C-c C-SPC"))
-  (define-prefix-command 'my-map)
-
-  (use-package bind-key
-    :bind (:prefix-map my-map
-           :prefix-docstring "My own keyboard map"
-           :prefix "C-c C-SPC")
-    :after org)
-#+end_src
-
-** Turn off audible bell
-Turn off audible and visible bell.
-
-#+begin_src emacs-lisp
-  (setq ring-bell-function 'ignore)
-#+end_src
-
 ** [[https://github.com/purcell/exec-path-from-shell][Exec path from shell]]
 Use exec-path-from-shell on unix computers.
 
@@ -132,79 +66,6 @@ Use exec-path-from-shell on unix computers.
     :when sys-unix-p
     :init
     (exec-path-from-shell-initialize))
-#+end_src
-
-** [[https://github.com/storvik/emacs-lastpass][Lastpass]]
-Package used to communicate with LastPass.
-Depends on =lpass= command line utility.
-
-#+begin_src emacs-lisp
-  (use-package lastpass
-    :when (executable-find "lpass")
-    :config
-    (setq lastpass-user "petterstorvik@gmail.com")
-    (lastpass-auth-source-enable))
-#+end_src
-
-** [[http://emacswiki.org/emacs/key-chord.el][Key Chord]]
-Key chord, run command when two keys are pressed simultanously.
-
-#+begin_src emacs-lisp
-  (use-package key-chord
-    :init
-    (setq key-chord-two-keys-delay .015
-          key-chord-one-key-delay .020)
-    (key-chord-mode 1)
-    (key-chord-define-global ",u" 'undo)
-    (key-chord-define-global ",r" 'redo)
-    (key-chord-define-global ",o" 'other-window)
-    (key-chord-define-global ",0" 'delete-window)
-    (key-chord-define-global ",1" 'delete-other-windows)
-    (key-chord-define-global ",2" 'split-window-below)
-    (key-chord-define-global ",3" 'split-window-right)
-    (key-chord-define-global "xf" 'counsel-find-file)
-    (key-chord-define-global "mx" 'counsel-M-x))
-#+end_src
-
-use-package key chord extension:
-
-#+begin_src emacs-lisp
-  (use-package use-package-chords
-    :config (key-chord-mode 1))
-#+end_src
-
-** [[https://github.com/magnars/multiple-cursors.el][Multiple cursors]]
-Multiple cursors is an awesome package thats makes editing multiple entries with similar structure a breeze.
-This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multiple-cursors][hydra wiki]].
-
-#+begin_src emacs-lisp
-  (use-package multiple-cursors
-    :bind (:map my-map ("c" . hydra-multiple-cursors/body))
-    :config
-    (defhydra hydra-multiple-cursors (:hint nil)
-      "
-   Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
-  ------------------------------------------------------------------
-   [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
-   [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
-   [_M-p_] Unmark   [_M-n_] Unmark   [_s_] Search
-   [Click] Cursor at point       [_q_] Quit"
-      ("l" mc/edit-lines :exit t)
-      ("a" mc/mark-all-like-this :exit t)
-      ("n" mc/mark-next-like-this)
-      ("N" mc/skip-to-next-like-this)
-      ("M-n" mc/unmark-next-like-this)
-      ("p" mc/mark-previous-like-this)
-      ("P" mc/skip-to-previous-like-this)
-      ("M-p" mc/unmark-previous-like-this)
-      ("s" mc/mark-all-in-region-regexp :exit t)
-      ("0" mc/insert-numbers :exit t)
-      ("A" mc/insert-letters :exit t)
-      ("<mouse-1>" mc/add-cursor-on-click)
-      ;; Help with click recognition in this hydra
-      ("<down-mouse-1>" ignore)
-      ("<drag-mouse-1>" ignore)
-      ("q" nil)))
 #+end_src
 
 ** Newline
@@ -221,16 +82,6 @@ Number of items to be saved in recent file list.
   (setq recentf-max-saved-items 2048)
 #+end_src
 
-** [[https://github.com/aspiers/smooth-scrolling][Smooth scrolling]]
-Smoother scrolling, with a margin of 5.
-
-#+begin_src emacs-lisp
-  (use-package smooth-scrolling
-    :config
-    (smooth-scrolling-mode 1)
-    (setq smooth-scroll-margin 5))
-#+end_src
-
 ** Tramp settings
 Make tramp auto-save in another local directory.
 
@@ -245,59 +96,6 @@ Delete trailing whitespaces on save.
 
 #+begin_src emacs-lisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-#+end_src
-
-** [[https://github.com/fourier/ztree][Ztree]]
-Visualize dir trees and run Ediff on folders.
-Useful when upgrading between frameworks and such.
-
-#+begin_src emacs-lisp
-  (use-package ztree
-    :config
-    (setq ediff-window-setup-function 'ediff-setup-windows-plain))
-#+end_src
-
-** [[https://github.com/parkouss/speed-type][Speed type]]
-How do I train them fingers?
-
-#+begin_src emacs-lisp
-  (use-package speed-type)
-#+end_src
-
-* Platform dependant
-Load config file dependant on current platform.
-
-** Windows
-*** Use git bash on windows
-Use git bash on windows if git bash is found, also change path to [[https://emacs.stackexchange.com/questions/29942/projectile-indexing-wont-work-on-windows][ensure that unix tools are preferred]].
-
-#+begin_src emacs-lisp
-  (let ((git-bash-executable "C:/Program Files/Git/usr/bin/bash.exe"))
-    (when (and (eq system-type 'windows-nt)
-               (file-exists-p git-bash-executable))
-      (setq explicit-shell-file-name git-bash-executable)
-      (setq explicit-sh-args '("-login" "-i"))
-
-      ;; Make sure Unix tools are in front of `exec-path'
-      (let ((bash (executable-find "bash")))
-        (when bash
-          (push (file-name-directory bash) exec-path)))
-
-      ;; Update PATH from exec-path
-      (let ((path (mapcar 'file-truename
-                          (append exec-path
-                                  (split-string (getenv "PATH") path-separator t)))))
-        (setenv "PATH" (mapconcat 'identity (delete-dups path) path-separator)))))
-#+end_src
-
-** Darwin
-*** Ctrl and cmd
-Use Ctrl key as control modifier and Cmd as meta modifier.
-
-#+begin_src emacs-lisp
-  (when (eq system-type 'darwin)
-    (setq mac-command-modifier 'meta)
-    (setq mac-control-modifier 'control))
 #+end_src
 
 * Appearance settings
@@ -353,6 +151,14 @@ To have icons one must run =M-x all-the-icons-install-fonts=.
     :hook (after-init . doom-modeline-mode))
 #+end_src
 
+** [[https://github.com/iqbalansari/emacs-emojify][Emojify]]
+Display emojis in Emacs!
+
+#+begin_src emacs-lisp
+  (use-package emojify
+    :hook (after-init . global-emojify-mode))
+#+end_src
+
 ** [[https://github.com/Fanael/rainbow-delimiters][Rainbow delimiters]]
 Added to `prog-mode-hook`.
 
@@ -369,12 +175,29 @@ Show paren mode highlights the mathing pair of parentheses.
   (show-paren-mode 1)
 #+end_src
 
+** [[https://github.com/aspiers/smooth-scrolling][Smooth scrolling]]
+Smoother scrolling, with a margin of 5.
+
+#+begin_src emacs-lisp
+  (use-package smooth-scrolling
+    :config
+    (smooth-scrolling-mode 1)
+    (setq smooth-scroll-margin 5))
+#+end_src
+
 ** Tab width
 Use tabs, set default tab width to 4.
 
 #+begin_src emacs-lisp
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
+#+end_src
+
+** Turn off audible bell
+Turn off audible and visible bell.
+
+#+begin_src emacs-lisp
+  (setq ring-bell-function 'ignore)
 #+end_src
 
 ** Tool bar modifications
@@ -400,12 +223,213 @@ Helps differentiating between buffers with similar / same name.
   (require 'uniquify)
 #+end_src
 
-** [[https://github.com/iqbalansari/emacs-emojify][Emojify]]
-Display emojis in Emacs!
+* General settings
+* Keybindings
+All overrides (key bindings that overrides existing ones) are [[https://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][placed in a minor mode]], =storvik/overrides-minor-mode=.
+This way it's easy to completely disable all overrides if default behaviour is needed.
+Other custom keybindings are placed behind a prefix map, =storvik/prefix-map=, making it easy to maintain and discover using whick-key.
+Inspired by [[https://karl-voit.at/2018/07/08/emacs-key-bindings/][this post]].
+
+*Adding keybindings to map can be done the following ways:*
+
+: (bind-key "m w" #'function-name map-name)
+
+or
+
+: (bind-keys
+:  :map map-name
+:  ("f" . function-name))
+
+or
+
+: (use-package example-package
+:   :bind (:map map-name
+:         ("f" . function-name)))
+
+** storvik/overrides-minor-mode
 
 #+begin_src emacs-lisp
-  (use-package emojify
-    :hook (after-init . global-emojify-mode))
+  (defvar storvik/overrides-minor-mode-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "M-o") 'other-window)
+      (define-key map (kbd "RET") 'newline-and-indent)
+      map)
+    "storvik/overrides-minor-mode keymap.")
+
+  (define-minor-mode storvik/overrides-minor-mode
+    "A minor mode so that my key settings override major modes."
+    :init-value t
+    :lighter " storvik-key-overrides")
+
+  ;; Enable minor mode, maybe it should
+  (storvik/overrides-minor-mode 1)
+
+  ;; Disable overrides minor mode in minibuffer
+  (defun storvik/overrides-minibuffer-setup-hook ()
+    (storvik/overrides-minor-mode 0))
+
+  (add-hook 'minibuffer-setup-hook 'storvik/overrides-minibuffer-setup-hook)
+#+end_src
+
+** storvik/prefix-map
+
+#+begin_src emacs-lisp
+  (global-unset-key (kbd "C-c C-SPC"))
+  (define-prefix-command 'storvik/prefix-map)
+
+  (use-package bind-key
+    :bind (:prefix-map storvik/prefix-map
+           :prefix-docstring "Storviks keyboard map"
+           :prefix "C-c C-SPC")
+    :after org)
+#+end_src
+
+** [[https://github.com/Kungsgeten/ryo-modal][Ryo modal]]
+RYO modal is a way to define your own modal editing.
+I considered [[https://github.com/emacsorphanage/god-mode][god-mode]] but wanting to customize further i decided RYO was the best fit.
+
+#+begin_src emacs-lisp
+  (use-package ryo-modal
+    :commands ryo-modal-mode
+    :bind ("S-SPC" . ryo-modal-mode)
+
+    :config
+    (ryo-modal-keys
+     ("i" ryo-modal-repeat)
+     ("n" next-line)
+     ("p" previous-line)
+     ("l" recenter-top-bottom)
+     ("f" forward-word)
+     ("b" backward-word)
+     ("e" move-end-of-line)
+     ("a" back-to-indentation)
+     ("y" yank)
+     ("m"
+      (("f" forward-char :name "Forward char")
+       ("b" backward-char :name "Backward char")))
+     ("w"
+      (("W" kill-ring-save :name "Copy selection")))
+     ("k"
+      (("k" kill-line :name "Kill line"))))
+
+    (ryo-modal-keys
+     ;; First argyment to ryo-modal-keys may be a list of keywords.
+     ;; These keywords will be applied to all keybindings.
+     (:norepeat t)
+     ("0" "M-0")
+     ("1" "M-1")
+     ("2" "M-2")
+     ("3" "M-3")
+     ("4" "M-4")
+     ("5" "M-5")
+     ("6" "M-6")
+     ("7" "M-7")
+     ("8" "M-8")
+     ("9" "M-9")))
+#+end_src
+
+** [[https://github.com/justbur/emacs-which-key][Which key mode]]
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :no-require t                         ; eval after load
+    :config
+    ;; Remove ryo:<hash>: prefix
+    (which-key-mode)
+    (push '((nil . "ryo:.*:") . (nil . "")) which-key-replacement-alist))
+#+end_src
+
+** [[http://emacswiki.org/emacs/key-chord.el][Key Chord]]
+Key chord, run command when two keys are pressed simultanously.
+
+#+begin_src emacs-lisp
+  (use-package key-chord
+    :init
+    (setq key-chord-two-keys-delay .015
+          key-chord-one-key-delay .020)
+    (key-chord-mode 1)
+    (key-chord-define-global ",u" 'undo)
+    (key-chord-define-global ",r" 'redo)
+    (key-chord-define-global ",o" 'other-window)
+    (key-chord-define-global ",0" 'delete-window)
+    (key-chord-define-global ",1" 'delete-other-windows)
+    (key-chord-define-global ",2" 'split-window-below)
+    (key-chord-define-global ",3" 'split-window-right)
+    (key-chord-define-global "xf" 'counsel-find-file)
+    (key-chord-define-global "mx" 'counsel-M-x))
+#+end_src
+
+use-package key chord extension:
+
+#+begin_src emacs-lisp
+  (use-package use-package-chords
+    :config (key-chord-mode 1))
+#+end_src
+
+* Misc
+** [[https://github.com/storvik/emacs-lastpass][Lastpass]]
+Package used to communicate with LastPass.
+Depends on =lpass= command line utility.
+
+#+begin_src emacs-lisp
+  (use-package lastpass
+    :when (executable-find "lpass")
+    :config
+    (setq lastpass-user "petterstorvik@gmail.com")
+    (lastpass-auth-source-enable))
+#+end_src
+
+** [[https://github.com/parkouss/speed-type][Speed type]]
+How do I train them fingers?
+
+#+begin_src emacs-lisp
+  (use-package speed-type)
+#+end_src
+
+** [[https://github.com/fourier/ztree][Ztree]]
+Visualize dir trees and run Ediff on folders.
+Useful when upgrading between frameworks and such.
+
+#+begin_src emacs-lisp
+  (use-package ztree
+    :config
+    (setq ediff-window-setup-function 'ediff-setup-windows-plain))
+#+end_src
+
+* Platform dependant
+Load config file dependant on current platform.
+
+** Windows
+*** Use git bash on windows
+Use git bash on windows if git bash is found, also change path to [[https://emacs.stackexchange.com/questions/29942/projectile-indexing-wont-work-on-windows][ensure that unix tools are preferred]].
+
+#+begin_src emacs-lisp
+  (let ((git-bash-executable "C:/Program Files/Git/usr/bin/bash.exe"))
+    (when (and (eq system-type 'windows-nt)
+               (file-exists-p git-bash-executable))
+      (setq explicit-shell-file-name git-bash-executable)
+      (setq explicit-sh-args '("-login" "-i"))
+
+      ;; Make sure Unix tools are in front of `exec-path'
+      (let ((bash (executable-find "bash")))
+        (when bash
+          (push (file-name-directory bash) exec-path)))
+
+      ;; Update PATH from exec-path
+      (let ((path (mapcar 'file-truename
+                          (append exec-path
+                                  (split-string (getenv "PATH") path-separator t)))))
+        (setenv "PATH" (mapconcat 'identity (delete-dups path) path-separator)))))
+#+end_src
+
+** Darwin
+*** Ctrl and cmd
+Use Ctrl key as control modifier and Cmd as meta modifier.
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'darwin)
+    (setq mac-command-modifier 'meta)
+    (setq mac-control-modifier 'control))
 #+end_src
 
 * Terminal specific
@@ -429,19 +453,6 @@ Ivy replaces the heavier Helm package, try it and be amazed!
 
   (use-package swiper
     :diminish ivy-mode
-    :config
-    (ivy-mode 1)
-    (setq ivy-height 10)
-    (setq ivy-count-format "")
-    (setq ivy-extra-directories nil)     ;; Do not show "./" and "../"
-    (setq ivy-virtual-abbreviate 'full)  ;; Show full file path
-    (setq ivy-use-virtual-buffers t)     ;; Show recently killed buffers
-    (setq ivy-use-ignore-default 'always)
-    (setq ivy-ignore-buffers '("smex-autoloads.el"
-                               "emacs.d/custom.el"))
-    (setq ivy-initial-inputs-alist ())
-    (setq ivy-re-builders-alist
-          '((t	 . ivy--regex-ignore-order)))
     :bind (("C-s" . swiper)
            ("M-x" . counsel-M-x)
            ("C-x C-f" . counsel-find-file)
@@ -451,7 +462,20 @@ Ivy replaces the heavier Helm package, try it and be amazed!
            ("C-c g" . counsel-git)
            ("C-c j" . counsel-git-grep)
            ("C-c k" . counsel-ag)
-           ("C-x l" . counsel-locate)))
+           ("C-x l" . counsel-locate))
+    :config
+    (ivy-mode 1)
+    (setq ivy-height 10)
+    (setq ivy-count-format "")
+    (setq ivy-extra-directories nil)    ;; Do not show "./" and "../"
+    (setq ivy-virtual-abbreviate 'full) ;; Show full file path
+    (setq ivy-use-virtual-buffers t)    ;; Show recently killed buffers
+    (setq ivy-use-ignore-default 'always)
+    (setq ivy-ignore-buffers '("smex-autoloads.el"
+                               "emacs.d/custom.el"))
+    (setq ivy-initial-inputs-alist ())
+    (setq ivy-re-builders-alist
+          '((t	 . ivy--regex-ignore-order))))
 
   (use-package ivy-hydra)
 #+end_src
@@ -461,13 +485,13 @@ To enhance the M-x experience, smex must be installed.
   (use-package smex)
 #+end_src
 
-* Navigation
+* Navigation and editing
 ** [[https://github.com/abo-abo/ace-window][Ace-window]]
 Easier window movement, bind it to default other-window =C-x o=.
 
 #+begin_src emacs-lisp
   (use-package ace-window
-    :bind (:map my-overrides-minor-mode-map ("C-x o" . ace-window))
+    :bind (:map storvik/overrides-minor-mode-map ("C-x o" . ace-window))
     :init
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
@@ -477,8 +501,15 @@ Tool for jumping to a given char on the screen.
 
 #+begin_src emacs-lisp
   (use-package avy
-    :bind (:map my-map (";" . hydra-avy/body)
-           :map my-overrides-minor-mode-map ("M-g g" . avy-goto-line))
+    :bind (:map storvik/prefix-map (";" . hydra-avy/body)
+                :map storvik/overrides-minor-mode-map ("M-g g" . avy-goto-line))
+    :ryo
+    ("SPC"
+     ((";" hydra-avy/body :name "Avy hydra")))
+    ("g"
+     (("c" avy-goto-char :name "Goto char")
+      ("w" avy-goto-word-1 :name "Goto word")
+      ("g" avy-goto-line :name "Goto line")))
     :config
     (defhydra hydra-avy (:exit t :hint nil)
       "
@@ -506,7 +537,23 @@ This package expands region by semantic units.
 
 #+begin_src emacs-lisp
   (use-package expand-region
-    :bind (:map my-map ("e" . hydra-expand-region/body))
+    :bind (:map storvik/prefix-map ("e" . hydra-expand-region/body))
+    :ryo
+    ("SPC"
+     (("e" hydra-expand-region/body :name "Expand region hydra")))
+    ("k"
+     (("w" er/mark-word :name "Kill word")
+      ("d" er/mark-defun :name "Kill defun")
+      ("s" er/mark-sentence :name "Kill sentence")
+      ("p" er/mark-inside-pairs :name "Kill inside pairs"))
+     :name "kill" :then '(kill-region))
+    ("w"
+     (("w" er/mark-word :name "Copy word")
+      ("d" er/mark-defun :name "Copy defun")
+      ("s" er/mark-sentence :name "Copy sentence")
+      ("p" er/mark-inside-pairs :name "Copy inside pairs"))
+     :name "copy" :then '(kill-ring-save
+                          deactivate-mark))
     :config
     (defhydra hydra-expand-region (:columns 2 :body-pre (er/expand-region 1))
       "Expand region"
@@ -520,7 +567,7 @@ Install [[https://github.com/ggreer/the_silver_searcher][thesilversearcher-ag]] 
 
 #+begin_src emacs-lisp
   (use-package dumb-jump
-    :bind (:map my-map ("d" . hydra-dumb-jump/body))
+    :bind (:map storvik/prefix-map ("d" . hydra-dumb-jump/body))
     :config
     (setq dumb-jump-selector 'ivy)
     (defhydra hydra-dumb-jump (:hint nil)
@@ -558,7 +605,10 @@ Moves region if marked.
 
 #+begin_src emacs-lisp
   (use-package move-text
-    :bind (:map my-map ("m" . hydra-move-text/body))
+    :bind (:map storvik/prefix-map ("m" . hydra-move-text/body))
+    :ryo
+    ("SPC"
+     (("m" hydra-move-text/body :name "Move text hydra")))
     :config
     (defhydra hydra-move-text (:hint nil)
       "Move line or region"
@@ -596,47 +646,8 @@ This is an awesome function from Endless.
            (LaTeX-narrow-to-environment))
           (t (narrow-to-defun))))
 
-  (bind-key "n" #'narrow-or-widen-dwim my-map)
-#+end_src
-
-** [[https://github.com/Kungsgeten/ryo-modal][Ryo modal]]
-RYO modal is a way to define your own modal editing.
-
-#+begin_src emacs-lisp
-  (use-package ryo-modal
-    :commands ryo-modal-mode
-    :bind (:map my-map ("SPC" . ryo-modal-mode))
-
-    :config
-    (ryo-modal-keys
-     ("," ryo-modal-repeat)
-     ("q" ryo-modal-mode)
-     ("n" next-line)
-     ("p" previous-line)
-     ("l" forward-char)
-     ("h" backward-char)
-     ("f" forward-word)
-     ("b" backward-word)
-     ("m" hydra-move-text/body)
-     ("e" move-end-of-line)
-     ("a" back-to-indentation)
-     ("k" kill-line)
-     ("y" yank))
-
-    (ryo-modal-keys
-     ;; First argyment to ryo-modal-keys may be a list of keywords.
-     ;; These keywords will be applied to all keybindings.
-     (:norepeat t)
-     ("0" "M-0")
-     ("1" "M-1")
-     ("2" "M-2")
-     ("3" "M-3")
-     ("4" "M-4")
-     ("5" "M-5")
-     ("6" "M-6")
-     ("7" "M-7")
-     ("8" "M-8")
-     ("9" "M-9")))
+  (bind-key "n" #'narrow-or-widen-dwim storvik/prefix-map)
+  (ryo-modal-keys ("SPC" (("n" narrow-or-widen-dwim :name "Narrow DWIM"))))
 #+end_src
 
 ** [[https://github.com/Alexander-Miller/treemacs][Treemacs]]
@@ -675,12 +686,41 @@ Treemacs is useful for navigating projects.
     :after treemacs magit)
 #+end_src
 
-** [[https://github.com/justbur/emacs-which-key][Which key mode]]
+** [[https://github.com/magnars/multiple-cursors.el][Multiple cursors]]
+Multiple cursors is an awesome package thats makes editing multiple entries with similar structure a breeze.
+This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multiple-cursors][hydra wiki]].
 
 #+begin_src emacs-lisp
-  (use-package which-key
+  (use-package multiple-cursors
+    :bind (:map storvik/prefix-map ("c" . hydra-multiple-cursors/body))
+    :ryo
+    ("SPC"
+     (("c" hydra-multiple-cursors/body)))
     :config
-    (which-key-mode))
+    (defhydra hydra-multiple-cursors (:hint nil)
+      "
+   Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
+  ------------------------------------------------------------------
+   [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
+   [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
+   [_M-p_] Unmark   [_M-n_] Unmark   [_s_] Search
+   [Click] Cursor at point       [_q_] Quit"
+      ("l" mc/edit-lines :exit t)
+      ("a" mc/mark-all-like-this :exit t)
+      ("n" mc/mark-next-like-this)
+      ("N" mc/skip-to-next-like-this)
+      ("M-n" mc/unmark-next-like-this)
+      ("p" mc/mark-previous-like-this)
+      ("P" mc/skip-to-previous-like-this)
+      ("M-p" mc/unmark-previous-like-this)
+      ("s" mc/mark-all-in-region-regexp :exit t)
+      ("0" mc/insert-numbers :exit t)
+      ("A" mc/insert-letters :exit t)
+      ("<mouse-1>" mc/add-cursor-on-click)
+      ;; Help with click recognition in this hydra
+      ("<down-mouse-1>" ignore)
+      ("<drag-mouse-1>" ignore)
+      ("q" nil)))
 #+end_src
 
 * Language
@@ -696,16 +736,14 @@ Brilliant interface to git.
 #+begin_src emacs-lisp
   (use-package magit
     :when (executable-find "git")
-    :bind (:map my-map ("g" . magit-status))
+    :bind (:map storvik/prefix-map
+           ("g" . magit-status)
+           :map magit-status-mode-map
+           ("TAB" . magit-section-toggle)
+           ("<C-tab>" . magit-section-cycle))
     :config
     (setq magit-completing-read-function 'ivy-completing-read)
-    (setq magit-git-executable "git")
-    (bind-key "v" 'visit-pull-request-url magit-mode-map)
-    (bind-keys :map magit-status-mode-map
-               ("TAB" . magit-section-toggle)
-               ("<C-tab>" . magit-section-cycle))
-    (bind-keys :map magit-branch-section-map
-                 ("RET" . magit-checkout)))
+    (setq magit-git-executable "git"))
 #+end_src
 
 * [[https://github.com/bbatsov/projectile][Projectile]]
@@ -714,8 +752,11 @@ Git folders are identified as projects, other projects have to have an empty =.p
 
 #+begin_src emacs-lisp
   (use-package projectile
-    :diminish projectile-mode
     :bind-keymap ("C-c p" . projectile-command-map)
+    :ryo
+    (:mode 'projectile-mode)
+    ("c"
+     (("p" "C-c p" :name "projectile prefix")))
     :commands (projectile-project-p)
     :config
     (setq projectile-completion-system 'ivy
@@ -724,7 +765,7 @@ Git folders are identified as projects, other projects have to have an empty =.p
                                                             ".git"
                                                             ".gomod"
                                                             ".ccls-cache")))
-    (projectile-mode))
+    (projectile-mode +1))
 #+end_src
 
 * Programming
@@ -772,21 +813,22 @@ Some performance enhancing settings, see lsp-mode README.md for details.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
+    :bind-keymap ("C-c l" . lsp-command-map)
+    :ryo
+    (:mode 'lsp-mode)
+    ("c"
+     (("l" "C-c l" :name "lsp prefix")))
     :init
     (setq lsp-keymap-prefix "C-c l"
-          lsp-prefer-capf t ;; for performance, see lsp-mode readme
+          lsp-prefer-capf t     ;; for performance, see lsp-mode readme
           lsp-prefer-flymake nil
           lsp-auto-execute-action nil
           lsp-enable-indentation nil))
 
-  ;; dont use lsp ui as its kinda annoying
   (use-package lsp-ui
     :commands lsp-ui-mode
     :init
     (setq lsp-ui-doc-position 'top))
-
-  ;;(use-package company-lsp
-  ;;  :commands company-lsp)
 
   (use-package lsp-ivy
     :commands lsp-ivy-workspace-symbol)
@@ -1448,7 +1490,7 @@ Reindents the entire buffer. Use =C-c /=.
             (tabify (point-min) (point-max)))
         (untabify (point-min) (point-max)))))
 
-  (bind-key "/" #'indent-buffer my-map)
+  (bind-key "/" #'indent-buffer storvik/prefix-map)
 #+end_src
 
 ** Rename current file
