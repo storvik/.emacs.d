@@ -749,9 +749,11 @@ Brilliant interface to git.
 * [[https://github.com/bbatsov/projectile][Projectile]]
 Projectile simplifies navigation and structuring on large projects.
 Git folders are identified as projects, other projects have to have an empty =.projectile=-file to be categorized as project.
+=:demant t= overrides defered loading in order to make =projectile-mode= enabled before projectile commands are called for the first time.
 
 #+begin_src emacs-lisp
   (use-package projectile
+    :demand t
     :bind-keymap ("C-c p" . projectile-command-map)
     :ryo
     (:mode 'projectile-mode)
