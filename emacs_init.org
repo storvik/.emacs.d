@@ -265,10 +265,11 @@ or
   (storvik/overrides-minor-mode 1)
 
   ;; Disable overrides minor mode in minibuffer
-  (defun storvik/overrides-minibuffer-setup-hook ()
+  (defun storvik/overrides-minor-mode-disable-hook ()
     (storvik/overrides-minor-mode 0))
 
-  (add-hook 'minibuffer-setup-hook 'storvik/overrides-minibuffer-setup-hook)
+  (add-hook 'minibuffer-setup-hook 'storvik/overrides-minor-mode-disable-hook)
+  (add-hook 'eshell-mode-hook 'storvik/overrides-minor-mode-disable-hook)
 #+end_src
 
 ** storvik/prefix-map
@@ -788,7 +789,7 @@ Company mode autocomplete.
           company-dabbrev-downcase        nil)
     (setq company-backends (delete 'company-clang company-backends))
     :bind
-    ("C-;" . company-complete-common))
+    :bind (:map storvik/overrides-minor-mode-map ("C-;" . company-complete-common)))
 #+end_src
 
 ** [[https://github.com/flycheck/flycheck][Flycheck]]
