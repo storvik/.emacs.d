@@ -370,6 +370,15 @@ use-package key chord extension:
 #+end_src
 
 * Misc
+** [[https://github.com/akermu/emacs-libvterm][vterm]]
+vterm is to be considered as unstable atm.
+Linux only.
+
+#+begin_src emacs-lisp
+  (use-package vterm
+      :when (sys-type-p 'gnu/linux))
+#+end_src
+
 ** [[https://github.com/storvik/emacs-lastpass][Lastpass]]
 Package used to communicate with LastPass.
 Depends on =lpass= command line utility.
