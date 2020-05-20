@@ -115,6 +115,9 @@ Highlight current line.
 #+begin_src emacs-lisp
   (when window-system
     (global-hl-line-mode))
+
+  (add-hook 'eshell-mode-hook (lambda ()
+                                (setq-local global-hl-line-mode nil)))
 #+end_src
 
 ** Startup messages
@@ -223,7 +226,6 @@ Helps differentiating between buffers with similar / same name.
   (require 'uniquify)
 #+end_src
 
-* General settings
 * Keybindings
 All overrides (key bindings that overrides existing ones) are [[https://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][placed in a minor mode]], =storvik/overrides-minor-mode=.
 This way it's easy to completely disable all overrides if default behaviour is needed.
@@ -736,6 +738,7 @@ Brilliant interface to git.
 
 #+begin_src emacs-lisp
   (use-package magit
+    :demand t
     :when (executable-find "git")
     :bind (:map storvik/prefix-map
            ("g" . magit-status)
@@ -771,6 +774,52 @@ Git folders are identified as projects, other projects have to have an empty =.p
     (projectile-mode +1))
 #+end_src
 
+* Eshell
+SSH with =cd /ssh:remote-server:=.
+
+** Alias
+
+#+begin_src emacs-lisp
+  (defun eshell/ll (&rest args)
+    "Alias ll -> ls -l"
+    (apply #'eshell/ls (cons '-l args)))
+#+end_src
+
+** Prompt
+Custom prompt inspired by [[http://www.modernemacs.com/post/custom-eshell/][this post]].
+
+#+begin_src emacs-lisp
+    (defun storvik/eshell-fishy-path (path)
+      "Takes eshell path and makes it fishy."
+      (let ((pathlist (split-string path "/")))
+        (concat (string-join (mapcar (lambda (el)
+                                       (unless (= (length el) 0)
+                                         (substring el 0 1)))
+                                     (butlast pathlist 1))
+                             "/")
+                "/"
+                (car (last pathlist)))))
+
+    (defun storvik/eshell-prompt-function ()
+      "Custom eshell prompt function."
+      (concat
+       (propertize user-login-name 'face font-lock-function-name-face)
+       "@"
+       (propertize system-name 'face font-lock-keyword-face)
+       (propertize (concat "  "
+                           (storvik/eshell-fishy-path (eshell/pwd)))
+                   'face font-lock-string-face)
+       (when (magit-get-current-branch)
+         (propertize (concat " ( "
+                             (magit-get-current-branch)
+                             ")")
+                     'face font-lock-comment-face))
+       "> "))
+
+    (setq eshell-prompt-function 'storvik/eshell-prompt-function)
+    (setq eshell-prompt-regexp "[a-zA-Z]+@[a-zA-Z0-9-_]+\\ \\ [a-zA-Z0-9-_/~]+\\( \( [a-zA-Z0-9-_@/.]+\)\\)*>\\ ")
+#+end_src
+
 * Programming
 ** [[http://company-mode.github.io/][Autocomplete]]
 Company mode autocomplete.
@@ -778,6 +827,7 @@ Company mode autocomplete.
 #+begin_src emacs-lisp
   (use-package company
     :defer t
+    :bind (:map storvik/overrides-minor-mode-map ("C-;" . company-complete-common))
     :diminish company-mode
     :init
     (global-company-mode t)
@@ -787,9 +837,15 @@ Company mode autocomplete.
           company-show-numbers            t
           company-tooltip-limit           20
           company-dabbrev-downcase        nil)
-    (setq company-backends (delete 'company-clang company-backends))
-    :bind
-    :bind (:map storvik/overrides-minor-mode-map ("C-;" . company-complete-common)))
+    (setq company-global-modes '(not eshell-mode shell-mode))
+    (setq company-backends (delete 'company-clang company-backends)))
+
+  ;; Disable company if remote session
+  ;; Should be added to relevant hooks
+  (defun storvik/company-disable-if-remote ()
+    (when (and (fboundp 'company-mode)
+               (file-remote-p default-directory))
+      (company-mode -1)))
 #+end_src
 
 ** [[https://github.com/flycheck/flycheck][Flycheck]]
