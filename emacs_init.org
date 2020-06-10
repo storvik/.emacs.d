@@ -1,6 +1,7 @@
 #+TITLE: Storviks Emacs Configurations
 #+AUTHOR: Petter S. Storvik
 #+EMAIL: petterstorvik@gmail.com
+#+STARTUP: overview
 #+PROPERTY: header-args    :results silent
 
 * Personal information
@@ -89,6 +90,28 @@ Make tramp auto-save in another local directory.
   (require 'tramp)
   (setq tramp-default-method "scp")
   (setq tramp-auto-save-directory (concat user-emacs-directory "tramp.autosave/"))
+
+  (defun storvik/tramp-parse-sconfigs (path)
+    (mapcan 'tramp-parse-sconfig
+            (directory-files path t "[^\.].+$")))
+
+  (map-put tramp-completion-function-alist-ssh
+           'storvik/tramp-parse-sconfigs "~/.ssh/config.d")
+
+  (mapc (lambda (method)
+          (tramp-set-completion-function method
+           '((tramp-parse-sconfig "/etc/ssh_config")
+             (tramp-parse-sconfig "~/.ssh/config")
+             (tramp-parse-shosts "~/.ssh/known_hosts")
+             (tramp-parse-rhosts "~/.rhosts")
+             (tramp-parse-rhosts "~/.shosts")
+             (tramp-parse-rhosts "/etc/hosts.equiv")
+             (tramp-parse-rhosts "/etc/shosts.equiv")
+             (tramp-parse-shosts "/etc/ssh_known_hosts")
+             (tramp-parse-sconfig "/etc/ssh_config")
+             (storvik/tramp-parse-sconfigs "~/.ssh/config.d"))))
+        '("scp" "scpc" "ssh"))
+
 #+end_src
 
 ** Whitespace
@@ -272,6 +295,7 @@ or
 
   (add-hook 'minibuffer-setup-hook 'storvik/overrides-minor-mode-disable-hook)
   (add-hook 'eshell-mode-hook 'storvik/overrides-minor-mode-disable-hook)
+  (add-hook 'mu4e-headers-mode-hook 'storvik/overrides-minor-mode-disable-hook)
 #+end_src
 
 ** storvik/prefix-map
@@ -792,6 +816,10 @@ SSH with =cd /ssh:remote-server:=.
   (defun eshell/ll (&rest args)
     "Alias ll -> ls -l"
     (apply #'eshell/ls (cons '-l args)))
+
+  (defun eshell/clc ()
+    "Clear the eshell buffer."
+    (eshell/clear-scrollback))
 #+end_src
 
 ** Prompt
