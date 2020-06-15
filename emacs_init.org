@@ -1478,6 +1478,13 @@ Install org mode package
   (setq org-clock-in-switch-to-state "STARTED")
 #+end_src
 
+** [[https://github.com/sabof/org-bullets][Bullets]]
+
+#+begin_src emacs-lisp
+  (use-package org-bullets
+    :hook (org-mode . org-bullets-mode))
+#+end_src
+
 ** Capture
 Templates for capturing stuff. Same as the todo states defined above.
 - A phone call (p)
