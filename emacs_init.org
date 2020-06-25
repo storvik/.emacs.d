@@ -318,6 +318,33 @@ or
     :after org)
 #+end_src
 
+** [[http://emacswiki.org/emacs/key-chord.el][Key Chord]]
+Key chord, run command when two keys are pressed simultanously.
+
+#+begin_src emacs-lisp
+  (use-package key-chord
+    :init
+    (setq key-chord-two-keys-delay .015
+          key-chord-one-key-delay .020)
+    (key-chord-mode 1)
+    (key-chord-define-global ",u" 'undo)
+    (key-chord-define-global ",r" 'redo)
+    (key-chord-define-global ",o" 'other-window)
+    (key-chord-define-global ",0" 'delete-window)
+    (key-chord-define-global ",1" 'delete-other-windows)
+    (key-chord-define-global ",2" 'split-window-below)
+    (key-chord-define-global ",3" 'split-window-right)
+    (key-chord-define-global "xf" 'counsel-find-file)
+    (key-chord-define-global "mx" 'counsel-M-x))
+#+end_src
+
+use-package key chord extension:
+
+#+begin_src emacs-lisp
+  (use-package use-package-chords
+    :config (key-chord-mode 1))
+#+end_src
+
 ** [[https://github.com/Kungsgeten/ryo-modal][Ryo modal]]
 RYO modal is a way to define your own modal editing.
 I considered [[https://github.com/emacsorphanage/god-mode][god-mode]] but wanting to customize further i decided RYO was the best fit.
@@ -373,33 +400,6 @@ I considered [[https://github.com/emacsorphanage/god-mode][god-mode]] but wantin
     ;; Remove ryo:<hash>: prefix
     (which-key-mode)
     (push '((nil . "ryo:.*:") . (nil . "")) which-key-replacement-alist))
-#+end_src
-
-** [[http://emacswiki.org/emacs/key-chord.el][Key Chord]]
-Key chord, run command when two keys are pressed simultanously.
-
-#+begin_src emacs-lisp
-  (use-package key-chord
-    :init
-    (setq key-chord-two-keys-delay .015
-          key-chord-one-key-delay .020)
-    (key-chord-mode 1)
-    (key-chord-define-global ",u" 'undo)
-    (key-chord-define-global ",r" 'redo)
-    (key-chord-define-global ",o" 'other-window)
-    (key-chord-define-global ",0" 'delete-window)
-    (key-chord-define-global ",1" 'delete-other-windows)
-    (key-chord-define-global ",2" 'split-window-below)
-    (key-chord-define-global ",3" 'split-window-right)
-    (key-chord-define-global "xf" 'counsel-find-file)
-    (key-chord-define-global "mx" 'counsel-M-x))
-#+end_src
-
-use-package key chord extension:
-
-#+begin_src emacs-lisp
-  (use-package use-package-chords
-    :config (key-chord-mode 1))
 #+end_src
 
 * Misc
@@ -1312,6 +1312,24 @@ Nginx mode for editing Nginx config files.
 
 #+begin_src emacs-lisp
   (use-package nginx-mode)
+#+end_src
+
+** Nix
+
+*** [[https://github.com/NixOS/nix-mode][Nix-mode]]
+Mode for editing =.nix= files.
+
+#+begin_src emacs-lisp
+  (use-package nix-mode
+    :mode "\\.nix\\'")
+#+end_src
+
+*** [[https://github.com/purcell/emacs-nixpkgs-fmt][nixpgs-fmt]]
+nixpgs formatter.
+
+#+begin_src emacs-lisp
+  (use-package nixpkgs-fmt
+    :hook (nix-mode . nixpkgs-fmt-on-save-mode))
 #+end_src
 
 ** [[https://github.com/protocolbuffers/protobuf][Protobuf mode]]
