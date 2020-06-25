@@ -83,6 +83,13 @@ Number of items to be saved in recent file list.
   (setq recentf-max-saved-items 2048)
 #+end_src
 
+** Compilation buffer scroll
+Make compilation buffer scroll with content.
+
+#+begin_src emacs-lisp
+  (setq compilation-scroll-output t)
+#+end_src
+
 ** Tramp settings
 Make tramp auto-save in another local directory.
 
@@ -400,7 +407,9 @@ Linux only.
 
 #+begin_src emacs-lisp
   (use-package vterm
-      :when (sys-type-p 'gnu/linux))
+    :when (sys-type-p 'gnu/linux)
+    :config
+    (setq vterm-kill-buffer-on-exit t))
 #+end_src
 
 ** [[https://github.com/storvik/emacs-lastpass][Lastpass]]
@@ -731,7 +740,7 @@ This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multip
     :bind (:map storvik/prefix-map ("c" . hydra-multiple-cursors/body))
     :ryo
     ("SPC"
-     (("c" hydra-multiple-cursors/body)))
+     (("c" hydra-multiple-cursors/body :name "Multiple cursors hydra")))
     :config
     (defhydra hydra-multiple-cursors (:hint nil)
       "
@@ -1556,6 +1565,7 @@ Use org-mode to write letters.
 
 #+begin_src emacs-lisp
     (use-package org-roam
+      :when (executable-find "sqlite3")
       :hook
       (after-init . org-roam-mode)
       :custom
