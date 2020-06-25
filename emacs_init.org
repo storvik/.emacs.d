@@ -325,11 +325,13 @@ I considered [[https://github.com/emacsorphanage/god-mode][god-mode]] but wantin
 #+begin_src emacs-lisp
   (use-package ryo-modal
     :commands ryo-modal-mode
-    :bind ("S-SPC" . ryo-modal-mode)
+    ;; :bind ("S-SPC" . ryo-modal-mode)
+    :chords ("kj" . ryo-modal-mode)
 
     :config
     (ryo-modal-keys
      ("i" ryo-modal-repeat)
+     ("q" ryo-modal-mode)
      ("n" next-line)
      ("p" previous-line)
      ("l" recenter-top-bottom)
