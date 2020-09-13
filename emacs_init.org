@@ -371,12 +371,12 @@ I considered [[https://github.com/emacsorphanage/god-mode][god-mode]] but wantin
      ("d" beginning-of-defun)
      ("D" end-of-defun)
      ("m"
-      (("f" forward-char :name "Forward char")
-       ("b" backward-char :name "Backward char")))
+      (("f" forward-char)
+       ("b" backward-char)))
      ("w"
       (("W" kill-ring-save :name "Copy selection")))
      ("k"
-      (("k" kill-line :name "Kill line"))))
+      (("k" kill-line))))
 
     (ryo-modal-keys
      ;; First argyment to ryo-modal-keys may be a list of keywords.
@@ -560,6 +560,8 @@ Tool for jumping to a given char on the screen.
      (("c" avy-goto-char :name "Goto char")
       ("w" avy-goto-word-1 :name "Goto word")
       ("g" avy-goto-line :name "Goto line")))
+    ("w"
+     (("l" avy-copy-line :name "Copy line")))
     :config
     (defhydra hydra-avy (:exit t :hint nil)
       "
@@ -1136,6 +1138,19 @@ Prettify csv files.
 #+begin_src emacs-lisp
   (use-package csv-mode)
 #+end_src
+
+** [[https://github.com/bradyt/dart-mode][Dart mode]]
+
+
+#+begin_src emacs-lisp
+  (use-package dart-mode)
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package lsp-dart
+    :hook (dart-mode . lsp))
+#+end_src
+
 
 ** [[https://github.com/spotify/dockerfile-mode][Dockerfile mode]]
 Simple syntax highlightning for Docker containers.
