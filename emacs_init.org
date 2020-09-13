@@ -304,6 +304,7 @@ or
   (add-hook 'eshell-mode-hook 'storvik/overrides-minor-mode-disable-hook)
   (add-hook 'mu4e-headers-mode-hook 'storvik/overrides-minor-mode-disable-hook)
   (add-hook 'magit-post-display-buffer-hook 'storvik/overrides-minor-mode-disable-hook)
+  (add-hook 'python-shell-first-prompt-hook 'storvik/overrides-minor-mode-disable-hook)
 #+end_src
 
 ** storvik/prefix-map
@@ -1359,23 +1360,17 @@ Protobuf-mode to edit protobuf files.
 
 ** Python
 
-*** [[https://github.com/jorgenschaefer/elpy][Elpy]]
-The following python packages must be installed by running:
-=pip install rope jedi flake8 autopep8 yapf=
+*** [[https://emacs-lsp.github.io/lsp-mode/page/lsp-pyls/][pyls]]
+=pip install 'python-language-server[all]'=
 
 #+begin_src emacs-lisp
-  (use-package elpy
-    :defer t
-    :init
-    (elpy-enable)
-    (defun my-elpy-before-save-hook ()
-      (when (eq major-mode 'python-mode)
-        (elpy-format-code)))
-    (add-hook 'before-save-hook 'my-elpy-before-save-hook))
+  (add-hook 'python-mode-hook (lambda ()
+                                (lsp-deferred)))
 #+end_src
 
 *** [[https://github.com/jorgenschaefer/pyvenv][pyvenv.el]] handles virtual environments in Emacs.
 Use =M-x pyvenv-activate= to activate environment.
+
 #+begin_src emacs-lisp
   (use-package pyvenv)
 #+end_src
