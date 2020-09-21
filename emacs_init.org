@@ -1359,13 +1359,15 @@ Protobuf-mode to edit protobuf files.
 #+end_src
 
 ** Python
-
-*** [[https://emacs-lsp.github.io/lsp-mode/page/lsp-pyls/][pyls]]
-=pip install 'python-language-server[all]'=
+*** [[https://emacs-lsp.github.io/lsp-pyright/][lsp-pyright]]
+Decided to try Microsoft [[https://github.com/microsoft/pyright][pyright]] lsp server.
+Depends on a never nodejs installation.
 
 #+begin_src emacs-lisp
-  (add-hook 'python-mode-hook (lambda ()
-                                (lsp-deferred)))
+  (use-package lsp-pyright
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-pyright)
+                           (lsp))))
 #+end_src
 
 *** [[https://github.com/jorgenschaefer/pyvenv][pyvenv.el]] handles virtual environments in Emacs.
