@@ -1502,13 +1502,15 @@ Install org mode package
   ;; File locations
   (setq org-directory "~/org")
   (setq org-default-notes-file "~/org/refile.org")
+  (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "*/*.org"))
+                                 (file-expand-wildcards (concat org-directory "*/*/*.org"))))
 
   ;; Refile
   (setq org-refile-use-outline-path t)
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-allow-creating-parent-nodes (quote confirm))
   (setq org-refile-targets (quote ((nil :maxlevel . 9)
-  (org-agenda-files :maxlevel . 9))))
+                                   (org-agenda-files :maxlevel . 9))))
 
   ;; Clock
   (setq org-clock-persist 'history)
