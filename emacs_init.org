@@ -1510,10 +1510,6 @@ As yasnippet doesn't contain any snippets, [[https://github.com/AndreaCrotti/yas
 Install org mode package
 
 #+begin_src emacs-lisp
-
-  ;; Agenda view
-  (setq org-agenda-files (quote ("~/org")))
-
   ;; Archive location
   (setq org-archive-location "archive/%s_archive::")
 
@@ -1526,7 +1522,8 @@ Install org mode package
   ;; File locations
   (setq org-directory "~/org")
   (setq org-default-notes-file "~/org/refile.org")
-  (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "*/*.org"))
+  (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "*.org"))
+                                 (file-expand-wildcards (concat org-directory "*/*.org"))
                                  (file-expand-wildcards (concat org-directory "*/*/*.org"))))
 
   ;; Refile
@@ -1556,15 +1553,7 @@ Install org mode package
 #+end_src
 
 ** Capture
-Templates for capturing stuff. Same as the todo states defined above.
-- A phone call (p)
-- A meeting (m)
-- A new task (t)
-- A new note (n)
-- A jounral entry in AAT (j)
-- Status meeting (s)
-- Email response must be written (r)
-- Email todo entry, normal todo with email link (e)
+Capture templates and such
 
 #+begin_src emacs-lisp
   (setq org-capture-templates
@@ -1575,14 +1564,9 @@ Templates for capturing stuff. Same as the todo states defined above.
                 ("n" "Note" entry (file "~/org/refile.org")
                  "* %? :NOTE:\n")
                 ("m" "Meeting" entry (file "~/org/refile.org")
-                 "* MEETING with %? :MEETING:\n")
+                 "* MEETING %T %? :MEETING:\n")
                 ("p" "Phone Call" entry (file "~/org/refile.org")
-                 "* PHONE %? :PHONE:\n")
-                ("j" "Journal Entry (AAT)" entry (file+datetree "~/org/aat.org")
-                 "* %? %T" :empty-lines 0)
-                ("s" "Status meeting (AAT)" entry (file+datetree "~/org/aat.org")
-                 "* StatusmÃ¸te\n%?" :clock-in t)
-                ;; MU4E related templates
+                 "* PHONE %T %? :PHONE:\n")
                 ("r" "Respond to email, must be run from mu4e" entry (file "~/org/refile.org")
                  "* TODO Respond to %:from on %:subject\n\t%a\n" :immediate-finish t)
                 ("e" "E-mail todo, must be run from mu4e" entry (file "~/org/refile.org")
