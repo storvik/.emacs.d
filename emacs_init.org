@@ -1019,9 +1019,10 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
 Setup =lsp= =ccls= support and add hooks.
 
 #+begin_src emacs-lisp
-  (let ((storvik/ccls-exec (sys-diversification "~/developer/ccls/Release/ccls"
-                                                "~/developer/ccls/Release/ccls"
-                                                "~/../../developer/ccls/Release/ccls.exe")))
+  (let ((storvik/ccls-exec (or (executable-find "ccls")
+                               (sys-diversification "~/developer/ccls/Release/ccls"
+                                                    "~/developer/ccls/Release/ccls"
+                                                    "~/../../developer/ccls/Release/ccls.exe"))))
     (use-package ccls
       :when (file-exists-p storvik/ccls-exec)
       :hook ((c-mode c++-mode objc-mode) .
