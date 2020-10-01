@@ -27,3 +27,6 @@ straight/*
 srecode-map.el
 elpy/
 emojis/
+.dap-breakpoints
+.org-id-locations
+semanticdb/*
