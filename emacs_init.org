@@ -1141,18 +1141,34 @@ Prettify csv files.
   (use-package csv-mode)
 #+end_src
 
-** [[https://github.com/bradyt/dart-mode][Dart mode]]
+** Dart
 
+I mainly use dart when programming with Flutter.
+
+*** [[https://github.com/bradyt/dart-mode][Dart mode]]
+Major mode for editing dart files.
 
 #+begin_src emacs-lisp
   (use-package dart-mode)
 #+end_src
 
+*** [[https://github.com/emacs-lsp/lsp-dart][lsp-dart]]
+Setup lsp-dart, thanks to [[https://github.com/ericdallo/dotfiles/blob/master/.doom.d/config.el#L150-L155][ericdallo]] for the snippet in :config.
+
 #+begin_src emacs-lisp
   (use-package lsp-dart
-    :hook (dart-mode . lsp))
+    :hook (dart-mode . lsp)
+    :config
+    (setq lsp-dart-flutter-executable "flutter-dev")
+    (when-let (dart-exec (executable-find "dart"))
+      (let ((dart-sdk-path (-> dart-exec
+                               file-chase-links
+                               file-name-directory
+                               directory-file-name
+                               file-name-directory)))
+        (setq lsp-dart-sdk-dir dart-sdk-path
+              lsp-dart-dap-flutter-hot-reload-on-save t))))
 #+end_src
-
 
 ** [[https://github.com/spotify/dockerfile-mode][Dockerfile mode]]
 Simple syntax highlightning for Docker containers.
