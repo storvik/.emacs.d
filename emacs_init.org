@@ -973,6 +973,15 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     :commands lsp-treemacs-errors-list)
 #+end_src
 
+** [[https://github.com/wbolster/emacs-direnv][Direnv]]
+Direnv changes environments if =.envrc= is present.
+
+#+begin_src emacs-lisp
+  (use-package direnv
+    :config
+    (direnv-mode))
+#+end_src
+
 ** [[https://www.gnu.org/software/auctex/][Auctex]]
 Auctex is the best way editing LaTeX documents!
 #+begin_src emacs-lisp
