@@ -1561,7 +1561,7 @@ Install org mode package
   (setq org-log-done 'time)
 
   ;; Todo
-  (setq org-clock-in-switch-to-state "STARTED")
+  ; (setq org-clock-in-switch-to-state "STARTED")
 #+end_src
 
 ** [[https://github.com/sabof/org-bullets][Bullets]]
@@ -1583,9 +1583,9 @@ Capture templates and such
                 ("n" "Note" entry (file "~/org/refile.org")
                  "* %? :NOTE:\n")
                 ("m" "Meeting" entry (file "~/org/refile.org")
-                 "* MEETING %T %? :MEETING:\n")
+                 "* MEETING %t %? :MEETING:\n" :clock-in t :clock-resume t)
                 ("p" "Phone Call" entry (file "~/org/refile.org")
-                 "* PHONE %T %? :PHONE:\n")
+                 "* PHONE %T %? :PHONE:\n" :clock-in t :clock-resume t)
                 ("r" "Respond to email, must be run from mu4e" entry (file "~/org/refile.org")
                  "* TODO Respond to %:from on %:subject\n\t%a\n" :immediate-finish t)
                 ("e" "E-mail todo, must be run from mu4e" entry (file "~/org/refile.org")
