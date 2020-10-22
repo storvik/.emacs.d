@@ -1166,17 +1166,7 @@ Setup lsp-dart, thanks to [[https://github.com/ericdallo/dotfiles/blob/master/.d
 
 #+begin_src emacs-lisp
   (use-package lsp-dart
-    :hook (dart-mode . lsp)
-    :config
-    (setq lsp-dart-flutter-executable "flutter-dev")
-    (when-let (dart-exec (executable-find "dart"))
-      (let ((dart-sdk-path (-> dart-exec
-                               file-chase-links
-                               file-name-directory
-                               directory-file-name
-                               file-name-directory)))
-        (setq lsp-dart-sdk-dir dart-sdk-path
-              lsp-dart-dap-flutter-hot-reload-on-save t))))
+    :hook (dart-mode . lsp))
 #+end_src
 
 ** [[https://github.com/spotify/dockerfile-mode][Dockerfile mode]]
