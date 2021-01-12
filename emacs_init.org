@@ -1132,7 +1132,13 @@ Run astyle on save, this should be changed when package is in MELPA.
 #+begin_src emacs-lisp
   (use-package astyle
     :when (executable-find "astyle")
-    :hook (c-mode-common . astyle-on-save-mode))
+    :hook (c-mode-common . astyle-on-save-mode)
+    :config
+    (setq astyle-custom-args '("--pad-oper"
+                              "--pad-header"
+                              "--break-blocks"
+                              "--align-pointer=type"
+                              "--align-reference=name")))
 #+end_src
 
 ** [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][CMake mode]]
