@@ -1348,6 +1348,13 @@ Preview markdown files, =pandoc= must be installed, with =markdown-preview=.
     :when (executable-find "pandoc"))
 #+end_src
 
+** [[https://github.com/wentasah/meson-mode][Meson mode]]
+Mode for editing meson build files.
+
+#+begin_src elisp
+  (use-package meson-mode)
+#+end_src
+
 ** [[https://github.com/ajc/nginx-mode][Nginx mode]]
 Nginx mode for editing Nginx config files.
 
