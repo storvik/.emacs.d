@@ -1380,11 +1380,18 @@ nixpgs formatter.
     :hook (nix-mode . nixpkgs-fmt-on-save-mode))
 #+end_src
 
-** [[https://github.com/jwiegley/nix-update-el][nix-update]]
+*** [[https://github.com/jwiegley/nix-update-el][nix-update]]
 Update rev/sha from Emacs.
 
 #+begin_src emacs-lisp
   (use-package nix-update)
+#+end_src
+
+** [[https://github.com/jschaf/powershell.el][Powershell]]
+Edit powershell scripts.
+
+#+begin_src elisp
+  (use-package powershell)
 #+end_src
 
 ** [[https://github.com/protocolbuffers/protobuf][Protobuf mode]]
