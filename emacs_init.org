@@ -800,6 +800,15 @@ Brilliant interface to git.
     (setq magit-git-executable "git"))
 #+end_src
 
+** [[https://github.com/alphapapa/magit-todos][Magit todos]]
+Shows todo in magit buffers.
+
+#+begin_src elisp
+  (use-package magit-todos
+    :after magit
+    :hook (after-init . magit-todos-mode))
+#+end_src
+
 * [[https://github.com/bbatsov/projectile][Projectile]]
 Projectile simplifies navigation and structuring on large projects.
 Git folders are identified as projects, other projects have to have an empty =.projectile=-file to be categorized as project.
