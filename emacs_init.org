@@ -315,6 +315,9 @@ or
   (add-hook 'mu4e-headers-mode-hook 'storvik/overrides-minor-mode-disable-hook)
   (add-hook 'magit-post-display-buffer-hook 'storvik/overrides-minor-mode-disable-hook)
   (add-hook 'python-shell-first-prompt-hook 'storvik/overrides-minor-mode-disable-hook)
+  (add-hook 'org-agenda-mode-hook 'storvik/overrides-minor-mode-disable-hook)
+  (add-hook 'mu4e-main-mode-hook 'storvik/overrides-minor-mode-disable-hook)
+  (add-hook 'sly-db-hook 'storvik/overrides-minor-mode-disable-hook)
 #+end_src
 
 ** storvik/prefix-map
@@ -792,7 +795,6 @@ Set default ispell language to English.
 #+begin_src emacs-lisp
   (setq ispell-dictionary "en")
 #+end_src
-
 * [[https://magit.vc/][Magit]]
 Brilliant interface to git.
 
@@ -1433,6 +1435,7 @@ To choose between multiple lisps use =C-- M-x sly=.
   (use-package sly
     :when (or (executable-find "sbcl")
               (executable-find "ecl"))
+    :hook ((sly-db . (lambda () (lispy-mode 0))))
     :init
     (cond ((and (executable-find "sbcl")
                 (executable-find "ecl"))
@@ -1446,12 +1449,6 @@ To choose between multiple lisps use =C-- M-x sly=.
     (add-hook 'sly-mode-hook
               (lambda ()
                 (setq-local lispy-no-space t))))
-
-  (use-package sly-quicklisp
-    :requires sly)
-
-  (use-package sly-asdf
-    :requires sly)
 #+end_src
 
 ** SQL mode

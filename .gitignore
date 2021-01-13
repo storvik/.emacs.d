@@ -30,3 +30,6 @@ emojis/
 .dap-breakpoints
 .org-id-locations
 semanticdb/*
+projects
+org-roam.db
+eln-cache/*
