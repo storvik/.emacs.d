@@ -184,6 +184,16 @@ To have icons one must run =M-x all-the-icons-install-fonts=.
     :hook (after-init . doom-modeline-mode))
 #+end_src
 
+** [[https://github.com/tarsius/hl-todo][Highlight Todo]]
+Highlight todo, fixme, etc.
+
+#+begin_src emacs-lisp
+  (use-package hl-todo
+    :hook (after-init . global-hl-todo-mode)
+    :config
+    (setq hl-todo-highlight-punctuation ":"))
+#+end_src
+
 ** [[https://github.com/iqbalansari/emacs-emojify][Emojify]]
 Display emojis in Emacs!
 
@@ -1215,20 +1225,6 @@ Use =emmet-expand-line= to do this.
 
 #+begin_src emacs-lisp
   (use-package fish-mode)
-#+end_src
-
-** Fixme/Todo Highlights
-Highlights fixme and todo in comments.
-
-#+begin_src emacs-lisp
-  (defun font-lock-comment-annotations ()
-    "Highlight a bunch of well known comment annotations.
-     This functions should be added to the hooks of major modes for programming."
-    (font-lock-add-keywords
-     nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
-            1 font-lock-warning-face t))))
-
-  (add-hook 'prog-mode-hook 'font-lock-comment-annotations)
 #+end_src
 
 ** Go
