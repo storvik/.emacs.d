@@ -1003,6 +1003,18 @@ Direnv changes environments if =.envrc= is present.
     (direnv-mode))
 #+end_src
 
+** [[https://github.com/lassik/emacs-format-all-the-code][Format all]]
+Format all, one package to run all formatters.
+
+#+begin_src elisp
+  (use-package format-all
+    :hook ((prog-mode . format-all-mode)
+           (format-all-mode . format-all-ensure-formatter)
+           (go-mode . (lambda () (setq format-all-formatters '(("Go" goimports)))))
+           (sh-mode . (lambda () (setq format-all-formatters '(("Shell" (shfmt "-i=4"))))))
+           (c-mode-common . (lambda () (setq format-all-formatters '(("C" astyle)))))))
+#+end_src
+
 ** [[https://www.gnu.org/software/auctex/][Auctex]]
 Auctex is the best way editing LaTeX documents!
 #+begin_src emacs-lisp
@@ -1147,21 +1159,6 @@ cmake and ninja are run in =build/= dir.
   (add-hook 'c++-mode-hook 'storvik/c-mode-compile-setup)
 #+end_src
 
-*** [[https://github.com/storvik/emacs-astyle][Astyle]]
-Run astyle on save, this should be changed when package is in MELPA.
-
-#+begin_src emacs-lisp
-  (use-package astyle
-    :when (executable-find "astyle")
-    :hook (c-mode-common . astyle-on-save-mode)
-    :config
-    (setq astyle-custom-args '("--pad-oper"
-                              "--pad-header"
-                              "--break-blocks"
-                              "--align-pointer=type"
-                              "--align-reference=name")))
-#+end_src
-
 ** [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][CMake mode]]
 CMake mode to edit files related to cmake.
 
@@ -1243,10 +1240,7 @@ Install dependencies and useful go stuff by running:
 
 #+begin_src emacs-lisp
   (use-package go-mode
-    :when (executable-find "go")
-    :init
-    (setq gofmt-command "goimports")
-    (add-hook 'before-save-hook 'gofmt-before-save))
+    :when (executable-find "go"))
 #+end_src
 
 *** LSP
@@ -1377,14 +1371,6 @@ Mode for editing =.nix= files.
 #+begin_src emacs-lisp
   (use-package nix-mode
     :mode "\\.nix\\'")
-#+end_src
-
-*** [[https://github.com/purcell/emacs-nixpkgs-fmt][nixpgs-fmt]]
-nixpgs formatter.
-
-#+begin_src emacs-lisp
-  (use-package nixpkgs-fmt
-    :hook (nix-mode . nixpkgs-fmt-on-save-mode))
 #+end_src
 
 *** [[https://github.com/jwiegley/nix-update-el][nix-update]]
