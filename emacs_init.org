@@ -1753,6 +1753,23 @@ Rename the current buffer and file. Thanks to [[http://whattheemacsd.com/][whatt
                      name (file-name-nondirectory new-name)))))))
 #+end_src
 
+** Termbin
+Function that sends region or buffer to termbin and puts URL in kill ring.
+
+#+begin_src elisp
+  (defun termbin-region (begin end)
+    "Sends region to termbin, if no region active send entire buffer"
+    (interactive "r")
+    (kill-new
+     (car
+      (split-string
+       (with-output-to-string
+         (if (use-region-p)
+             (shell-command-on-region begin end "nc termbin.com 9999" standard-output)
+           (shell-command-on-region (point-min) (point-max) "nc termbin.com 9999" standard-output)))
+       "\n"))))
+#+end_src
+
 * Daemon
 Start emacs server
 
