@@ -181,7 +181,9 @@ To have icons one must run =M-x all-the-icons-install-fonts=.
 
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :hook (after-init . doom-modeline-mode))
+    :hook (after-init . doom-modeline-mode)
+    :config
+    (setq find-file-visit-truename t))
 #+end_src
 
 ** [[https://github.com/tarsius/hl-todo][Highlight Todo]]
