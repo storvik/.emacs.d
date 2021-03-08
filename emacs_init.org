@@ -431,18 +431,6 @@ Linux only.
     (setq vterm-kill-buffer-on-exit t))
 #+end_src
 
-** [[https://github.com/storvik/emacs-lastpass][Lastpass]]
-Package used to communicate with LastPass.
-Depends on =lpass= command line utility.
-
-#+begin_src emacs-lisp
-  (use-package lastpass
-    :when (executable-find "lpass")
-    :config
-    (setq lastpass-user "petterstorvik@gmail.com")
-    (lastpass-auth-source-enable))
-#+end_src
-
 ** [[https://github.com/parkouss/speed-type][Speed type]]
 How do I train them fingers?
 
