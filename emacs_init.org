@@ -984,15 +984,6 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     :commands lsp-treemacs-errors-list)
 #+end_src
 
-** [[https://github.com/wbolster/emacs-direnv][Direnv]]
-Direnv changes environments if =.envrc= is present.
-
-#+begin_src emacs-lisp
-  (use-package direnv
-    :config
-    (direnv-mode))
-#+end_src
-
 ** [[https://github.com/lassik/emacs-format-all-the-code][Format all]]
 Format all, one package to run all formatters.
 
@@ -1520,6 +1511,16 @@ As yasnippet doesn't contain any snippets, [[https://github.com/AndreaCrotti/yas
 #+begin_src emacs-lisp
   (use-package yasnippet-snippets
     :defer t)
+#+end_src
+
+** [[https://github.com/purcell/envrc][envrc]]
+Use purcell's envrc, must be late in config as per instructions.
+
+#+begin_src emacs-lisp
+  (use-package envrc
+    :when (executable-find "direnv")
+    :config
+    (envrc-global-mode))
 #+end_src
 
 * Org mode
