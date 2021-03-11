@@ -993,7 +993,8 @@ Format all, one package to run all formatters.
            (format-all-mode . format-all-ensure-formatter)
            (go-mode . (lambda () (setq format-all-formatters '(("Go" goimports)))))
            (sh-mode . (lambda () (setq format-all-formatters '(("Shell" (shfmt "-i=4"))))))
-           (c-mode-common . (lambda () (setq format-all-formatters '(("C" astyle)))))))
+           (c-mode . (lambda () (setq format-all-formatters '(("C" astyle)))))
+           (c++-mode . (lambda () (setq format-all-formatters '(("C++" astyle)))))))
 #+end_src
 
 ** [[https://www.gnu.org/software/auctex/][Auctex]]
@@ -1136,8 +1137,8 @@ cmake and ninja are run in =build/= dir.
           ;; Not a cmake project, use `make all`
           (set (make-local-variable 'compile-command) "make all")))))
 
-  (add-hook 'c-mode-hook 'storvik/c-mode-compile-setup)
-  (add-hook 'c++-mode-hook 'storvik/c-mode-compile-setup)
+  ;;(add-hook 'c-mode-hook 'storvik/c-mode-compile-setup)
+  ;;(add-hook 'c++-mode-hook 'storvik/c-mode-compile-setup)
 #+end_src
 
 ** [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][CMake mode]]
