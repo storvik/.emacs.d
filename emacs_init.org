@@ -832,6 +832,10 @@ Git folders are identified as projects, other projects have to have an empty =.p
                                                             ".git"
                                                             ".gomod"
                                                             ".ccls-cache")))
+    ;; Fix slow tramp buffers
+    ;; https://github.com/bbatsov/projectile/issues/1232#issuecomment-536281335
+    (defadvice projectile-project-root (around ignore-remote first activate)
+      (unless (file-remote-p default-directory) ad-do-it))
     (projectile-mode +1))
 #+end_src
 
