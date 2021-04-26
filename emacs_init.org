@@ -1105,46 +1105,6 @@ Set default indentation to 4.
   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 #+end_src
 
-*** Custom compile command
-This custom compile command setup detects wether to use cmake or make.
-When using cmake it prompts for cmake, ninja or any other self written command.
-cmake and ninja are run in =build/= dir.
-
-#+begin_src emacs-lisp
-  (defvar storvik/compile-history '()
-    "List containing compile history.")
-
-  (defun storvik/cmake-compile ()
-    (let ((compile-cmd (completing-read "Run cmake or ninja: " (append storvik/compile-history '(ninja cmake)) nil nil)))
-      (with-temp-buffer
-      (cond ((string= compile-cmd "cmake")
-             (let ((default-directory
-                     (if sys-unix-p
-                         (projectile-project-root)
-                       (concat (projectile-project-root) "/build/"))))
-               (compile (if sys-unix-p
-                            "cmake -G Ninja -B build ."
-                          "cmake -G Ninja .."))))
-             ((string= compile-cmd "ninja")
-              (let ((default-directory (concat (projectile-project-root) "/build/")))
-                (compile "ninja")))
-             (t (let ((default-directory (projectile-project-root)))
-               (add-to-list 'storvik/compile-history compile-cmd)
-               (compile compile-cmd)))))))
-
-  (defun storvik/c-mode-compile-setup ()
-    (when (projectile-project-p)
-      (let ((default-directory (projectile-project-root)))
-        (if (file-exists-p "CMakeLists.txt")
-            ;; Cmake project run cmake compile function
-            (set (make-local-variable 'compile-command) `(storvik/cmake-compile))
-          ;; Not a cmake project, use `make all`
-          (set (make-local-variable 'compile-command) "make all")))))
-
-  ;;(add-hook 'c-mode-hook 'storvik/c-mode-compile-setup)
-  ;;(add-hook 'c++-mode-hook 'storvik/c-mode-compile-setup)
-#+end_src
-
 ** [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][CMake mode]]
 CMake mode to edit files related to cmake.
 
