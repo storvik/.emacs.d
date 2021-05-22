@@ -22,8 +22,7 @@
   (load custom-file))
 
 ;; Install org before using it to load init file
-(use-package org-plus-contrib
-  :mode ("\\.org$" . org-mode))
+(straight-use-package 'org-contrib)
 
 ;; Require org and load emacs_init.org
 (org-babel-load-file (expand-file-name "emacs_init.org" user-emacs-directory))
