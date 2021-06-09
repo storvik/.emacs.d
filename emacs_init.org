@@ -230,6 +230,16 @@ Smoother scrolling, with a margin of 5.
     (setq smooth-scroll-margin 5))
 #+end_src
 
+** [[https://github.com/alphapapa/scrollkeeper.el][Scrollkeeper]]
+Keep track of cursor when scrolling.
+
+#+begin_src emacs-lisp
+  (use-package scrollkeeper
+    :config
+    (global-set-key [remap scroll-up-command] #'scrollkeeper-contents-up)
+    (global-set-key [remap scroll-down-command] #'scrollkeeper-contents-down))
+#+end_src
+
 ** Tab width
 Use tabs, set default tab width to 4.
 
