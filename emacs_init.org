@@ -1135,7 +1135,8 @@ Major mode for editing dart files.
 Setup lsp-dart, thanks to [[https://github.com/ericdallo/dotfiles/blob/master/.doom.d/config.el#L150-L155][ericdallo]] for the snippet in :config.
 
 #+begin_src emacs-lisp
-  (defun storvik/locate-flutter-dart ()
+  (defun storvik/lsp-dart ()
+    (envrc-reload-all)
     (when-let (dart-exec (executable-find "dart"))
       (let ((dart-sdk-path (-> dart-exec
                              file-chase-links
@@ -1143,11 +1144,11 @@ Setup lsp-dart, thanks to [[https://github.com/ericdallo/dotfiles/blob/master/.d
                              directory-file-name
                              file-name-directory)))
         (setq lsp-dart-sdk-dir dart-sdk-path
-              lsp-dart-dap-flutter-hot-reload-on-save t))))
+              lsp-dart-dap-flutter-hot-reload-on-save t)))
+    (lsp))
 
   (use-package lsp-dart
-    :hook ((dart-mode . storvik/locate-flutter-dart)
-           (dart-mode . lsp)))
+    :hook (dart-mode . storvik/lsp-dart))
 #+end_src
 
 ** [[https://github.com/spotify/dockerfile-mode][Dockerfile mode]]
