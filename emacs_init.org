@@ -811,6 +811,26 @@ Shows todo in magit buffers.
     :hook (after-init . magit-todos-mode))
 #+end_src
 
+** [[https://github.com/emacsorphanage/git-gutter][gutter]]
+
+#+begin_src elisp
+  (use-package git-gutter
+    :ryo
+    ("SPC"
+     (("g" hydra-git-gutter/body :name "Git gutter hydra")))
+    :hook (after-init . global-git-gutter-mode)
+    :config
+    (defhydra hydra-git-gutter ()
+      "A hydra for git!"
+      ("j" git-gutter:next-hunk "next")
+      ("k" git-gutter:previous-hunk "previous")
+      ("d" git-gutter:popup-hunk "diff")
+      ("s" git-gutter:stage-hunk "stage")
+      ("r" git-gutter:revert-hunk "revert")
+      ("m" git-gutter:mark-hunk "mark")
+      ("q" nil "cancel" :color blue)))
+#+end_src
+
 * [[https://github.com/bbatsov/projectile][Projectile]]
 Projectile simplifies navigation and structuring on large projects.
 Git folders are identified as projects, other projects have to have an empty =.projectile=-file to be categorized as project.
