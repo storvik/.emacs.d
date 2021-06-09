@@ -240,6 +240,19 @@ Keep track of cursor when scrolling.
     (global-set-key [remap scroll-down-command] #'scrollkeeper-contents-down))
 #+end_src
 
+** [[https://github.com/minad/marginalia][Marginalia]]
+Annotations in minibuffer.
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :bind (("M-A" . marginalia-cycle)
+           :map minibuffer-local-map
+           ("M-A" . marginalia-cycle))
+
+    :init
+    (marginalia-mode))
+#+end_src
+
 ** Tab width
 Use tabs, set default tab width to 4.
 
@@ -372,7 +385,8 @@ use-package key chord extension:
     :config (key-chord-mode 1))
 #+end_src
 
-** [[https://github.com/Kungsgeten/ryo-modal][Ryo modal]]
+
+
 RYO modal is a way to define your own modal editing.
 I considered [[https://github.com/emacsorphanage/god-mode][god-mode]] but wanting to customize further i decided RYO was the best fit.
 
