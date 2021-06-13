@@ -843,7 +843,8 @@ Shows todo in magit buffers.
     :ryo
     ("SPC"
      (("g" hydra-git-gutter/body :name "Git gutter hydra")))
-    :hook (after-init . global-git-gutter-mode)
+    :hook ((after-init . global-git-gutter-mode)
+           (magit-post-refresh . git-gutter:update-all-windows))
     :config
     (defhydra hydra-git-gutter ()
       "A hydra for git!"
@@ -854,6 +855,13 @@ Shows todo in magit buffers.
       ("r" git-gutter:revert-hunk "revert")
       ("m" git-gutter:mark-hunk "mark")
       ("q" nil "cancel" :color blue)))
+#+end_src
+
+** [[https://gitlab.com/pidu/git-timemachine][git-timemachine]]
+Travel through time!
+
+#+begin_src emacs-lisp
+  (use-package git-timemachine)
 #+end_src
 
 * [[https://github.com/bbatsov/projectile][Projectile]]
