@@ -33,3 +33,4 @@ semanticdb/*
 projects
 org-roam.db
 eln-cache/*
+spell-fu/*

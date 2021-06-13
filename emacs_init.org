@@ -808,6 +808,7 @@ Set default ispell language to English.
 
 #+begin_src emacs-lisp
   (setq ispell-dictionary "en")
+  (use-package spell-fu)
 #+end_src
 * [[https://magit.vc/][Magit]]
 Brilliant interface to git.
