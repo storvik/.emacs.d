@@ -177,7 +177,8 @@ To have icons one must run =M-x all-the-icons-install-fonts=.
   (use-package doom-modeline
     :hook (after-init . doom-modeline-mode)
     :config
-    (setq find-file-visit-truename t))
+    (setq find-file-visit-truename t)
+    (setq doom-modeline-icon t))
 #+end_src
 
 ** [[https://github.com/tarsius/hl-todo][Highlight Todo]]
@@ -222,16 +223,6 @@ Smoother scrolling, with a margin of 5.
     :config
     (smooth-scrolling-mode 1)
     (setq smooth-scroll-margin 5))
-#+end_src
-
-** [[https://github.com/alphapapa/scrollkeeper.el][Scrollkeeper]]
-Keep track of cursor when scrolling.
-
-#+begin_src emacs-lisp
-  (use-package scrollkeeper
-    :config
-    (global-set-key [remap scroll-up-command] #'scrollkeeper-contents-up)
-    (global-set-key [remap scroll-down-command] #'scrollkeeper-contents-down))
 #+end_src
 
 ** [[https://github.com/minad/marginalia][Marginalia]]
