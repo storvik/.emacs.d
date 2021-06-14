@@ -277,6 +277,7 @@ Helps differentiating between buffers with similar / same name.
 #+end_src
 
 * Keybindings
+
 All overrides (key bindings that overrides existing ones) are [[https://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][placed in a minor mode]], =storvik/overrides-minor-mode=.
 This way it's easy to completely disable all overrides if default behaviour is needed.
 Other custom keybindings are placed behind a prefix map, =storvik/prefix-map=, making it easy to maintain and discover using whick-key.
@@ -328,6 +329,7 @@ or
   (add-hook 'org-agenda-mode-hook 'storvik/overrides-minor-mode-disable-hook)
   (add-hook 'mu4e-main-mode-hook 'storvik/overrides-minor-mode-disable-hook)
   (add-hook 'sly-db-hook 'storvik/overrides-minor-mode-disable-hook)
+  (add-hook 'dired-mode-hook 'storvik/overrides-minor-mode-disable-hook)
 #+end_src
 
 ** storvik/prefix-map
@@ -759,6 +761,17 @@ Set default ispell language to English.
   (setq ispell-dictionary "en")
   (use-package spell-fu)
 #+end_src
+
+* Dired
+
+#+begin_src emacs-lisp
+  (use-package dired+
+    :init
+    (setq diredp-hide-details-initially-flag nil)
+    :config
+    (diredp-toggle-find-file-reuse-dir 1))
+#+end_src
+
 * [[https://magit.vc/][Magit]]
 Brilliant interface to git.
 
