@@ -164,16 +164,10 @@ Checks for file =custom_theme.el= and loads file if available.
 If not default theme used is =doom-theme-one=.
 
 #+begin_src emacs-lisp
-    (let ((storvik/custom-theme-file (concat user-emacs-directory "custom_theme.el")))
-      (if (file-exists-p storvik/custom-theme-file)
-          (load storvik/custom-theme-file)
-        (use-package doom-themes
-          :when window-system
-          :config
-          (load-theme 'doom-one t)
-          ;; (doom-themes-visual-bell-config) Removed due to color issued in modeline
-          (doom-themes-treemacs-config)
-          (doom-themes-org-config))))
+  (use-package doom-themes
+    :config
+    (load-theme 'doom-one t)
+    (doom-themes-org-config))
 #+end_src
 
 ** [[https://github.com/seagle0128/doom-modeline][Doom modeline]]
@@ -730,42 +724,6 @@ This is an awesome function from Endless.
   (ryo-modal-keys ("SPC" (("n" narrow-or-widen-dwim :name "Narrow DWIM"))))
 #+end_src
 
-** [[https://github.com/Alexander-Miller/treemacs][Treemacs]]
-Treemacs is useful for navigating projects.
-
-#+begin_src emacs-lisp
-  (use-package treemacs
-    :defer t
-    :init
-    (with-eval-after-load 'winum
-      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-    :config
-    (progn
-      (treemacs-follow-mode t)
-      (treemacs-filewatch-mode t)
-      (treemacs-fringe-indicator-mode t)
-      (pcase (cons (not (null (executable-find "git")))
-                   (not (null (executable-find "python3"))))
-        (`(t . t)
-         (treemacs-git-mode 'deferred))
-        (`(t . _)
-         (treemacs-git-mode 'simple))))
-    :bind
-    (:map global-map
-          ("M-0"       . treemacs-select-window)
-          ("C-x t 1"   . treemacs-delete-other-windows)
-          ("C-x t t"   . treemacs)
-          ("C-x t B"   . treemacs-bookmark)
-          ("C-x t C-t" . treemacs-find-file)
-          ("C-x t M-t" . treemacs-find-tag)))
-
-  (use-package treemacs-projectile
-    :after treemacs projectile)
-
-  (use-package treemacs-magit
-    :after treemacs magit)
-#+end_src
-
 ** [[https://github.com/magnars/multiple-cursors.el][Multiple cursors]]
 Multiple cursors is an awesome package thats makes editing multiple entries with similar structure a breeze.
 This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multiple-cursors][hydra wiki]].
@@ -1035,10 +993,6 @@ Some performance enhancing settings, see lsp-mode README.md for details.
 
   (use-package lsp-ivy
     :commands lsp-ivy-workspace-symbol)
-
-  (use-package lsp-treemacs
-    :after treemacs lsp
-    :commands lsp-treemacs-errors-list)
 #+end_src
 
 ** [[https://github.com/lassik/emacs-format-all-the-code][Format all]]
