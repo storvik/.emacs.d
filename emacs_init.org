@@ -628,6 +628,14 @@ This package expands region by semantic units.
       ("c" er/contract-region "contract")))
 #+end_src
 
+** [[https://github.com/Wilfred/deadgrep][Deadgrep]]
+Use ripgrep from Emacs.
+
+#+begin_src emacs-lisp
+  (use-package deadgrep
+    :bind (:map storvik/prefix-map ("s" . deadgrep)))
+#+end_src
+
 ** [[https://github.com/jacktasia/dumb-jump][Dumb jump]]
 Used to jump between definitions in almost every language.
 Install [[https://github.com/ggreer/the_silver_searcher][thesilversearcher-ag]] on Ubuntu with =apt-get install silversearcher-ag=.
@@ -1147,6 +1155,7 @@ Setup lsp-dart, thanks to [[https://github.com/ericdallo/dotfiles/blob/master/.d
 
 #+begin_src emacs-lisp
   (defun storvik/lsp-dart ()
+    (interactive)
     (envrc-reload-all)
     (when-let (dart-exec (executable-find "dart"))
       (let ((dart-sdk-path (-> dart-exec
