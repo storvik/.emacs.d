@@ -332,6 +332,7 @@ or
   (add-hook 'mu4e-main-mode-hook 'storvik/overrides-minor-mode-disable-hook)
   (add-hook 'sly-db-hook 'storvik/overrides-minor-mode-disable-hook)
   (add-hook 'dired-mode-hook 'storvik/overrides-minor-mode-disable-hook)
+  (add-hook 'deadgrep-mode-hook 'storvik/overrides-minor-mode-disable-hook)
 #+end_src
 
 ** storvik/prefix-map
@@ -435,6 +436,12 @@ I considered [[https://github.com/emacsorphanage/god-mode][god-mode]] but wantin
 #+end_src
 
 * Misc
+** [[https://github.com/joddie/pcre2el][pcre2el]]
+
+#+begin_src emacs-lisp
+  (use-package pcre2el)
+#+end_src
+
 ** [[https://github.com/akermu/emacs-libvterm][vterm]]
 vterm is to be considered as unstable atm.
 Linux only.
@@ -451,6 +458,14 @@ How do I train them fingers?
 
 #+begin_src emacs-lisp
   (use-package speed-type)
+#+end_src
+
+** [[https://github.com/nflath/sudo-edit][sudo edit]]
+Sometimes I forgot to plan ahead when I should use sudo.
+Now sudo-edit comes to the rescue!
+
+#+begin_src emacs-lisp
+  (use-package sudo-edit)
 #+end_src
 
 ** [[https://github.com/fourier/ztree][Ztree]]
@@ -640,13 +655,12 @@ Use ripgrep from Emacs.
 
 ** [[https://github.com/jacktasia/dumb-jump][Dumb jump]]
 Used to jump between definitions in almost every language.
-Install [[https://github.com/ggreer/the_silver_searcher][thesilversearcher-ag]] on Ubuntu with =apt-get install silversearcher-ag=.
 
 #+begin_src emacs-lisp
   (use-package dumb-jump
     :bind (:map storvik/prefix-map ("d" . hydra-dumb-jump/body))
     :config
-    (setq dumb-jump-selector 'ivy)
+    (setq dumb-jump-force-searcher 'rg)
     (defhydra hydra-dumb-jump (:hint nil)
       "
    Jump^^         Other window^^    Other
