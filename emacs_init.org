@@ -95,8 +95,10 @@ Make tramp auto-save in another local directory.
 
 #+begin_src emacs-lisp
   (require 'tramp)
-  (setq tramp-default-method "scp")
+  (setq tramp-default-method "ssh")
   (setq tramp-auto-save-directory (concat user-emacs-directory "tramp.autosave/"))
+  (setq explicit-shell-file-name "/bin/bash")
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
   (defun storvik/tramp-parse-sconfigs (path)
     (mapcan 'tramp-parse-sconfig
@@ -857,8 +859,8 @@ Git folders are identified as projects, other projects have to have an empty =.p
                                                             ".ccls-cache")))
     ;; Fix slow tramp buffers
     ;; https://github.com/bbatsov/projectile/issues/1232#issuecomment-536281335
-    (defadvice projectile-project-root (around ignore-remote first activate)
-      (unless (file-remote-p default-directory) ad-do-it))
+    ;; (defadvice projectile-project-root (around ignore-remote first activate)
+    ;;   (unless (file-remote-p default-directory) ad-do-it))
     (projectile-mode +1))
 #+end_src
 
