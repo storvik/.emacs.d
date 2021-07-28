@@ -137,10 +137,10 @@ Set default font and size.
 
 #+begin_src emacs-lisp
   (set-face-attribute 'default nil :font (sys-diversification
-                                           "Ubuntu Mono-11"
+                                           "Fira Code-10"
                                            "Fira Mono-10"
                                            "Courier New-10"))
-#+End_src
+#+end_src
 
 ** Highlight line mode
 Highlight current line.
