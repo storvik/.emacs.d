@@ -80,6 +80,7 @@ Add newline to end of files.
 Number of items to be saved in recent file list.
 
 #+begin_src emacs-lisp
+  (recentf-mode 1)
   (setq recentf-max-saved-items 2048)
 #+end_src
 
