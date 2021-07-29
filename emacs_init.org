@@ -1524,6 +1524,9 @@ To choose between multiple lisps use =C-- M-x sly=.
     (add-hook 'sly-mode-hook
               (lambda ()
                 (setq-local lispy-no-space t))))
+
+  (use-package sly-asdf
+    :after sly)
 #+end_src
 
 ** SQL mode
