@@ -1636,8 +1636,8 @@ Install org mode package
   (setq org-catch-invisible-edit 'nil)
 
   ;; File locations
-  (setq org-directory "~/org")
-  (setq org-default-notes-file "~/org/refile.org")
+  (setq org-directory "~/developer/org/org")
+  (setq org-default-notes-file "~/developer/org/org/refile.org")
   (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "*.org"))
                                  (file-expand-wildcards (concat org-directory "*/*.org"))
                                  (file-expand-wildcards (concat org-directory "*/*/*.org"))))
@@ -1673,19 +1673,19 @@ Capture templates and such
 
 #+begin_src emacs-lisp
   (setq org-capture-templates
-        (quote (("t" "Todo" entry (file "~/org/refile.org")
+        (quote (("t" "Todo" entry (file "~/developer/org/org/refile.org")
                  "* TODO %?\n")
-                ("c" "Todo code" entry (file "~/org/refile.org")
+                ("c" "Todo code" entry (file "~/developer/org/org/refile.org")
                  "* TODO %?\n%l\n")
-                ("n" "Note" entry (file "~/org/refile.org")
+                ("n" "Note" entry (file "~/developer/org/org/refile.org")
                  "* %? :NOTE:\n")
-                ("m" "Meeting" entry (file "~/org/refile.org")
+                ("m" "Meeting" entry (file "~/developer/org/org/refile.org")
                  "* MEETING %t %? :MEETING:\n" :clock-in t :clock-resume t)
-                ("p" "Phone Call" entry (file "~/org/refile.org")
+                ("p" "Phone Call" entry (file "~/developer/org/org/refile.org")
                  "* PHONE %T %? :PHONE:\n" :clock-in t :clock-resume t)
-                ("r" "Respond to email, must be run from mu4e" entry (file "~/org/refile.org")
+                ("r" "Respond to email, must be run from mu4e" entry (file "~/developer/org/org/refile.org")
                  "* TODO Respond to %:from on %:subject\n\t%a\n" :immediate-finish t)
-                ("e" "E-mail todo, must be run from mu4e" entry (file "~/org/refile.org")
+                ("e" "E-mail todo, must be run from mu4e" entry (file "~/developer/org/org/refile.org")
                  "* TODO %?\n%a\n")
                 )))
 #+end_src
@@ -1725,31 +1725,29 @@ Use org-mode to write letters.
 ** [[https://org-roam.readthedocs.io][Org-roam]]
 
 #+begin_src emacs-lisp
-    (use-package org-roam
-      :when (executable-find "sqlite3")
-      :hook
-      (after-init . org-roam-mode)
-      :custom
-      (org-roam-directory (concat org-directory "/roam"))
-      :bind
-      (:map org-roam-mode-map
-            (("C-c n l" . org-roam)
-             ("C-c n f" . org-roam-find-file)
-             ("C-c n j" . org-roam-jump-to-index)
-             ("C-c n b" . org-roam-switch-to-buffer)
-             ("C-c n g" . org-roam-graph))
-            :map org-mode-map
-            (("C-c n i" . org-roam-insert))))
-
-  (use-package deft
+  (use-package org-roam
     :after org
-    :bind
-    ("C-c n d" . deft)
     :custom
-    (deft-recursive t)
-    (deft-use-filter-string-for-filename t)
-    (deft-default-extension "org")
-    (deft-directory (concat org-directory "/roam")))
+    (org-roam-complete-everywhere t)
+    (org-roam-directory "~/developer/org/roam-notes")
+    ;; Dailies
+    (org-roam-dailies-directory "~/developer/org/roam-dailies")
+    (org-roam-dailies-capture-templates
+          '(("d" "default" entry
+             "* %?"
+             :if-new (file+head "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n"))))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n g" . org-roam-graph)
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n c" . org-roam-capture)
+           ;; Dailies
+           ("C-c n j" . org-roam-dailies-capture-today))
+    :init
+    (setq org-roam-v2-ack t)
+    :config
+    (org-roam-setup))
 #+end_src
 
 * Email
