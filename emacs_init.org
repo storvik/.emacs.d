@@ -1732,9 +1732,9 @@ Use org-mode to write letters.
     :after org
     :custom
     (org-roam-complete-everywhere t)
-    (org-roam-directory "~/developer/org/roam-notes")
+    (org-roam-directory (file-truename "~/developer/org/roam-notes"))
     ;; Dailies
-    (org-roam-dailies-directory "~/developer/org/roam-dailies")
+    (org-roam-dailies-directory (file-truename "~/developer/org/roam-dailies"))
     (org-roam-dailies-capture-templates
           '(("d" "default" entry
              "* %?"
