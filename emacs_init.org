@@ -1712,32 +1712,56 @@ Use org-mode to write letters.
     '(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t) t))
 #+end_src
 
-** [[https://org-roam.readthedocs.io][Org-roam]]
+** [[https://org-roam.readthedocs.io][org-roam]]
 
 #+begin_src emacs-lisp
+  (defun storvik/org-roam-ripgrep ()
+    "Search org roam files with ripgrep"
+    (interactive)
+    (consult-ripgrep org-roam-directory))
+
   (use-package org-roam
-    :after org
+    :after (org consult)
     :custom
-    (org-roam-complete-everywhere t)
+    (org-roam-completion-everywhere t)
     (org-roam-directory (file-truename "~/developer/org/roam-notes"))
     ;; Dailies
     (org-roam-dailies-directory (file-truename "~/developer/org/roam-dailies"))
     (org-roam-dailies-capture-templates
-          '(("d" "default" entry
-             "* %?"
-             :if-new (file+head "%<%Y-%m-%d>.org"
-                                "#+title: %<%Y-%m-%d>\n"))))
+     '(("d" "default" entry
+        "* %?"
+        :if-new (file+head "%<%Y-%m-%d>.org"
+                           "#+title: %<%Y-%m-%d>\n"))))
     :bind (("C-c n l" . org-roam-buffer-toggle)
            ("C-c n f" . org-roam-node-find)
            ("C-c n g" . org-roam-graph)
            ("C-c n i" . org-roam-node-insert)
            ("C-c n c" . org-roam-capture)
            ;; Dailies
-           ("C-c n j" . org-roam-dailies-capture-today))
+           ("C-c n j" . org-roam-dailies-capture-today)
+           ("C-c n d" . storvik/org-roam-ripgrep))
     :init
     (setq org-roam-v2-ack t)
     :config
-    (org-roam-setup))
+    (org-roam-setup)
+    (require 'org-roam-protocol))
+#+end_src
+
+** [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
+
+#+begin_src emacs-lisp
+  ;; Fix simple-httpd when using straight, see here
+  ;; https://github.com/nnicandro/emacs-jupyter/issues/160#issuecomment-520138197
+  (use-package simple-httpd
+    :straight
+    (:host github :repo "skeeto/emacs-web-server" :local-repo "simple-httpd"))
+
+  (use-package org-roam-ui
+    :straight
+    (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+    :after org-roam
+    ;; :hook (org-roam . org-roam-ui-mode)
+    )
 #+end_src
 
 * Email
