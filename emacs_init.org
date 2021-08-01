@@ -1402,7 +1402,9 @@ Mode for interacting with gomacro REPL.
     :hook (go-mode . gomacro-mode))
 #+end_src
 
-** [[https://github.com/abo-abo/lispy][Lispy]]
+** Lisp
+
+*** [[https://github.com/abo-abo/lispy][Lispy]]
 Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
 
 #+begin_src emacs-lisp
@@ -1411,6 +1413,34 @@ Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
     :hook ((emacs-lisp-mode . (lambda () (lispy-mode 1)))
            (sly-mode . (lambda () (lispy-mode 1)))))
 #+end_src
+
+*** [[https://github.com/joaotavora/sly][SLY]]
+SLY is a [[https://github.com/slime/slime][Slime]] fork with lots of improvements!
+To choose between multiple lisps use =C-- M-x sly=.
+
+#+begin_src emacs-lisp
+  (use-package sly
+    :when (or (executable-find "sbcl")
+              (executable-find "ecl"))
+    :hook ((sly-db . (lambda () (lispy-mode 0))))
+    :init
+    (cond ((and (executable-find "sbcl")
+                (executable-find "ecl"))
+           (setq sly-lisp-implementations
+                 '((sbcl ("sbcl" "--noinform") :coding-system utf-8-unix)
+                   (ecl ("ecl")))))
+          ((executable-find "sbcl")
+           (setq inferior-lisp-program "sbcl --noinform"))
+          ((executable-find "ecl")
+           (setq inferior-lisp-program "ecl")))
+    (add-hook 'sly-mode-hook
+              (lambda ()
+                (setq-local lispy-no-space t))))
+
+  (use-package sly-asdf
+    :after sly)
+#+end_src
+
 
 ** [[https://sourceforge.net/projects/matlab-emacs/][Matlab]]
 Major mode for editing matlab `.m` files.
@@ -1512,33 +1542,6 @@ Use =M-x pyvenv-activate= to activate environment.
 
 #+begin_src emacs-lisp
   (use-package pyvenv)
-#+end_src
-
-** [[https://github.com/joaotavora/sly][SLY]]
-SLY is a [[https://github.com/slime/slime][Slime]] fork with lots of improvements!
-To choose between multiple lisps use =C-- M-x sly=.
-
-#+begin_src emacs-lisp
-  (use-package sly
-    :when (or (executable-find "sbcl")
-              (executable-find "ecl"))
-    :hook ((sly-db . (lambda () (lispy-mode 0))))
-    :init
-    (cond ((and (executable-find "sbcl")
-                (executable-find "ecl"))
-           (setq sly-lisp-implementations
-                 '((sbcl ("sbcl" "--noinform") :coding-system utf-8-unix)
-                   (ecl ("ecl")))))
-          ((executable-find "sbcl")
-           (setq inferior-lisp-program "sbcl --noinform"))
-          ((executable-find "ecl")
-           (setq inferior-lisp-program "ecl")))
-    (add-hook 'sly-mode-hook
-              (lambda ()
-                (setq-local lispy-no-space t))))
-
-  (use-package sly-asdf
-    :after sly)
 #+end_src
 
 ** SQL mode
