@@ -1054,33 +1054,6 @@ Custom buffer names =*eshell*<path/to/eshell>=.
 #+end_src
 
 * Programming
-** [[http://company-mode.github.io/][Autocomplete]]
-Company mode autocomplete.
-
-#+begin_src emacs-lisp
-  ;; (use-package company
-  ;;   :defer t
-  ;;   :bind (:map storvik/overrides-minor-mode-map ("C-;" . company-complete-common))
-  ;;   :diminish company-mode
-  ;;   :init
-  ;;   (global-company-mode t)
-  ;;   :config
-  ;;   (setq company-idle-delay              0.0
-  ;;         company-minimum-prefix-length   1
-  ;;         company-show-numbers            t
-  ;;         company-tooltip-limit           20
-  ;;         company-dabbrev-downcase        nil)
-  ;;   (setq company-global-modes '(not eshell-mode shell-mode))
-  ;;   (setq company-backends (delete 'company-clang company-backends)))
-
-  ;; Disable company if remote session
-  ;; Should be added to relevant hooks
-  (defun storvik/company-disable-if-remote ()
-    (when (and (fboundp 'company-mode)
-               (file-remote-p default-directory))
-      (company-mode -1)))
-#+end_src
-
 ** [[https://github.com/flycheck/flycheck][Flycheck]]
 Flycheck is a programming grammar checker.
 It includes on the fly function lookup and syntax validation.
@@ -1440,7 +1413,6 @@ To choose between multiple lisps use =C-- M-x sly=.
   (use-package sly-asdf
     :after sly)
 #+end_src
-
 
 ** [[https://sourceforge.net/projects/matlab-emacs/][Matlab]]
 Major mode for editing matlab `.m` files.
