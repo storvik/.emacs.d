@@ -782,6 +782,21 @@ This package expands region by semantic units.
       ("c" er/contract-region "contract")))
 #+end_src
 
+** [[https://github.com/jrosdahl/fancy-dabbrev][Fancy dabbrev]]
+
+#+begin_src emacs-lisp
+  (use-package fancy-dabbrev
+    :commands (fancy-dabbrev-mode)
+    :bind (:map storvik/overrides-minor-mode-map
+                ("C-<tab>" . fancy-dabbrev-expand))
+    :config
+    (setq fancy-dabbrev-preview-delay 0.0)
+    (setq fancy-dabbrev-preview-context 'before-non-word)
+    (setq fancy-dabbrev-expansion-on-preview-only t)
+    (setq fancy-dabbrev-indent-command 'indent-for-tab-command)
+    (global-fancy-dabbrev-mode))
+#+end_src
+
 ** Hyperlinks
 Open hyperlinks at point. =C-c B(rowse)=.
 
