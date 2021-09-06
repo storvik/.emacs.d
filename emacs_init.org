@@ -38,6 +38,19 @@ Configure load-path to include =~/.emacs.d/elisp/=.
   (add-to-list 'load-path (concat user-emacs-directory "elisp/"))
 #+end_src
 
+** Custom after gui hook
+- source :: https://www.reddit.com/r/emacs/comments/j2xezg/usepackage_best_practices/
+
+Now I can =:after storvik/gui= to make sure to load packages after gui is loaded, useful when running as daemon.
+In order to run custom elisp after GUI is loaded it's possible to =(with-eval-after-load 'storvik/gui (...))= or with use-package =(use-package emacs :after storvik/gui :config (...))=.
+
+#+begin_src emacs-lisp
+  (defun storvik/first-graphical-frame-hook-function ()
+    (remove-hook 'focus-in-hook #'storvik/first-graphical-frame-hook-function)
+    (provide 'storvik/gui))
+  (add-hook 'focus-in-hook #'storvik/first-graphical-frame-hook-function)
+#+end_src
+
 ** Coding system
 Set coding system before doing anything.
 This is taken from [[https://www.masteringemacs.org/article/working-coding-systems-unicode-emacs][MasteringEmacs]] website.
