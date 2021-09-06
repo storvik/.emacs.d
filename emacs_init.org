@@ -307,8 +307,8 @@ or
 #+begin_src emacs-lisp
   (defvar storvik/overrides-minor-mode-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "M-o") 'other-window)
       (define-key map (kbd "RET") 'newline-and-indent)
+      (define-key map (kbd "C-j") 'newline-and-indent)
       map)
     "storvik/overrides-minor-mode keymap.")
 
@@ -324,17 +324,22 @@ or
   (defun storvik/overrides-minor-mode-disable-hook ()
     (storvik/overrides-minor-mode 0))
 
-  (add-hook 'minibuffer-setup-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'eshell-mode-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'mu4e-headers-mode-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'magit-post-display-buffer-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'python-shell-first-prompt-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'org-agenda-mode-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'mu4e-main-mode-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'sly-db-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'dired-mode-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'deadgrep-mode-hook 'storvik/overrides-minor-mode-disable-hook)
-  (add-hook 'help-mode-hook 'storvik/overrides-minor-mode-disable-hook)
+  ;; Disable overrides in some modes
+  (mapc
+   (lambda (hook)
+     (add-hook hook 'storvik/overrides-minor-mode-disable-hook))
+   '(minibuffer-setup-hook
+     eshell-mode-hook
+     mu4e-headers-mode-hook
+     magit-post-display-buffer-hook
+     python-shell-first-prompt-hook
+     org-agenda-mode-hook
+     mu4e-main-mode-hook
+     sly-db-hook
+     dired-mode-hook
+     deadgrep-mode-hook
+     help-mode-hook
+     cider-repl-mode-hook))
 #+end_src
 
 ** storvik/prefix-map
