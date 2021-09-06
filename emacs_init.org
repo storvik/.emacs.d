@@ -1104,7 +1104,7 @@ Some performance enhancing settings, see lsp-mode README.md for details.
      (("l" "C-c l" :name "lsp prefix")))
     :init
     (setq lsp-keymap-prefix "C-c l"
-          lsp-prefer-capf t     ;; for performance, see lsp-mode readme
+          lsp-prefer-capf t
           lsp-prefer-flymake nil
           lsp-auto-execute-action nil
           lsp-enable-indentation nil))
@@ -1180,8 +1180,6 @@ Setup =lsp= =ccls= support and add hooks.
                                                     "~/../../developer/ccls/Release/ccls.exe"))))
     (use-package ccls
       :when (file-exists-p storvik/ccls-exec)
-      :hook ((c-mode c++-mode objc-mode) .
-             (lambda () (require 'ccls) (lsp)))
       :config (setq ccls-executable storvik/ccls-exec)))
 #+end_src
 
@@ -1275,8 +1273,7 @@ Setup lsp-dart, thanks to [[https://github.com/ericdallo/dotfiles/blob/master/.d
               lsp-dart-dap-flutter-hot-reload-on-save t)))
     (lsp))
 
-  (use-package lsp-dart
-    :hook (dart-mode . storvik/lsp-dart))
+  (use-package lsp-dart)
 #+end_src
 
 ** [[https://github.com/spotify/dockerfile-mode][Dockerfile mode]]
@@ -1334,8 +1331,6 @@ To install lsp support for Go gopls must be installed:
 =GO111MODULE=on go get golang.org/x/tools/gopls@latest=
 
 #+begin_src emacs-lisp
-  (add-hook 'go-mode-hook 'lsp)
-
   ;; Add LSP remote client for golang
   (lsp-register-client
       (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
@@ -1522,10 +1517,7 @@ Decided to try Microsoft [[https://github.com/microsoft/pyright][pyright]] lsp s
 Depends on a never nodejs installation.
 
 #+begin_src emacs-lisp
-  (use-package lsp-pyright
-    :hook (python-mode . (lambda ()
-                           (require 'lsp-pyright)
-                           (lsp))))
+  (use-package lsp-pyright)
 #+end_src
 
 *** [[https://github.com/jorgenschaefer/pyvenv][pyvenv.el]] handles virtual environments in Emacs.
@@ -1740,7 +1732,7 @@ Use org-mode to write letters.
     (consult-ripgrep org-roam-directory))
 
   (use-package org-roam
-    :after (org consult)
+    :after org
     :custom
     (org-roam-completion-everywhere t)
     (org-roam-directory (file-truename "~/developer/org/roam-notes"))
