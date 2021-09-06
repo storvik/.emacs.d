@@ -625,12 +625,6 @@ Enable mouse clicks in terminal.
       (require 'consult-vertico))
     (advice-add #'completing-read-multiple
           :override #'consult-completing-read-multiple))
-
-  (use-package consult-lsp
-    :after (consult lsp-mode)
-    :commands consult-lsp-symbols
-    :config
-    (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
 #+end_src
 
 ** [[https://github.com/oantolin/orderless][Orderless]]
@@ -1113,6 +1107,16 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     :commands lsp-ui-mode
     :init
     (setq lsp-ui-doc-position 'top))
+#+end_src
+
+*** consult-lsp
+
+#+begin_src emacs-lisp
+  (use-package consult-lsp
+    :after (consult lsp-mode)
+    :commands consult-lsp-symbols
+    :config
+    (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
 #+end_src
 
 ** [[https://github.com/lassik/emacs-format-all-the-code][Format all]]
