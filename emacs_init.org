@@ -728,6 +728,7 @@ Tool for jumping to a given char on the screen.
   (use-package corfu
     :custom
     (corfu-quit-at-boundary nil)   ;; Automatically quit at word boundary, nil due to orderless
+    (corfu-quit-no-match t)        ;; Quit if no match
     (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
     (corfu-auto t)                 ;; Enable auto completion
     :init
