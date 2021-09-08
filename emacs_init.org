@@ -1540,6 +1540,17 @@ Update rev/sha from Emacs.
   (use-package nix-update)
 #+end_src
 
+** [[https://github.com/skuro/plantuml-mode][plantuml]]
+
+#+begin_src emacs-lisp
+  (use-package plantuml-mode
+    :custom
+    (plantuml-default-exec-mode 'executable)
+    :config
+    (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+    (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode)))
+#+end_src
+
 ** [[https://github.com/jschaf/powershell.el][Powershell]]
 Edit powershell scripts.
 
@@ -1764,6 +1775,12 @@ Use org-mode to write letters.
   (eval-after-load 'ox '(require 'ox-koma-letter))
   (eval-after-load 'ox-latex
     '(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t) t))
+#+end_src
+
+** org plantuml
+
+#+begin_src emacs-lisp
+  (setq org-plantuml-exec-mode 'plantuml)
 #+end_src
 
 ** [[https://org-roam.readthedocs.io][org-roam]]
