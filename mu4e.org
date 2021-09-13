@@ -1,0 +1,312 @@
+#+TITLE: Storviks mu4e configs
+#+AUTHOR: Petter S. Storvik
+#+EMAIL: petterstorvik@gmail.com
+#+STARTUP: overview
+#+PROPERTY: header-args    :results silent
+
+* Mu initial setup
+The following must be done in order to have a working mu setup.
+
+#+begin_src shell
+  mu init --maildir=/media/storvik/EncryptedEmail/maildir --my-address=petterstorvik@gmail.com --my-address=petter.storvik@avantieng.no
+  mu index
+#+end_src
+
+* General settings
+[[http://www.djcbsoftware.nl/code/mu/mu4e.html][Visit webpage]].
+MU4E is used together with mbsync to receive mail.
+
+#+begin_src emacs-lisp
+  ;; Load path to mu4e, platform dependent.
+  (add-to-list 'load-path (expand-file-name "~/.nix-profile/share/emacs/site-lisp/mu4e"))
+
+  (require 'mu4e)
+
+  ;; use mu4e for e-mail in emacs
+  (setq mail-user-agent 'mu4e-user-agent)
+
+  (setq mu4e-maildir "/media/storvik/EncryptedEmail/maildir")
+  ;;(setq mu4e-get-mail-command "offlineimap") ; Removed as offlineimap is run by systemd
+
+  ;; MU4E key-chord
+  (key-chord-define-global "mu" 'mu4e)
+
+  ;; LastPass login test
+  (defun lastpass-mu4e-update-mail-and-index (update-function &rest r)
+    "Check if user is logged in and run UPDATE-FUNCTION with arguments R."
+    (unless (lastpass-logged-in-p)
+      (lastpass-login)
+      (error "LastPass: Not logged in, log in and retry"))
+    (apply update-function r))
+  ;(advice-add 'mu4e-update-mail-and-index :around #'lastpass-mu4e-update-mail-and-index)
+
+  ;; Automatic updates
+  (setq mu4e-update-interval 300)
+
+  ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
+  (setq mu4e-sent-messages-behavior 'delete)
+
+  ;; Change luminosity to work with dark themes
+  ;;(setq shr-color-visible-luminance-min 80)
+
+  ;; Attempt to show images when viewing messages
+  ;;(setq mu4e-view-show-images t)
+
+  ;; Save attachment (this can also be a function)
+  (setq mu4e-attachment-dir "~/Downloads")
+
+  ;; Change filename when moving, to avoid duplicate uid error in mbsync
+  ;;(setq mu4e-change-filenames-when-moving t)
+
+  ;; Remove message buffer when finished
+  (setq message-kill-buffer-on-exit t)
+
+  ;; Turn off auto-fill
+  ;; (defun no-auto-fill ()
+  ;;   "Turn off auto-fill-mode."
+  ;;   (auto-fill-mode -1))
+  ;; (add-hook 'mu4e-compose-mode-hook #'no-auto-fill)
+#+end_src
+
+* Contexts
+Multiple contexts equals multiple accounts.
+
+#+begin_src emacs-lisp
+  (setq mu4e-contexts
+      `( ,(make-mu4e-context
+            :name "Gmail"
+            :enter-func (lambda () (mu4e-message "Entering gmail context"))
+            :leave-func (lambda () (mu4e-message "Leaving gmail context"))
+            ;; we match based on the contact-fields of the message
+            :match-func (lambda (msg)
+                          (when msg
+                            (mu4e-message-contact-field-matches msg
+                              :to "petterstorvik@gmail.com")))
+            :vars '( ( user-mail-address      . "petterstorvik@gmail.com"  )
+                     ( user-full-name         . "Petter S. Storvik" )
+                     ( mu4e-drafts-folder     . "/petterstorvik@gmail.com/Drafts")
+                     ( mu4e-sent-folder       . "/petterstorvik@gmail.com/Sent")
+                     ( mu4e-trash-folder      . "/petterstorvik@gmail.com/Trash")
+                     ( mu4e-refile-folder     . "/petterstorvik@gmail.com/All")
+                     ( smtpmail-smtp-user     . "petterstorvik@gmail.com")
+                     ( smtpmail-smtp-server   . "smtp.gmail.com")
+                     ( smtpmail-stream-type   . starttls)
+                     ( smtpmail-smtp-service  . 587)
+                     ( mu4e-compose-signature .
+                       (concat
+                         "\nMed vennlig hilsen / Kind regards\n"
+                         "Petter Sakrihei Storvik\n\n"
+                         "Phone: +47 958 83 676\n"
+                         "E-mail: petterstorvik@gmail.com"))))
+         ,(make-mu4e-context
+            :name "Avantieng"
+            :enter-func (lambda () (mu4e-message "Entering avantieng context"))
+            :leave-func (lambda () (mu4e-message "Leaving avantieng context"))
+            ;; we match based on the maildir of the message
+            :match-func (lambda (msg)
+                          (when msg
+                              (string-match-p "^/petter.storvik@avantieng.no" (mu4e-message-field msg :maildir))))
+            :vars '( ( user-mail-address       . "petter.storvik@avantieng.no" )
+                     ( user-full-name          . "Petter S. Storvik" )
+                     ( mu4e-drafts-folder      . "/petter.storvik@avantieng.no/Drafts")
+                     ( mu4e-sent-folder        . "/petter.storvik@avantieng.no/Sent")
+                     ( mu4e-trash-folder       . "/petter.storvik@avantieng.no/Trash")
+                     ( mu4e-refile-folder      . "/petter.storvik@avantieng.no/Archive")
+                     ( smtpmail-smtp-user      . "petter.storvik@avantieng.no")
+                     ( smtpmail-smtp-server    . "smtp.office365.com")
+                     ( smtpmail-stream-type    . starttls)
+                     ( smtpmail-smtp-service   . 587)
+                     ( mu4e-compose-signature  .
+                       (concat
+                         "\nMed vennlig hilsen / Kind regards\n"
+                         "Petter Sakrihei Storvik\n\n"
+                         "Avanti Engineering AS\n"
+                         "M.Sc Electronics\n"
+                         "Web: avantieng.no\n"
+                         "Tlf: +47 907 34 650\n"
+                         "E-mail: petter.storvik@avantieng.no"))))
+         ,(make-mu4e-context
+            :name "Svartisenfestivalen"
+            :enter-func (lambda () (mu4e-message "Entering svartisenfestivalen context"))
+            :leave-func (lambda () (mu4e-message "Leaving svartisenfestivalen context"))
+            ;; we match based on the maildir of the message
+            ;; this matches maildir /Arkham and its sub-directories
+            :match-func (lambda (msg)
+                          (when msg
+                            (or
+                              (string-match-p "^/petterstorvik@gmail.com/Svartisenfestivalen" (mu4e-message-field msg :maildir))
+                              (mu4e-message-contact-field-matches msg :to "petter@svartisenfestivalen.no"))))
+            :vars '( ( user-mail-address       . "petter@svartisenfestivalen.no" )
+                     ( user-full-name          . "Petter S. Storvik" )
+                     ( mu4e-drafts-folder     . "/petterstorvik@gmail.com/Drafts")
+                     ( mu4e-sent-folder       . "/petterstorvik@gmail.com/Sent")
+                     ( mu4e-trash-folder      . "/petterstorvik@gmail.com/Trash")
+                     ( mu4e-refile-folder      . "/petterstorvik@gmail.com/All")
+                     ( smtpmail-smtp-user     . "petterstorvik@gmail.com")
+                     ( smtpmail-smtp-server   . "smtp.gmail.com")
+                     ( smtpmail-stream-type   . starttls)
+                     ( smtpmail-smtp-service  . 587)
+                     ( mu4e-compose-signature  .
+                       (concat
+                         "\nMed vennlig hilsen / Kind regards\n"
+                         "Petter Sakrihei Storvik\n\n"
+                         "Svartisenfestivalen\n"
+                         "Booking / Sponsorkontakt\n"
+                         "Web: http://www.svartisenfestivalen.no\n"
+                         "Tlf: +47 958 83 676\n"
+                         "E-mail: petter@svartisenfestivalen.no"))))))
+
+    ;; This sets `mu4e-user-mail-address-list' to the concatenation of all
+    ;; `user-mail-address' values for all contexts. If you have other mail
+    ;; addresses as well, you'll need to add those manually.
+    (setq mu4e-user-mail-address-list
+      (delq nil
+        (mapcar (lambda (context)
+                  (when (mu4e-context-vars context)
+                    (cdr (assq 'user-mail-address (mu4e-context-vars context)))))
+          mu4e-contexts)))
+
+    ;; start with default context
+      (setq mu4e-context-policy 'pick-first)
+
+#+end_src
+
+* Maildirs
+Shortcuts to maildirs goes here
+
+#+begin_src emacs-lisp
+  ;; Shortcuts to maildirs
+  (setq mu4e-maildir-shortcuts
+        '(("/petterstorvik@gmail.com/Inbox"               . ?i)
+          ("/petterstorvik@gmail.com/All"                 . ?a)
+          ("/petterstorvik@gmail.com/Sent"                . ?s)
+          ("/petterstorvik@gmail.com/Trash"               . ?t)
+          ("/petterstorvik@gmail.com/Svartisenfestivalen" . ?S)
+          ("/petter.storvik@avantieng.no/Inbox"           . ?o)
+          ("/petter.storvik@avantieng.no/Archive"         . ?p)
+          ("/petter.storvik@avantieng.no/Sent"            . ?w)
+          ("/petter.storvik@avantieng.no/Trash"           . ?q)))
+#+end_src
+
+* Bookmarks
+Add some useful bookmarks.
+
+#+begin_src emacs-lisp
+  (add-to-list 'mu4e-bookmarks
+               '((concat
+                  "flag:unread AND "
+                  "NOT flag:trashed AND "
+                  "NOT (maildir:/petterstorvik@gmail.com/Trash OR maildir:/petter.storvik@avantieng.no/Trash)") "Unread in inbox" ?i))
+  (add-to-list 'mu4e-bookmarks
+               '((concat
+                  "maildir:/petterstorvik@gmail.com/Inbox AND "
+                  "to:petter@svartisenfestivalen.no") "Svartisenfestivalen Inbox" ?3))
+  (add-to-list 'mu4e-bookmarks
+               '("maildir:/petter.storvik@avantieng.no/Inbox" "Avantieng Inbox" ?2))
+  (add-to-list 'mu4e-bookmarks
+               '("maildir:/petterstorvik@gmail.com/Inbox" "Gmail Inbox" ?1))
+#+end_src
+
+* Headers view
+Headers view customizations.
+
+#+begin_src emacs-lisp
+  ;; Change date format
+  (setq mu4e-headers-date-format "%Y.%m.%d %H:%M")
+
+  ;; Include related mail, use carefully when deleting mail with search queries.
+  (setq mu4e-headers-include-related t)
+
+  ;; Show number of recipients
+  ;; (add-to-list 'mu4e-header-info-custom
+  ;;   '(:recipnum .
+  ;;      ( :name "Number of recipients"                  ;; long name, as seen in the message-view
+  ;;        :shortname " R"                                ;; short name, as seen in the headers view
+  ;;        :help "Number of recipients for this message" ;; tooltip
+  ;;        :function (lambda (msg)
+  ;;           (format "%2d"
+  ;;             (+ (length (mu4e-message-field msg :to))
+  ;;                (length (mu4e-message-field msg :cc))))))))
+  ;; (add-to-list 'mu4e-view-fields :recipnum)
+  ;; (add-to-list 'mu4e-headers-fields '(:recipnum))
+
+  ;; Make date field wider
+  ;; (add-to-list 'mu4e-headers-fields '(:human-date . 17))
+#+end_src
+
+* Message setting
+Use org mode tables and structure in message mode.
+
+#+begin_src emacs-lisp
+  (add-hook 'message-mode-hook 'turn-on-orgtbl)
+  (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+
+  (add-to-list 'mu4e-view-actions
+               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+#+end_src
+
+* Compose setting
+Message compose section.
+
+#+begin_src emacs-lisp
+  ;; Remove automatic newlines
+  (setq mu4e-compose-format-flowed t)
+
+  ;; Attach files to bottom to avoid exchange bug
+  (defun storvik/attach-file ()
+    (interactive)
+    (with-current-buffer (current-buffer)
+      (let ((pos (point-marker)))
+        (goto-char (point-max))
+        (call-interactively 'mail-add-attachment)
+        (goto-char pos))))
+
+  (define-key mu4e-compose-mode-map (kbd "C-c C-a") 'storvik/attach-file)
+#+end_src
+
+* SMTP settings
+Outgoing SMTP settings, note that username, server address etc. are defined in contexts.
+
+#+begin_src emacs-lisp
+  (require 'smtpmail)
+  (setq message-send-mail-function 'smtpmail-send-it)
+  (setq smtpmail-stream-type 'starttls)
+#+end_src
+
+* Confirm sending with yes or no
+
+#+begin_src emacs-lisp
+  (add-hook 'message-send-hook
+            (lambda ()
+              (unless (yes-or-no-p "Are you sure you want to send this?")
+                (signal 'quit nil))))
+#+end_src
+
+* Notifications
+[[https://github.com/iqbalansari/mu4e-alert][Visit webpage]].
+=mu4e-alert= sets up mail notifications in modeline.
+Can also be used to show system notifications on Mac Os X and Linux.
+
+#+begin_src emacs-lisp
+  (use-package mu4e-alert
+    :after mu4e
+    :init
+    (setq mu4e-alert-interesting-mail-query
+          (concat
+           "flag:unread maildir:/petterstorvik@gmail.com/Inbox "
+           "OR "
+           "flag:unread maildir:/petter.storvik@avantieng.no/Inbox"))
+    :config
+    (mu4e-alert-set-default-style 'libnotify)
+    ;; (mu4e-alert-enable-mode-line-display)
+    :hook
+    ((after-init . mu4e-alert-enable-notifications)
+     (after-init . mu4e-alert-enable-mode-line-display)))
+#+end_src
+* Org integration
+Make org capture templates with =%a= include link to selected email in mu4e.
+
+#+begin_src emacs-lisp
+  (require 'org-mu4e)
+  (setq org-mu4e-link-query-in-headers-mode nil)
+#+end_src
