@@ -1485,14 +1485,16 @@ Major mode for editing matlab `.m` files.
 Mode to edit markdown files more efficiently.
 
 #+begin_src emacs-lisp
+  (use-package edit-indirect)
+
   (use-package markdown-mode
+    :after edit-indirect
     :commands (markdown-mode gfm-mode)
+    :custom
+    (markdown-command "multimarkdown")
     :mode (("README\\.md\\'" . gfm-mode)
            ("\\.md\\'" . gfm-mode)
-           ("\\.markdown\\'" . markdown-mode))
-    :init (setq markdown-command (concat "pandoc -f gfm --standalone --highlight-style kate --metadata title=\"MarkdownPreview\" --css "
-                                         (file-truename user-emacs-directory)
-                                         "pandoc.css")))
+           ("\\.markdown\\'" . markdown-mode)))
 #+end_src
 
 *** [[https://github.com/ardumont/markdown-toc][Markdown toc]]
