@@ -1966,5 +1966,6 @@ Function that sends region or buffer to termbin and puts URL in kill ring.
 Start emacs server
 
 #+begin_src emacs-lisp
-  (server-start)
+  (unless (daemonp)
+    (server-start))
 #+end_src
