@@ -958,25 +958,14 @@ Shows todo in magit buffers.
     :hook (after-init . magit-todos-mode))
 #+end_src
 
-** [[https://github.com/emacsorphanage/git-gutter][gutter]]
+** [[https://github.com/dgutov/diff-hl][diff-hl]]
 
-#+begin_src elisp
-  (use-package git-gutter
-    :ryo
-    ("SPC"
-     (("g" hydra-git-gutter/body :name "Git gutter hydra")))
-    :hook ((after-init . global-git-gutter-mode)
-           (magit-post-refresh . git-gutter:update-all-windows))
-    :config
-    (defhydra hydra-git-gutter ()
-      "A hydra for git!"
-      ("j" git-gutter:next-hunk "next")
-      ("k" git-gutter:previous-hunk "previous")
-      ("d" git-gutter:popup-hunk "diff")
-      ("s" git-gutter:stage-hunk "stage")
-      ("r" git-gutter:revert-hunk "revert")
-      ("m" git-gutter:mark-hunk "mark")
-      ("q" nil "cancel" :color blue)))
+#+begin_src emacs-lisp
+  (use-package diff-hl
+    :hook (dired-mode . diff-hl-dired-mode)
+    :init
+    (with-eval-after-load 'storvik/gui
+        (global-diff-hl-mode)))
 #+end_src
 
 ** [[https://gitlab.com/pidu/git-timemachine][git-timemachine]]
