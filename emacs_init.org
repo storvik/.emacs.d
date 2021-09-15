@@ -1188,7 +1188,7 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
     :config
     (auctex-latexmk-setup)
     (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-    (add-hook 'TeX-mode-hook '(lambda ()
+    (add-hook 'TeX-mode-hook (lambda ()
                               (setq TeX-command-default "LatexMk"))))
 #+end_src
 
