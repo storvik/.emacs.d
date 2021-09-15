@@ -43,6 +43,7 @@ Configure load-path to include =~/.emacs.d/elisp/=.
 
 Now I can =:after storvik/gui= to make sure to load packages after gui is loaded, useful when running as daemon.
 In order to run custom elisp after GUI is loaded it's possible to =(with-eval-after-load 'storvik/gui (...))= or with use-package =(use-package emacs :after storvik/gui :config (...))=.
+When =with-eval-after-load= is used from =use-package= it should be placed in =:init=.
 
 #+begin_src emacs-lisp
   (defun storvik/first-graphical-frame-hook-function ()
@@ -794,6 +795,23 @@ This package expands region by semantic units.
       "Expand region"
       ("e" er/expand-region "expand")
       ("c" er/contract-region "contract")))
+#+end_src
+
+** [[https://github.com/jrosdahl/fancy-dabbrev][Fancy dabbrev]]
+
+#+begin_src emacs-lisp
+  (use-package fancy-dabbrev
+    :commands (fancy-dabbrev-mode)
+    :bind (:map storvik/overrides-minor-mode-map
+                ("C-<tab>" . fancy-dabbrev-expand))
+    :custom
+    (fancy-dabbrev-preview-delay 0.0)
+    (fancy-dabbrev-preview-context 'before-non-word)
+    (fancy-dabbrev-expansion-on-preview-only t)
+    (fancy-dabbrev-indent-command 'indent-for-tab-command)
+    :init
+    (with-eval-after-load 'storvik/gui
+      (global-fancy-dabbrev-mode)))
 #+end_src
 
 ** Hyperlinks
