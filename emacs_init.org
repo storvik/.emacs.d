@@ -150,10 +150,11 @@ Delete trailing whitespaces on save.
 Set default font and size.
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font (sys-diversification
-                                           "Fira Code-10"
-                                           "Fira Mono-10"
-                                           "Courier New-10"))
+  (with-eval-after-load 'storvik/gui
+    (set-face-attribute 'default nil :font (sys-diversification
+                                            "iosevka-10"
+                                            "iosevka-10"
+                                            "Courier New-10")))
 #+end_src
 
 ** Highlight line mode
