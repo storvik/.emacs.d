@@ -214,7 +214,9 @@ Display emojis in Emacs!
 
 #+begin_src emacs-lisp
   (use-package emojify
-    :hook (after-init . global-emojify-mode))
+    :hook ((after-init . global-emojify-mode)
+           (org-agenda-mode . (lambda ()
+                                (set (make-local-variable 'emojify-emoji-style) '(ascii unicode))))))
 #+end_src
 
 ** [[https://github.com/Fanael/rainbow-delimiters][Rainbow delimiters]]
@@ -1704,9 +1706,7 @@ Install org mode package
   ;; File locations
   (setq org-directory "~/developer/org/org")
   (setq org-default-notes-file "~/developer/org/org/refile.org")
-  (setq org-agenda-files (append (file-expand-wildcards (concat org-directory "*.org"))
-                                 (file-expand-wildcards (concat org-directory "*/*.org"))
-                                 (file-expand-wildcards (concat org-directory "*/*/*.org"))))
+  (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
 
   ;; Refile
   (setq org-refile-use-outline-path t)
@@ -1757,26 +1757,102 @@ Capture templates and such
 #+end_src
 
 ** Todo
-Todo states can be cycled through with =S-<left>/<right>=.
 Custom todo states are defined.
 
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-        (quote ((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
-                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+        '((sequence "TODO(t)" "NEXT(n@/!)" "WIP(s@/!)" "|" "DONE(d)")
+          (sequence "WAITING(w@/!)" "DELEGATED(g@/!)" "FOLLOWUP(f@/!)" "|" "CANCELLED(c@/!)")
+          (sequence "PHONE" "MEETING")))
 #+end_src
 
 This defines different colors for different states.
 #+begin_src emacs-lisp
   (setq org-todo-keyword-faces
-        (quote (("TODO" :foreground "red" :weight bold)
-                ("STARTED" :foreground "blue" :weight bold)
-                ("DONE" :foreground "forest green" :weight bold)
-                ("WAITING" :foreground "orange" :weight bold)
-                ("HOLD" :foreground "magenta" :weight bold)
-                ("CANCELLED" :foreground "forest green" :weight bold)
-                ("MEETING" :foreground "forest green" :weight bold)
-                ("PHONE" :foreground "forest green" :weight bold))))
+        '(("TODO" :foreground "orange red" :weight bold)
+          ("NEXT" :foreground "dark orange" :wight bold)
+          ("WIP" :foreground "deep sky blue" :weight bold)
+          ("DONE" :foreground "forest green" :weight bold)
+          ("WAITING" :foreground "orange" :weight bold)
+          ("DELEGATED" :foreground "light green" :weight bold)
+          ("FOLLOWUP" :foreground "deep sky blue" :weight bold)
+          ("CANCELLED" :foreground "forest green" :weight bold)
+          ("MEETING" :foreground "hot pink" :weight bold)
+          ("PHONE" :foreground "violet red" :weight bold)))
+#+end_src
+
+** Agenda
+Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-agenda]].
+
+#+begin_src emacs-lisp
+  (use-package org-super-agenda
+    :after org
+    :config
+    ;; Open in full window
+    (setq org-agenda-window-setup 'only-window)
+    (defun storvik/agenda-context-emoji ()
+      "Should insert emoji for given context, but alignment never worked."
+      (let ((tags (concat (org-entry-get (point) "TAGS"))))
+        (concat (when (string-match-p "@computer" tags)
+                  "@computer")
+                (when (string-match-p "@phone" tags)
+                  "@phone")
+                (when (string-match-p "@work" tags)
+                  "@work")
+                (when (string-match-p "@home" tags)
+                  "@home"))))
+    (setq org-agenda-custom-commands
+          '(("w" " Work"
+             ((agenda ""
+                      ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
+                       (org-agenda-overriding-header "")
+                       (org-agenda-remove-tags t) ;; remove tags from agenda view
+                       (org-super-agenda-groups
+                        '((:discard (:not (:tag ("avanti"))))
+                          (:name "This week")))))
+              (alltodo ""
+                       ((org-agenda-prefix-format " %i %-18:c %-12(storvik/agenda-context-emoji) ")
+                        (org-agenda-hide-tags-regexp "@") ;; remove context tags from tag list
+                        (org-agenda-overriding-header "")
+                        (org-super-agenda-groups
+                         '((:discard (:not (:tag ("avanti"))))
+                           (:name "🛠 Work in progress" :todo "WIP")
+                           (:name "⌛ Next" :todo "NEXT")
+                           (:name "🗒 Todo" :todo "TODO")
+                           (:name "🕐 Waiting" :todo "WAITING")
+                           (:discard (:todo ("PHONE" "MEETING")))))))))
+            ("p" " Private"
+             ((agenda ""
+                      ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
+                       (org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '((:discard (:tag ("avanti")))
+                          (:name "This week")))))
+              (alltodo ""
+                       ((org-agenda-prefix-format " %i %-22:c")
+                        (org-agenda-remove-tags t)
+                        (org-agenda-overriding-header "")
+                        (org-super-agenda-groups
+                         '((:discard (:tag ("avanti")))
+                           (:name "🛠 Work in progress" :todo "WIP")
+                           (:name "⌛ Next" :todo "NEXT")
+                           (:name "🗒 Todo" :todo "TODO")
+                           (:name "🕐 Waiting" :todo "WAITING")
+                           (:discard (:todo ("PHONE" "MEETING")))))))))))
+    (org-super-agenda-mode))
+#+end_src
+
+** Org hydra and keybinding
+Useful hydra for org-mode stuff.
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :bind (:map storvik/prefix-map ("o" . hydra-org-mode/body))
+    :config
+    (defhydra hydra-org-mode (:hint nil)
+      "org-mode hydra"
+      ("a" org-agenda "Agenda")
+      ("c" org-capture "Capture")))
 #+end_src
 
 ** [[https://orgmode.org/worg/exporters/koma-letter-export.html][Koma letter]]
