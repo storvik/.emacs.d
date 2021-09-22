@@ -1096,7 +1096,7 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     (setq lsp-ui-doc-position 'top))
 #+end_src
 
-*** consult-lsp
+*** [[https://github.com/gagbo/consult-lsp][consult-lsp]]
 
 #+begin_src emacs-lisp
   (use-package consult-lsp
@@ -1529,7 +1529,7 @@ Update rev/sha from Emacs.
   (use-package nix-update)
 #+end_src
 
-** [[https://github.com/skuro/plantuml-mode][plantuml]]
+** [[https://github.com/skuro/plantuml-mode][PlantUML]]
 
 #+begin_src emacs-lisp
   (use-package plantuml-mode
@@ -1637,22 +1637,6 @@ YAML editing improved.
 
 #+begin_src emacs-lisp
   (use-package yaml-mode)
-#+end_src
-
-** [[https://github.com/joaotavora/yasnippet][Yasnippet]]
-Expand snippets, making your life easier.
-
-#+begin_src emacs-lisp
-  (use-package yasnippet
-    :diminish yas-minor-mode
-    :config
-      (yas-global-mode 1))
-#+end_src
-
-As yasnippet doesn't contain any snippets, [[https://github.com/AndreaCrotti/yasnippet-snippets][here]] is an awesome collection!
-#+begin_src emacs-lisp
-  (use-package yasnippet-snippets
-    :defer t)
 #+end_src
 
 ** [[https://github.com/purcell/envrc][envrc]]
