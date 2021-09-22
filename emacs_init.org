@@ -1873,7 +1873,7 @@ Useful hydra for org-mode stuff.
   (use-package emacs
     :bind (:map storvik/prefix-map ("o" . hydra-org-mode/body))
     :config
-    (defhydra hydra-org-mode (:color pink :hint nil)
+    (defhydra hydra-org-mode (:color pink :exit t :hint nil)
       "
   ^roam^              ^org
   ^^^^^^^^---------------------------
