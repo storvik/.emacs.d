@@ -747,30 +747,6 @@ Use ripgrep from Emacs.
     :bind (:map storvik/prefix-map ("s" . deadgrep)))
 #+end_src
 
-** [[https://github.com/jacktasia/dumb-jump][Dumb jump]]
-Used to jump between definitions in almost every language.
-
-#+begin_src emacs-lisp
-  (use-package dumb-jump
-    :bind (:map storvik/prefix-map ("d" . hydra-dumb-jump/body))
-    :config
-    (setq dumb-jump-force-searcher 'rg)
-    (defhydra hydra-dumb-jump (:hint nil)
-      "
-   Jump^^         Other window^^    Other
-  ---------------------------------------------------
-   [_j_] go       [_J_] go          [_p_] prompt
-   [_e_] external [_E_] external    [_q_] quick look
-   [_b_] back"
-      ("j" dumb-jump-go)
-      ("J" dumb-jump-go-other-window)
-      ("e" dumb-jump-go-prefer-external)
-      ("E" dumb-jump-go-prefer-external-other-window)
-      ("p" dumb-jump-go-prompt)
-      ("q" dumb-jump-quick-look)
-      ("b" dumb-jump-back)))
-#+end_src
-
 ** [[https://github.com/magnars/expand-region.el][Expand region]]
 This package expands region by semantic units.
 
