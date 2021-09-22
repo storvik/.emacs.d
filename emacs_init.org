@@ -1788,8 +1788,6 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
   (use-package org-super-agenda
     :after org
     :config
-    ;; Open in full window
-    (setq org-agenda-window-setup 'only-window)
     (defun storvik/agenda-context-emoji ()
       "Should insert emoji for given context, but alignment never worked."
       (let ((tags (concat (org-entry-get (point) "TAGS"))))
@@ -1811,8 +1809,9 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
                         '((:discard (:not (:tag ("avanti"))))
                           (:name "This week")))))
               (alltodo ""
-                       ((org-agenda-prefix-format " %i %-18:c %-12(storvik/agenda-context-emoji) ")
+                       ((org-agenda-prefix-format "  %i %-16:c %-10(storvik/agenda-context-emoji) %-6e ")
                         (org-agenda-hide-tags-regexp "@") ;; remove context tags from tag list
+                        (org-agenda-remove-tags t)
                         (org-agenda-overriding-header "")
                         (org-super-agenda-groups
                          '((:discard (:not (:tag ("avanti"))))
@@ -1840,19 +1839,6 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
                            (:name "🕐 Waiting" :todo "WAITING")
                            (:discard (:todo ("PHONE" "MEETING")))))))))))
     (org-super-agenda-mode))
-#+end_src
-
-** Org hydra and keybinding
-Useful hydra for org-mode stuff.
-
-#+begin_src emacs-lisp
-  (use-package emacs
-    :bind (:map storvik/prefix-map ("o" . hydra-org-mode/body))
-    :config
-    (defhydra hydra-org-mode (:hint nil)
-      "org-mode hydra"
-      ("a" org-agenda "Agenda")
-      ("c" org-capture "Capture")))
 #+end_src
 
 ** [[https://orgmode.org/worg/exporters/koma-letter-export.html][Koma letter]]
@@ -1897,7 +1883,7 @@ Use org-mode to write letters.
            ("C-c n c" . org-roam-capture)
            ;; Dailies
            ("C-c n j" . org-roam-dailies-capture-today)
-           ("C-c n d" . storvik/org-roam-ripgrep))
+           ("C-c n s" . storvik/org-roam-ripgrep))
     :init
     (setq org-roam-v2-ack t)
     :config
@@ -1917,9 +1903,36 @@ Use org-mode to write letters.
   (use-package org-roam-ui
     :straight
     (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
-    :after org-roam
-    ;; :hook (org-roam . org-roam-ui-mode)
-    )
+    :after org-roam)
+#+end_src
+
+** Org hydra and keybinding
+Useful hydra for org-mode stuff.
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :bind (:map storvik/prefix-map ("o" . hydra-org-mode/body))
+    :config
+    (defhydra hydra-org-mode (:color pink :hint nil)
+      "
+  ^roam^              ^org
+  ^^^^^^^^---------------------------
+  _l_: buffer toggle  _a_: agenda
+  _c_: capture        _C_: capture
+  _f_: find
+  _i_: insert node
+  _u_: roam ui
+  _s_: roam ripgrep
+  "
+      ("a" org-agenda)
+      ("C" org-capture)
+      ("l" org-roamd-buffer-toggle)
+      ("c" org-roam-capture)
+      ("f" org-roam-node-find)
+      ("i" org-roam-node-insert)
+      ("u" org-roam-ui-mode)
+      ("s" storvik/org-roam-ripgrep)
+      ("q" nil "cancel")))
 #+end_src
 
 * Email
