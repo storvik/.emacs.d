@@ -1683,8 +1683,8 @@ Install org mode package
   (setq org-clock-into-drawer 1)
   (setq org-log-done 'time)
 
-  ;; Todo
-  ; (setq org-clock-in-switch-to-state "STARTED")
+  ;; Misc
+  (setq org-export-allow-bind-keywords t)
 #+end_src
 
 ** [[https://github.com/sabof/org-bullets][Bullets]]
