@@ -1708,9 +1708,9 @@ Capture templates and such
                 ("n" "Note" entry (file "~/developer/org/org/refile.org")
                  "* %? :NOTE:\n")
                 ("m" "Meeting" entry (file "~/developer/org/org/refile.org")
-                 "* MEETING %t %? :MEETING:\n" :clock-in t :clock-resume t)
+                 "* MEETING %t %? :meeting:\n" :clock-in t :clock-resume t)
                 ("p" "Phone Call" entry (file "~/developer/org/org/refile.org")
-                 "* PHONE %T %? :PHONE:\n" :clock-in t :clock-resume t)
+                 "* PHONE %T %? :phone:\n" :clock-in t :clock-resume t)
                 ("r" "Respond to email, must be run from mu4e" entry (file "~/developer/org/org/refile.org")
                  "* TODO Respond to %:from on %:subject\n\t%a\n" :immediate-finish t)
                 ("e" "E-mail todo, must be run from mu4e" entry (file "~/developer/org/org/refile.org")
@@ -1820,6 +1820,7 @@ Use org-mode to write letters.
 #+end_src
 
 ** [[https://org-roam.readthedocs.io][org-roam]]
+My roam config, trying to use roam as a personal knowledge base and daily note taking.
 
 #+begin_src emacs-lisp
   (defun storvik/org-roam-ripgrep ()
@@ -1832,11 +1833,30 @@ Use org-mode to write letters.
     :custom
     (org-roam-completion-everywhere t)
     (org-roam-directory (file-truename "~/developer/org/roam-notes"))
+    (org-roam-capture-templates
+     '(("d" "default" plain "%?"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                           "#+title: ${title}\n")
+        :unnarrowed t)
+       ("p" "person" plain "%?"
+        :if-new (file+head "people/${slug}.org"
+                           "#+title: ${title}\n\n- phone ::\n- email ::\n- company ::\n- role ::\n- location ::\n- how we met ::\n- birthday ::\n- interests ::\n- tags ::\n")
+        :unnarrowed t)))
     ;; Dailies
     (org-roam-dailies-directory (file-truename "~/developer/org/roam-dailies"))
     (org-roam-dailies-capture-templates
      '(("d" "default" entry
         "* %?"
+        :if-new (file+head "%<%Y-%m-%d>.org"
+                           "#+title: %<%Y-%m-%d>\n"))
+       ("m" "meeting" entry
+        "* MEETING %T %? :meeting:\n"
+        :clock-in t :clock-resume t
+        :if-new (file+head "%<%Y-%m-%d>.org"
+                           "#+title: %<%Y-%m-%d>\n"))
+       ("p" "phone" entry
+        "* PHONE %T %? :phone:\n"
+        :clock-in t :clock-resume t
         :if-new (file+head "%<%Y-%m-%d>.org"
                            "#+title: %<%Y-%m-%d>\n"))))
     :bind (("C-c n l" . org-roam-buffer-toggle)
@@ -1878,14 +1898,12 @@ Useful hydra for org-mode stuff.
     :config
     (defhydra hydra-org-mode (:color pink :exit t :hint nil)
       "
-  ^roam^              ^org
-  ^^^^^^^^---------------------------
-  _l_: buffer toggle  _a_: agenda
-  _c_: capture        _C_: capture
-  _f_: find
-  _i_: insert node
-  _u_: roam ui
-  _s_: roam ripgrep
+  ^org^                     ^roam^                                         ^dailies
+  ^^^^^^^^---------------------------------------------------------------------------------------------
+  _a_: agenda               _l_: buffer toggle        _f_: find              _j_: capture dailies
+  _C_: capture              _c_: capture              _i_: insert node       _t_: goto today
+  ^ ^                       _u_: roam ui              ^ ^                    _y_: goto yesterday
+  ^ ^                       _s_: roam ripgrep         ^ ^                    _d_: goto day
   "
       ("a" org-agenda)
       ("C" org-capture)
@@ -1895,6 +1913,10 @@ Useful hydra for org-mode stuff.
       ("i" org-roam-node-insert)
       ("u" org-roam-ui-mode)
       ("s" storvik/org-roam-ripgrep)
+      ("j" org-roam-dailies-capture-today)
+      ("t" org-roam-dailies-goto-today)
+      ("y" org-roam-dailies-goto-yesterday)
+      ("d" org-roam-dailies-goto-date)
       ("q" nil "cancel")))
 #+end_src
 
