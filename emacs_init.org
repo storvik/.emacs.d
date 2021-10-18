@@ -152,8 +152,8 @@ Set default font and size.
 #+begin_src emacs-lisp
   (with-eval-after-load 'storvik/gui
     (set-face-attribute 'default nil :font (sys-diversification
-                                            "Fira Code-10"
-                                            "Fira Code-10"
+                                            "Iosevka Nerd Font-10" ;
+                                            "Iosevka Nerd Font-10"
                                             "Courier New-10")))
 #+end_src
 
