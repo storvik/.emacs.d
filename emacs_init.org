@@ -1108,35 +1108,18 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
 #+end_src
 
-** [[https://github.com/lassik/emacs-format-all-the-code][Format all]]
-Format all, one package to run all formatters.
+** [[https://github.com/raxod502/apheleia][Apheleia]]
 
-#+begin_src elisp
-  (use-package format-all
-    :hook ((prog-mode . format-all-mode)
-           (format-all-mode . format-all-ensure-formatter)
-           (go-mode . (lambda () (setq format-all-formatters '(("Go" goimports)))))
-           (sh-mode . (lambda () (setq format-all-formatters '(("Shell" (shfmt "-i=4"))))))
-           (c-mode . (lambda () (setq format-all-formatters '(("C" astyle)))))
-           (c++-mode . (lambda () (setq format-all-formatters '(("C++" astyle))))))
+#+begin_src emacs-lisp
+  (use-package apheleia
+    :straight
+    (:host github :repo "raxod502/apheleia")
     :config
-    ;; Custom html-tidy command
-    (define-format-all-formatter html-tidy
-      (:executable "tidy")
-      (:install
-       (macos "brew install tidy-html5")
-       (windows "scoop install tidy"))
-      (:languages "HTML" "XML")
-      (:format
-       (format-all--buffer-hard
-        '(0 1) nil nil
-        executable
-        "-q"
-        "--tidy-mark" "no"
-        "-indent"
-        "--vertical-space" "no"
-        "--wrap" "0"
-        (when (equal language "XML") "-xml")))))
+    (add-to-list 'apheleia-formatters '(goimports "goimports"))
+    (setf (alist-get 'go-mode apheleia-mode-alist) 'goimports)
+    (add-to-list 'apheleia-formatters '(nixpkgs-fmt "nixpkgs-fmt"))
+    (setf (alist-get 'nix-mode apheleia-mode-alist) 'nixpkgs-fmt)
+    (apheleia-global-mode +1))
 #+end_src
 
 ** [[https://www.gnu.org/software/auctex/][Auctex]]
