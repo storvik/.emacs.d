@@ -1,4 +1,5 @@
 ;; Bootstrap straight.el
+(setq package-enable-at-startup nil)
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -22,7 +23,8 @@
   (load custom-file))
 
 ;; Install org before using it to load init file
-(straight-use-package 'org-contrib)
+;; (use-package org :straight (org :type built-in))
+(use-package org-contrib)
 
 ;; Require org and load emacs_init.org
 (org-babel-load-file (expand-file-name "emacs_init.org" user-emacs-directory))

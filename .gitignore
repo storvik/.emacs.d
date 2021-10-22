@@ -1,3 +1,6 @@
+straight/build/*
+straight/repos/*
+straight/build-cache.el
 auto-save-list/*
 custom.el*
 elpa/*
@@ -23,7 +26,6 @@ speed-type/*
 transient/
 .lsp-session*
 .cache/
-straight/*
 srecode-map.el
 elpy/
 emojis/
