@@ -86,7 +86,7 @@
  ("nix-mode" . "1ac42cd103ba11c37e8566e240a2272966e6f813")
  ("nix-update-el" . "fc6c39c2da3fcfa62f4796816c084a6389c8b6e7")
  ("orderless" . "62f71c34baca0b7d0adeab4a1c07d85ffcee80d9")
- ("org" . "5315773e8a0838268592617174b221ec7bf1c87a")
+ ("org" . "e2fa3c4c4046b6f547e1f3c116e174e8f12ca5e1")
  ("org-bullets" . "767f55feb58b840a5a04eabfc3fbbf0d257c4792")
  ("org-contrib" . "56a3bbbd486c567234e63c95c954c5e2ed77f8e7")
  ("org-roam" . "852042436ed4282a0521604d5f98f69d01f14272")
