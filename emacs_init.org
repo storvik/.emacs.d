@@ -699,10 +699,22 @@ This package expands region by semantic units.
   (use-package expand-region
     :bind (:map storvik/prefix-map ("e" . hydra-expand-region/body))
     :config
-    (defhydra hydra-expand-region (:columns 2 :body-pre (er/expand-region 1))
-      "Expand region"
-      ("e" er/expand-region "expand")
-      ("c" er/contract-region "contract")))
+    (defhydra hydra-expand-region (:color pink :exit t :hint nil)
+      "
+  ^mark^                     ^region
+  ^^^^^^^^-------------------------------------------
+  _w_: word                   _e_: expand
+  _s_: sentence               _c_: contract
+  _d_: defun
+  _p_: pairs
+  "
+      ("w" er/mark-word)
+      ("s" er/mark-sentence)
+      ("d" er/mark-defun)
+      ("p" er/mark-inside-pairs)
+      ("e" er/expand-region)
+      ("c" er/contract-region)
+      ("q" nil "cancel")))
 #+end_src
 
 ** [[https://github.com/jrosdahl/fancy-dabbrev][Fancy dabbrev]]
