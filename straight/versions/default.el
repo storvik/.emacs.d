@@ -106,7 +106,6 @@
  ("pyvenv" . "31ea715f2164dd611e7fc77b26390ef3ca93509b")
  ("queue" . "130c2d656cd5d7376552272fab9e50a7c37d0c4a")
  ("rainbow-delimiters" . "d576e6694ad3a3e88b2bb1363305b38fa364c149")
- ("ryo-modal" . "fc9e227127fa327183d39d28c3afdb2f395a51a2")
  ("s.el" . "08661efb075d1c6b4fa812184c1e5e90c08795a9")
  ("sesman" . "e0f555f963c9f02f8e4a50e06fc353eb4c15ee77")
  ("shrink-path.el" . "c14882c8599aec79a6e8ef2d06454254bb3e1e41")

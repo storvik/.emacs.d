@@ -387,52 +387,8 @@ use-package key chord extension:
 #+end_src
 
 
-** [[https://github.com/Kungsgeten/ryo-modal][RYO modal]]
-
 #+begin_src emacs-lisp
-  (use-package ryo-modal
-    :commands ryo-modal-mode
-    :bind ("C-S-SPC" . ryo-modal-mode)
-    :chords ("kj" . ryo-modal-mode)
-
-    :config
-    (ryo-modal-keys
-     ("." ryo-modal-repeat)
-     ("q" ryo-modal-mode)
-     ("n" next-line)
-     ("p" previous-line)
-     ("l" recenter-top-bottom)
-     ("f" forward-word)
-     ("b" backward-word)
-     ("e" move-end-of-line)
-     ("a" back-to-indentation)
-     ("y" yank)
-     ("d" beginning-of-defun)
-     ("D" end-of-defun)
-     ("m"
-      (("f" forward-char)
-       ("b" backward-char)))
-     ("w"
-      (("W" kill-ring-save :name "Copy selection")))
-     ("k"
-      (("k" kill-line))))
-
-    (ryo-modal-keys
-     ;; First argyment to ryo-modal-keys may be a list of keywords.
-     ;; These keywords will be applied to all keybindings.
-     (:norepeat t)
-     ("0" "M-0")
-     ("1" "M-1")
-     ("2" "M-2")
-     ("3" "M-3")
-     ("4" "M-4")
-     ("5" "M-5")
-     ("6" "M-6")
-     ("7" "M-7")
-     ("8" "M-8")
-     ("9" "M-9")))
 #+end_src
-
 
 * Misc
 ** [[https://github.com/joddie/pcre2el][pcre2el]]
@@ -683,15 +639,6 @@ Tool for jumping to a given char on the screen.
   (use-package avy
     :bind (:map storvik/prefix-map (";" . hydra-avy/body)
                 :map storvik/overrides-minor-mode-map ("M-g g" . avy-goto-line))
-    :ryo
-    ("SPC"
-     ((";" hydra-avy/body :name "Avy hydra")))
-    ("g"
-     (("c" avy-goto-char :name "Goto char")
-      ("w" avy-goto-word-1 :name "Goto word")
-      ("g" avy-goto-line :name "Goto line")))
-    ("w"
-     (("l" avy-copy-line :name "Copy line")))
     :config
     (defhydra hydra-avy (:exit t :hint nil)
       "
@@ -741,22 +688,6 @@ This package expands region by semantic units.
 #+begin_src emacs-lisp
   (use-package expand-region
     :bind (:map storvik/prefix-map ("e" . hydra-expand-region/body))
-    :ryo
-    ("SPC"
-     (("e" hydra-expand-region/body :name "Expand region hydra")))
-    ("k"
-     (("w" er/mark-word :name "Kill word")
-      ("d" er/mark-defun :name "Kill defun")
-      ("s" er/mark-sentence :name "Kill sentence")
-      ("p" er/mark-inside-pairs :name "Kill inside pairs"))
-     :name "kill" :then '(kill-region))
-    ("w"
-     (("w" er/mark-word :name "Copy word")
-      ("d" er/mark-defun :name "Copy defun")
-      ("s" er/mark-sentence :name "Copy sentence")
-      ("p" er/mark-inside-pairs :name "Copy inside pairs"))
-     :name "copy" :then '(kill-ring-save
-                          deactivate-mark))
     :config
     (defhydra hydra-expand-region (:columns 2 :body-pre (er/expand-region 1))
       "Expand region"
@@ -801,9 +732,6 @@ Moves region if marked.
 #+begin_src emacs-lisp
   (use-package move-text
     :bind (:map storvik/prefix-map ("m" . hydra-move-text/body))
-    :ryo
-    ("SPC"
-     (("m" hydra-move-text/body :name "Move text hydra")))
     :config
     (defhydra hydra-move-text (:hint nil)
       "Move line or region"
@@ -842,7 +770,6 @@ This is an awesome function from Endless.
           (t (narrow-to-defun))))
 
   (bind-key "n" #'narrow-or-widen-dwim storvik/prefix-map)
-  (ryo-modal-keys ("SPC" (("n" narrow-or-widen-dwim :name "Narrow DWIM"))))
 #+end_src
 
 ** [[https://github.com/magnars/multiple-cursors.el][Multiple cursors]]
@@ -852,9 +779,6 @@ This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multip
 #+begin_src emacs-lisp
   (use-package multiple-cursors
     :bind (:map storvik/prefix-map ("c" . hydra-multiple-cursors/body))
-    :ryo
-    ("SPC"
-     (("c" hydra-multiple-cursors/body :name "Multiple cursors hydra")))
     :config
     (defhydra hydra-multiple-cursors (:hint nil)
       "
@@ -953,10 +877,6 @@ Git folders are identified as projects, other projects have to have an empty =.p
   (use-package projectile
     :demand t
     :bind-keymap ("C-c p" . projectile-command-map)
-    :ryo
-    (:mode 'projectile-mode)
-    ("c"
-     (("p" "C-c p" :name "projectile prefix")))
     :commands (projectile-project-p)
     :config
     (setq projectile-enable-caching t
@@ -1069,10 +989,6 @@ Some performance enhancing settings, see lsp-mode README.md for details.
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :bind-keymap ("C-c l" . lsp-command-map)
-    :ryo
-    (:mode 'lsp-mode)
-    ("c"
-     (("l" "C-c l" :name "lsp prefix")))
     :init
     (setq lsp-keymap-prefix "C-c l"
           lsp-prefer-capf t
