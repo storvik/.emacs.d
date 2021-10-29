@@ -386,8 +386,18 @@ use-package key chord extension:
     :config (key-chord-mode 1))
 #+end_src
 
+** [[https://github.com/emacsorphanage/god-mode][God mode]]
 
 #+begin_src emacs-lisp
+  (use-package god-mode
+    :bind (:map storvik/prefix-map
+           ("SPC" . god-local-mode)
+           :map god-local-mode-map
+           ("q" . god-local-mode)
+           ("z" . repeat))
+    :custom
+    (god-exempt-major-modes nil)
+    (god-exempt-predicates nil))
 #+end_src
 
 * Misc
