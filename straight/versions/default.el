@@ -33,7 +33,6 @@
  ("emacs-spell-fu" . "f38bebefea9d23c2bd4293ecf7100211c1410cd4")
  ("emacs-web-server" . "6357a1c2d1718778503f7ee0909585094117525b")
  ("emacs-websocket" . "fda4455333309545c0787a79d73c19ddbeb57980")
- ("emacs-which-key" . "4790a14683a2f3e4f72ade197c78e4c0af1cdd4b")
  ("emacsmirror-mirror" . "a9ed25e60078b9ee50d544e170a67a73ec0d4239")
  ("emacsql" . "9dca5996168c4963eb67e61c7f17fdcb8228e314")
  ("embark" . "9a8bb2915aa57ed2151daf31b90c9c135c2f4989")

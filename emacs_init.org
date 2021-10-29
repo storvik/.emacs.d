@@ -387,9 +387,7 @@ use-package key chord extension:
 #+end_src
 
 
-
-RYO modal is a way to define your own modal editing.
-I considered [[https://github.com/emacsorphanage/god-mode][god-mode]] but wanting to customize further i decided RYO was the best fit.
+** [[https://github.com/Kungsgeten/ryo-modal][RYO modal]]
 
 #+begin_src emacs-lisp
   (use-package ryo-modal
@@ -435,16 +433,6 @@ I considered [[https://github.com/emacsorphanage/god-mode][god-mode]] but wantin
      ("9" "M-9")))
 #+end_src
 
-** [[https://github.com/justbur/emacs-which-key][Which key mode]]
-
-#+begin_src emacs-lisp
-  (use-package which-key
-    :no-require t                         ; eval after load
-    :config
-    ;; Remove ryo:<hash>: prefix
-    (which-key-mode)
-    (push '((nil . "ryo:.*:") . (nil . "")) which-key-replacement-alist))
-#+end_src
 
 * Misc
 ** [[https://github.com/joddie/pcre2el][pcre2el]]
