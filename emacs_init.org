@@ -1826,12 +1826,12 @@ Useful hydra for org-mode stuff.
 #+end_src
 
 * Email
-Uncomment this to load mu4e configs
 
 #+begin_src emacs-lisp
-  (when (and (executable-find "mu")
-             (file-exists-p (expand-file-name "mu4e.org" user-emacs-directory)))
-    (org-babel-load-file (expand-file-name "mu4e.org" user-emacs-directory)))
+  (let ((storvik/mu4e-config "~/.emacs.d-mu4e/mu4e-config.org"))
+    (when (and (executable-find "mu")
+               (file-exists-p (expand-file-name storvik/mu4e-config)))
+      (org-babel-load-file (expand-file-name storvik/mu4e-config))))
 #+end_src
 
 * Functions
