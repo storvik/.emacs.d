@@ -577,12 +577,10 @@ Enable mouse clicks in terminal.
            ("M-s e" . consult-isearch) ;; orig. isearch-edit-string
            ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
     :init
-
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref)
-    ;; (setq consult-preview-key "C-l")
-    ;; (setq consult-narrow-key ">")
     :config
+    (setq consult-narrow-key "<")
     (autoload 'projectile-project-root "projectile")
     (setq consult-project-root-function #'projectile-project-root)
     (with-eval-after-load 'vertico
@@ -613,7 +611,7 @@ Orderless completion style.
     :after sudo-edit
     :bind
     (("C-." . embark-act)
-     ("C-;" . embark-dwim)
+     ("M-." . embark-dwim)
      ("C-h b" . embark-bindings)
      :map embark-file-map
      ("s" . sudo-edit))
