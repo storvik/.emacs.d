@@ -740,7 +740,7 @@ This package expands region by semantic units.
   (use-package fancy-dabbrev
     :commands (fancy-dabbrev-mode)
     :bind (:map storvik/overrides-minor-mode-map
-           ("<tab>" . fancy-dabbrev-expand))
+           ("C-<tab>" . fancy-dabbrev-expand))
     :custom
     (fancy-dabbrev-preview-delay 0.0)
     (fancy-dabbrev-preview-context 'before-non-word)
