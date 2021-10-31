@@ -454,7 +454,6 @@ Load config file dependant on current platform.
 
 ** Windows
 *** Use git bash on windows
-Use git bash on windows if git bash is found, also change path to [[https://emacs.stackexchange.com/questions/29942/projectile-indexing-wont-work-on-windows][ensure that unix tools are preferred]].
 
 #+begin_src emacs-lisp
   (let ((git-bash-executable "C:/Program Files/Git/usr/bin/bash.exe"))
@@ -526,7 +525,6 @@ Enable mouse clicks in terminal.
 
 #+begin_src emacs-lisp
   (use-package consult
-    :after projectile
     :bind (:map storvik/overrides-minor-mode-map
            ;; C-c bindings (mode-specific-map)
            ("C-c h" . consult-history)
@@ -580,9 +578,13 @@ Enable mouse clicks in terminal.
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref)
     :config
+    ;; function that returns project root, works for project.el
+    (setq consult-project-root-function
+          (lambda ()
+            (when-let (project (project-current))
+              (car (project-roots project)))))
+    ;; narrow key
     (setq consult-narrow-key "<")
-    (autoload 'projectile-project-root "projectile")
-    (setq consult-project-root-function #'projectile-project-root)
     (with-eval-after-load 'vertico
       (require 'consult-vertico))
     (advice-add #'completing-read-multiple
@@ -903,29 +905,6 @@ Travel through time!
 
 #+begin_src emacs-lisp
   (use-package git-timemachine)
-#+end_src
-
-* [[https://github.com/bbatsov/projectile][Projectile]]
-Projectile simplifies navigation and structuring on large projects.
-Git folders are identified as projects, other projects have to have an empty =.projectile=-file to be categorized as project.
-=:demant t= overrides defered loading in order to make =projectile-mode= enabled before projectile commands are called for the first time.
-
-#+begin_src emacs-lisp
-  (use-package projectile
-    :demand t
-    :bind-keymap ("C-c p" . projectile-command-map)
-    :commands (projectile-project-p)
-    :config
-    (setq projectile-enable-caching t
-          projectile-globally-ignored-directories (append '("node_modules"
-                                                            ".git"
-                                                            ".gomod"
-                                                            ".ccls-cache")))
-    ;; Fix slow tramp buffers
-    ;; https://github.com/bbatsov/projectile/issues/1232#issuecomment-536281335
-    ;; (defadvice projectile-project-root (around ignore-remote first activate)
-    ;;   (unless (file-remote-p default-directory) ad-do-it))
-    (projectile-mode +1))
 #+end_src
 
 * Eshell

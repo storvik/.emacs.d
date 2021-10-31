@@ -102,7 +102,6 @@
  ("popup-el" . "cf899f8012f4189e76a009bebb589ff71631b1e9")
  ("posframe" . "f97c4aff2c2c376ca62276d5597aa108546633a9")
  ("powershell.el" . "d1b3f95669343399f199f291ef76c09a0ede5e60")
- ("projectile" . "7f64570d3e6829d767d340c8584f3e4f3472ee81")
  ("protobuf" . "d08bc71c96d3dfcea12de3d4efacfbad5d473e44")
  ("pyvenv" . "31ea715f2164dd611e7fc77b26390ef3ca93509b")
  ("queue" . "130c2d656cd5d7376552272fab9e50a7c37d0c4a")
