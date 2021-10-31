@@ -642,9 +642,9 @@ Annotations in minibuffer.
 #+begin_src emacs-lisp
   (use-package all-the-icons-completion
     :after marginalia
-    :config
+    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+    :init
     (with-eval-after-load 'storvik/gui
-      (all-the-icons-completion-mode)
       (all-the-icons-completion-marginalia-setup)))
 #+end_src
 
