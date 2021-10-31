@@ -1609,6 +1609,15 @@ Install org mode package
   (setq org-clock-into-drawer 1)
   (setq org-log-done 'time)
 
+  ;; Tags / context
+  (setq org-tag-persistent-alist
+        '(("@work" . ?w)
+          ("@mo" . ?m)
+          ("@nesna" .?n)
+          ("@home" . ?h)
+          ("@computer" . ?c)
+          ("@phone" . ?p)))
+
   ;; Misc
   (setq org-export-allow-bind-keywords t)
 #+end_src
