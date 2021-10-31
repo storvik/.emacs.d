@@ -1317,15 +1317,14 @@ Mode for interacting with gomacro REPL.
 #+end_src
 
 ** Lisp
-
-*** [[https://github.com/abo-abo/lispy][Lispy]]
-Lispy mode for editing listpy languages, elisp, common lisp, clojure, etc.
+*** [[https://github.com/emacsmirror/paredit][Paredit]]
 
 #+begin_src emacs-lisp
-  (use-package lispy
-    :defer t
-    :hook ((emacs-lisp-mode . (lambda () (lispy-mode 1)))
-           (sly-mode . (lambda () (lispy-mode 1)))))
+  (use-package paredit
+    :hook ((emacs-lisp-mode . paredit-mode)
+           (sly-mode . paredit-mode)
+           (clojure-mode . paredit-mode)
+           (clojurescript-mode . paredit-mode)))
 #+end_src
 
 *** [[https://github.com/joaotavora/sly][SLY]]
@@ -1336,7 +1335,6 @@ To choose between multiple lisps use =C-- M-x sly=.
   (use-package sly
     :when (or (executable-find "sbcl")
               (executable-find "ecl"))
-    :hook ((sly-db . (lambda () (lispy-mode 0))))
     :init
     (cond ((and (executable-find "sbcl")
                 (executable-find "ecl"))
@@ -1346,10 +1344,7 @@ To choose between multiple lisps use =C-- M-x sly=.
           ((executable-find "sbcl")
            (setq inferior-lisp-program "sbcl --noinform"))
           ((executable-find "ecl")
-           (setq inferior-lisp-program "ecl")))
-    (add-hook 'sly-mode-hook
-              (lambda ()
-                (setq-local lispy-no-space t))))
+           (setq inferior-lisp-program "ecl"))))
 
   (use-package sly-asdf
     :after sly)
@@ -1359,9 +1354,7 @@ To choose between multiple lisps use =C-- M-x sly=.
 **** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
 
 #+begin_src emacs-lisp
-  (use-package clojure-mode
-    :hook ((clojure-mode . (lambda () (lispy-mode 1)))
-           (clojurescript-mode . (lambda () (lispy-mode 1)))))
+  (use-package clojure-mode)
 #+end_src
 
 **** [[https://github.com/clojure-emacs/cider][cider]]
