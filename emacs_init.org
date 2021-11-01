@@ -493,8 +493,7 @@ Enable mouse clicks in terminal.
     (xterm-mouse-mode +1))
 #+end_src
 
-* Completion framework
-
+* Completion framework and friends
 ** [[https://github.com/minad/vertico][Vertico]]
 
 #+begin_src emacs-lisp
@@ -555,7 +554,6 @@ Enable mouse clicks in terminal.
            ("M-s L" . consult-locate)
            ("M-s g" . consult-grep)
            ("M-s G" . consult-git-grep)
-           ("M-s r" . consult-ripgrep)
            ("C-c f" . consult-ripgrep)
            ("M-s l" . consult-line)
            ("M-s m" . consult-multi-occur)
@@ -635,6 +633,21 @@ Annotations in minibuffer.
            ("M-A" . marginalia-cycle))
     :init
     (marginalia-mode))
+#+end_src
+
+** [[https://github.com/minad/affe][Affe]]
+
+#+begin_src emacs-lisp
+  (use-package affe
+    :after (consult orderless)
+    :bind (:map storvik/overrides-minor-mode-map
+           ("M-s r" . affe-grep))
+    :config
+    ;; -*- lexical-binding: t -*-
+    (defun affe-orderless-regexp-compiler (input _type)
+      (setq input (orderless-pattern-compiler input))
+      (cons input (lambda (str) (orderless--highlight input str))))
+    (setq affe-regexp-compiler #'affe-orderless-regexp-compiler))
 #+end_src
 
 ** [[https://github.com/iyefrat/all-the-icons-completion][All the icons completion]]
