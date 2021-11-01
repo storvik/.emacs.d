@@ -31,7 +31,6 @@
  ("emacs-doom-themes" . "3e6f5d9ce129ac6fc0f466eb6f5518593625578f")
  ("emacs-emojify" . "1b726412f19896abf5e4857d4c32220e33400b55")
  ("emacs-fish" . "a7c953b1491ac3a3e00a7b560f2c9f46b3cb5c04")
- ("emacs-libvterm" . "2681120b770573044832ba8c22ccbac192e1a294")
  ("emacs-spell-fu" . "f38bebefea9d23c2bd4293ecf7100211c1410cd4")
  ("emacs-web-server" . "6357a1c2d1718778503f7ee0909585094117525b")
  ("emacs-websocket" . "fda4455333309545c0787a79d73c19ddbeb57980")

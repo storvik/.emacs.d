@@ -414,17 +414,6 @@ use-package key chord extension:
   (use-package pcre2el)
 #+end_src
 
-** [[https://github.com/akermu/emacs-libvterm][vterm]]
-vterm is to be considered as unstable atm.
-Linux only.
-
-#+begin_src emacs-lisp
-  (use-package vterm
-    :when (sys-type-p 'gnu/linux)
-    :config
-    (setq vterm-kill-buffer-on-exit t))
-#+end_src
-
 ** [[https://github.com/parkouss/speed-type][Speed type]]
 How do I train them fingers?
 
