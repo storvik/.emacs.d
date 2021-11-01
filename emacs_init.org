@@ -414,13 +414,6 @@ use-package key chord extension:
   (use-package pcre2el)
 #+end_src
 
-** [[https://github.com/parkouss/speed-type][Speed type]]
-How do I train them fingers?
-
-#+begin_src emacs-lisp
-  (use-package speed-type)
-#+end_src
-
 ** [[https://github.com/nflath/sudo-edit][sudo edit]]
 Sometimes I forgot to plan ahead when I should use sudo.
 Now sudo-edit comes to the rescue!

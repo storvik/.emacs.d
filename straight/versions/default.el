@@ -113,7 +113,6 @@
  ("sly" . "540a8c5b9a04af0a6907e07cb070f1fed8a76f48")
  ("sly-asdf" . "95ca71ddeb6132c413e1e4352b136f41ed9254f1")
  ("smooth-scrolling" . "2462c13640aa4c75ab3ddad443fedc29acf68f84")
- ("speed-type" . "5ef695f7159aa1f20c7c9e55f0c39bcdacce8d21")
  ("spinner" . "34905eae12a236753fa88abc831eff1e41e8576e")
  ("straight.el" . "af5437f2afd00936c883124d6d3098721c2d306c")
  ("sudo-edit" . "23b78a39053088839f281bc0c3134203d7e04e50")
