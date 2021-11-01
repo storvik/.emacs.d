@@ -422,16 +422,6 @@ Now sudo-edit comes to the rescue!
   (use-package sudo-edit)
 #+end_src
 
-** [[https://github.com/fourier/ztree][Ztree]]
-Visualize dir trees and run Ediff on folders.
-Useful when upgrading between frameworks and such.
-
-#+begin_src emacs-lisp
-  (use-package ztree
-    :config
-    (setq ediff-window-setup-function 'ediff-setup-windows-plain))
-#+end_src
-
 * Platform dependant
 Load config file dependant on current platform.
 

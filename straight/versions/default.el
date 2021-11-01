@@ -124,6 +124,5 @@
  ("vertico" . "869d3fd77671a236560a114c38e01bc7ff374353")
  ("web-mode" . "61f057a6baeba6b3595e412ba79b3080dca17dcc")
  ("with-editor" . "8d52f933e50624c7bca3880f57297ac17ba4ac2d")
- ("yaml-mode" . "63b637f846411806ae47e63adc06fe9427be1131")
- ("ztree" . "f05677f9696e573c8c607e8876fb4a0cccbc491f"))
+ ("yaml-mode" . "63b637f846411806ae47e63adc06fe9427be1131"))
 :beta
