@@ -554,7 +554,7 @@ Enable mouse clicks in terminal.
            ("M-s L" . consult-locate)
            ("M-s g" . consult-grep)
            ("M-s G" . consult-git-grep)
-           ("C-c f" . consult-ripgrep)
+           ("M-s R" . consult-ripgrep)
            ("M-s l" . consult-line)
            ("M-s m" . consult-multi-occur)
            ("M-s k" . consult-keep-lines)
@@ -562,9 +562,6 @@ Enable mouse clicks in terminal.
            ;; Customizations that map to ivy
            ("C-x C-r" . consult-recent-file)
            ("C-c o" . consult-file-externally)
-           ("<f4>" . consult-bookmark)
-           ("s-4" . consult-bookmark)
-           ("C-s" . consult-line)
            ;; Isearch integration
            ("M-s e" . consult-isearch)
            ;; ("s-t" . jnf/consult-find-using-fd)
@@ -609,6 +606,7 @@ Orderless completion style.
 #+begin_src emacs-lisp
   (use-package embark
     :after sudo-edit
+    :demand t
     :bind
     (("C-." . embark-act)
      ("M-." . embark-dwim)
@@ -1316,7 +1314,9 @@ Mode for interacting with gomacro REPL.
     :hook ((emacs-lisp-mode . paredit-mode)
            (sly-mode . paredit-mode)
            (clojure-mode . paredit-mode)
-           (clojurescript-mode . paredit-mode)))
+           (clojurescript-mode . paredit-mode))
+    :config
+    (unbind-key "M-s" paredit-mode-map))
 #+end_src
 
 *** [[https://github.com/joaotavora/sly][SLY]]

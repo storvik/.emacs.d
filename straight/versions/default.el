@@ -1,4 +1,5 @@
 (("ace-window" . "c7cb315c14e36fded5ac4096e158497ae974bec9")
+ ("affe" . "0ee5e2374339c1a57d36c06818247afeecadc2c5")
  ("alert" . "7046393272686c7a1a9b3e7f7b1d825d2e5250a6")
  ("all-the-icons-completion" . "a0f34d68cc12330ab3992a7521f9caa1de3b8470")
  ("all-the-icons.el" . "c0d288a41faea2ecb7e8dd947486764a2ee17ec9")
