@@ -346,6 +346,7 @@ or
      org-agenda-mode-hook
      mu4e-main-mode-hook
      sly-db-hook
+     sly-mrepl-mode-hook
      dired-mode-hook
      deadgrep-mode-hook
      help-mode-hook
