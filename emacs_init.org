@@ -606,6 +606,20 @@ Annotations in minibuffer.
     (marginalia-mode))
 #+end_src
 
+** [[https://github.com/minad/corfu][Corfu]]
+
+#+begin_src emacs-lisp
+    (use-package corfu
+      :after orderless
+      :custom
+      (corfu-quit-at-boundary nil)   ;; Automatically quit at word boundary, nil due to orderless
+      (corfu-quit-no-match t)        ;; Quit if no match
+      (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+      (corfu-auto t)                 ;; Enable auto completion
+      :init
+      (corfu-global-mode))
+#+end_src
+
 ** [[https://github.com/minad/affe][Affe]]
 
 #+begin_src emacs-lisp
@@ -670,19 +684,6 @@ Tool for jumping to a given char on the screen.
       ("K" avy-kill-region)
       ("y" avy-copy-line)
       ("Y" avy-copy-region)))
-#+end_src
-
-** [[https://github.com/minad/corfu][Corfu]]
-
-#+begin_src emacs-lisp
-  (use-package corfu
-    :custom
-    (corfu-quit-at-boundary nil)   ;; Automatically quit at word boundary, nil due to orderless
-    (corfu-quit-no-match t)        ;; Quit if no match
-    (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    (corfu-auto t)                 ;; Enable auto completion
-    :init
-    (corfu-global-mode))
 #+end_src
 
 ** [[https://github.com/Wilfred/deadgrep][Deadgrep]]
@@ -991,10 +992,17 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     :bind-keymap ("C-c l" . lsp-command-map)
     :init
     (setq lsp-keymap-prefix "C-c l"
-          lsp-prefer-capf t
+          ;; lsp-prefer-capf t          ;; corfu / orderless fix
+          lsp-completion-provider :none ;; corfu / orderless fix
           lsp-prefer-flymake nil
           lsp-auto-execute-action nil
-          lsp-enable-indentation nil))
+          lsp-enable-indentation nil)
+    :config
+    (defun corfu-lsp-setup ()
+      "corfu / orderless fix, see https://www.reddit.com/r/emacs/comments/ql8cyp/corfu_orderless_and_lsp/"
+      (setq-local completion-styles '(orderless)
+                  completion-category-defaults nil))
+    (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup))
 
   (use-package lsp-ui
     :commands lsp-ui-mode
