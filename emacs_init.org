@@ -840,12 +840,21 @@ Set default ispell language to English.
 
 * Dired
 
+** [[https://github.com/emacsmirror/dired-plus][dired-plus]]
+
 #+begin_src emacs-lisp
   (use-package dired+
     :init
     (setq diredp-hide-details-initially-flag nil)
     :config
     (diredp-toggle-find-file-reuse-dir 1))
+#+end_src
+
+** [[https://github.com/wyuenho/all-the-icons-dired][all the icons dired support]]
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired
+    :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
 
 * [[https://magit.vc/][Magit]]
