@@ -2,7 +2,8 @@
 #+AUTHOR: Petter S. Storvik
 #+EMAIL: petterstorvik@gmail.com
 #+STARTUP: overview
-#+PROPERTY: header-args    :results silent
+#+PROPERTY: header-args:elisp :lexical t
+#+PROPERTY: header-args       :results silent
 
 * Personal information
 Add name and E-mail.
