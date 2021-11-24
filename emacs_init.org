@@ -399,9 +399,9 @@ use-package key chord extension:
 #+begin_src emacs-lisp
   (use-package god-mode
     :bind (:map storvik/prefix-map
-           ("SPC" . god-local-mode)
+           ("SPC" . god-mode-all)
            :map god-local-mode-map
-           ("q" . god-local-mode)
+           ("q" . god-mode-all)
            ("z" . repeat))
     :custom
     (god-exempt-major-modes nil)
