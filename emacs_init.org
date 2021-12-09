@@ -1097,7 +1097,7 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     (:host github :repo "raxod502/apheleia")
     :config
     (setf (alist-get 'clang-format apheleia-formatters)
-          '("clang-format" "-style={BasedOnStyle: Google, IndentWidth: 4}" file))
+          '("clang-format" "-style={BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 120}"))
     (add-to-list 'apheleia-formatters '(goimports "goimports"))
     (setf (alist-get 'go-mode apheleia-mode-alist) 'goimports)
     (add-to-list 'apheleia-formatters '(nixpkgs-fmt "nixpkgs-fmt"))
