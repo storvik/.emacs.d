@@ -1297,8 +1297,7 @@ Install dependencies and useful go stuff by running:
 
 
 #+begin_src emacs-lisp
-  (use-package go-mode
-    :when (executable-find "go"))
+  (use-package go-mode)
 #+end_src
 
 *** LSP
