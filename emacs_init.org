@@ -1089,6 +1089,17 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
 #+end_src
 
+** [[https://github.com/emacs-tree-sitter/elisp-tree-sitter][Tree sitter]]
+
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+    :hook (tree-sitter-after-on . tree-sitter-hl-mode)
+    :config
+    (global-tree-sitter-mode))
+
+  (use-package tree-sitter-langs)
+#+end_src
+
 ** [[https://github.com/raxod502/apheleia][Apheleia]]
 
 #+begin_src emacs-lisp
