@@ -357,13 +357,13 @@ or
 ** storvik/prefix-map
 
 #+begin_src emacs-lisp
-  (global-unset-key (kbd "C-c C-SPC"))
+  (global-unset-key (kbd "C-z"))
   (define-prefix-command 'storvik/prefix-map)
 
   (use-package bind-key
     :bind (:prefix-map storvik/prefix-map
            :prefix-docstring "Storviks keyboard map"
-           :prefix "C-c C-SPC")
+           :prefix "C-z")
     :after org)
 #+end_src
 
