@@ -205,16 +205,6 @@ Highlight todo, fixme, etc.
     (setq hl-todo-highlight-punctuation ":"))
 #+end_src
 
-** [[https://github.com/iqbalansari/emacs-emojify][Emojify]]
-Display emojis in Emacs!
-
-#+begin_src emacs-lisp
-  (use-package emojify
-    :hook ((after-init . global-emojify-mode)
-           (org-agenda-mode . (lambda ()
-                                (set (make-local-variable 'emojify-emoji-style) '(ascii unicode))))))
-#+end_src
-
 ** [[https://github.com/Fanael/rainbow-delimiters][Rainbow delimiters]]
 Added to `prog-mode-hook`.
 
@@ -1757,10 +1747,10 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
                         (org-agenda-overriding-header "")
                         (org-super-agenda-groups
                          '((:discard (:not (:tag ("avanti"))))
-                           (:name "🛠 Work in progress" :todo "WIP")
-                           (:name "⌛ Next" :todo "NEXT")
-                           (:name "🗒 Todo" :todo "TODO")
-                           (:name "🕐 Waiting" :todo "WAITING")
+                           (:name "🛠️ Work in progress" :todo "WIP")
+                           (:name "⏳ Next" :todo "NEXT")
+                           (:name "🗒️ Todo" :todo "TODO")
+                           (:name "🕙 Waiting" :todo "WAITING")
                            (:discard (:todo ("PHONE" "MEETING")))))))))
             ("p" " Private"
              ((agenda ""
@@ -1775,10 +1765,10 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
                         (org-agenda-overriding-header "")
                         (org-super-agenda-groups
                          '((:discard (:tag ("avanti")))
-                           (:name "🛠 Work in progress" :todo "WIP")
-                           (:name "⌛ Next" :todo "NEXT")
-                           (:name "🗒 Todo" :todo "TODO")
-                           (:name "🕐 Waiting" :todo "WAITING")
+                           (:name "🛠️ Work in progress" :todo "WIP")
+                           (:name "⏳ Next" :todo "NEXT")
+                           (:name "🗒️ Todo" :todo "TODO")
+                           (:name "🕙 Waiting" :todo "WAITING")
                            (:name "📌 Someday" :tag "someday")
                            (:discard (:todo ("PHONE" "MEETING")))))))))))
     (org-super-agenda-mode))

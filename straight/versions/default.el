@@ -30,7 +30,6 @@
  ("emacs-async" . "5d365ffc6a2c2041657eaa5d762c395ea748c8d7")
  ("emacs-ccls" . "675a5704c14a27931e835a431beea3631d92e8e6")
  ("emacs-doom-themes" . "96edc0ceb864b7d72218e58c8e9272cd96e5712c")
- ("emacs-emojify" . "1b726412f19896abf5e4857d4c32220e33400b55")
  ("emacs-fish" . "a7c953b1491ac3a3e00a7b560f2c9f46b3cb5c04")
  ("emacs-spell-fu" . "b2da2874f3227c0a969be80946e0c4ea455e8458")
  ("emacs-web-server" . "6357a1c2d1718778503f7ee0909585094117525b")
