@@ -547,10 +547,6 @@ Orderless completion style.
     :init
     (setq completion-styles '(orderless)
           completion-category-defaults nil
-          completion-category-overrides '((file (styles . (partial-completion)))))
-    :config
-    ;; Fix completing hostnames when using /ssh:
-    (setq completion-styles '(orderless)
           completion-category-overrides '((file (styles basic partial-completion)))))
 #+end_src
 
@@ -589,30 +585,33 @@ Annotations in minibuffer.
 ** [[https://github.com/minad/corfu][Corfu]]
 
 #+begin_src emacs-lisp
-    (use-package corfu
-      :after orderless
-      :custom
-      (corfu-quit-at-boundary nil)   ;; Automatically quit at word boundary, nil due to orderless
-      (corfu-quit-no-match t)        ;; Quit if no match
-      (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-      (corfu-auto t)                 ;; Enable auto completion
-      :init
-      (corfu-global-mode))
+  (use-package corfu
+    :after orderless
+    :custom
+    (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+    (corfu-auto t)                 ;; Enable auto completion
+    (corfu-quit-at-boundary nil)   ;; Automatically quit at word boundary, nil due to orderless
+    (corfu-quit-no-match t)        ;; Quit if no match
+    (corfu-preview-current nil)    ;; Disable current candidate preview
+    :init
+    (corfu-global-mode))
+#+end_src
+
 #+end_src
 
 ** [[https://github.com/minad/affe][Affe]]
 
 #+begin_src emacs-lisp
   (use-package affe
-    :after (consult orderless)
     :bind (:map storvik/overrides-minor-mode-map
            ("M-s r" . affe-grep))
-    :config
-    ;; -*- lexical-binding: t -*-
+    :preface
     (defun affe-orderless-regexp-compiler (input _type)
       (setq input (orderless-pattern-compiler input))
       (cons input (lambda (str) (orderless--highlight input str))))
-    (setq affe-regexp-compiler #'affe-orderless-regexp-compiler))
+    :config
+    (setq affe-regexp-function #'orderless-pattern-compiler
+          affe-highlight-function #'orderless-highlight-matches))
 #+end_src
 
 ** [[https://github.com/iyefrat/all-the-icons-completion][All the icons completion]]
@@ -1038,19 +1037,22 @@ Some performance enhancing settings, see lsp-mode README.md for details.
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :bind-keymap ("C-c l" . lsp-command-map)
+    :custom
+    (lsp-keymap-prefix "C-c l")
+    (lsp-prefer-flymake nil)
+    (lsp-auto-execute-action nil)
+    (lsp-enable-indentation nil)
+    (lsp-completion-provider :none) ;; we use Corfu!
     :init
-    (setq lsp-keymap-prefix "C-c l"
-          ;; lsp-prefer-capf t          ;; corfu / orderless fix
-          lsp-completion-provider :none ;; corfu / orderless fix
-          lsp-prefer-flymake nil
-          lsp-auto-execute-action nil
-          lsp-enable-indentation nil)
-    :config
-    (defun corfu-lsp-setup ()
-      "corfu / orderless fix, see https://www.reddit.com/r/emacs/comments/ql8cyp/corfu_orderless_and_lsp/"
-      (setq-local completion-styles '(orderless)
-                  completion-category-defaults nil))
-    (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup))
+    (defun storvik/orderless-dispatch-flex-first (_pattern index _total)
+      (and (eq index 0) 'orderless-flex))
+    (defun storvik/lsp-mode-setup-completion ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(orderless)))
+    ;; Optionally configure the first word as flex filtered.
+    (add-hook 'orderless-style-dispatchers #'storvik/orderless-dispatch-flex-first nil 'local)
+    :hook
+    (lsp-completion-mode . storvik/lsp-mode-setup-completion))
 
   (use-package lsp-ui
     :commands lsp-ui-mode
