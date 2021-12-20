@@ -164,17 +164,6 @@ Set default font and size.
   (use-package all-the-icons)
 #+end_src
 
-** Highlight line mode
-Highlight current line.
-
-#+begin_src emacs-lisp
-  (when window-system
-    (global-hl-line-mode))
-
-  (add-hook 'eshell-mode-hook (lambda ()
-                                (setq-local global-hl-line-mode nil)))
-#+end_src
-
 ** Startup messages
 Turn off splash screen and startup message.
 
