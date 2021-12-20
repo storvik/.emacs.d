@@ -147,6 +147,15 @@ Delete trailing whitespaces on save.
 #+end_src
 
 * Appearance settings
+
+#+begin_src emacs-lisp
+  (when (boundp 'pgtk-initialized)
+    (setq default-frame-alist '((undecorated . t)))) ;; Remove title bar when using pgtk
+  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+#+end_src
+
 ** Font
 Set default font and size.
 
@@ -244,15 +253,6 @@ Turn off audible and visible bell.
 
 #+begin_src emacs-lisp
   (setq ring-bell-function 'ignore)
-#+end_src
-
-** Tool bar modifications
-Turn off tool bar and scroll bar. Menu bar is kept on.
-
-#+begin_src emacs-lisp
-  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 #+end_src
 
 ** Y/N Prompt
