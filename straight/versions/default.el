@@ -61,6 +61,7 @@
  ("inf-clojure" . "765653dc23dc2a2c1520a1e24332ab9d4b49dd47")
  ("inheritenv" . "7e4c8b0d0a43b6f1c6c4d6dbd2f3bf5ce7f20067")
  ("key-chord" . "7f7fd7c5bd2b996fa054779357e1566f7989e07d")
+ ("kind-icon" . "cc55e10af7086ea4c62cfca921907360196817da")
  ("let-alist" . "d2d0cac92851d4480328bc3f41d30c518beb1f99")
  ("log4e" . "737d275eac28dbdfb0b26d28e99da148bfce9d16")
  ("lsp-dart" . "7afe141fe2a60265049a846abd254b5ff4169c10")
