@@ -1065,8 +1065,9 @@ Some performance enhancing settings, see lsp-mode README.md for details.
 
   (use-package lsp-ui
     :commands lsp-ui-mode
-    :init
-    (setq lsp-ui-doc-position 'top))
+    :custom
+    (lsp-ui-doc-position 'top)
+    (lsp-ui-doc-show-with-cursor t))
 #+end_src
 
 *** [[https://github.com/gagbo/consult-lsp][consult-lsp]]
