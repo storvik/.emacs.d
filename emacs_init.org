@@ -1155,45 +1155,6 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
 #+end_src
 
 ** C/C++
-*** [[https://github.com/MaskRay/ccls][LSP server ccls]]
-Setup =lsp= =ccls= support and add hooks.
-
-#+begin_src emacs-lisp
-  (let ((storvik/ccls-exec (or (executable-find "ccls")
-                               (sys-diversification "~/developer/ccls/Release/ccls"
-                                                    "~/developer/ccls/Release/ccls"
-                                                    "~/../../developer/ccls/Release/ccls.exe"))))
-    (use-package ccls
-      :when (file-exists-p storvik/ccls-exec)
-      :config (setq ccls-executable storvik/ccls-exec)))
-#+end_src
-
-**** Windows installation
-
-Windows installation using git bash, ninja and mingw64 with gcc 7.3.0-posix-seh-rev0 was done my running the following:
-
-#+begin_src shell
-  git clone --depth=1 --recursive https://github.com/MaskRay/ccls
-  cd ccls
-
-  git clone https://git.llvm.org/git/llvm.git
-  git clone https://git.llvm.org/git/clang.git llvm/tools/clang
-  cd llvm
-
-  cmake -H. -BRelease -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DLLVM_TARGETS_TO_BUILD=X86
-  ninja -C Release clang clangFormat clangFrontendTool clangIndex clangTooling
-
-  cd ../
-  cmake -H. -BRelease -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ \
-       -DCMAKE_PREFIX_PATH="$pwd/llvm/Release;$pwd/llvm/Release/tools/clang;$pwd/llvm;$pwd/llvm/tools/clang" \
-       -DCMAKE_CXX_FLAGS="-target x86_64-pc-windows-gnu" \
-       -DCMAKE_CXX_FLAGS=-D__STDC_FORMAT_MACROS
-  ninja -C Release
-#+end_src
-- =$pwd= should be path to current dir, seems like ut must start with =C:/= and not msys style =/c/=
-- =-target x86_64-pc-windows-gnu= makes clang use gcc headers instead of visual studio headers
-- =-D__STDC_FORMAT_MACROS= is to make mingw define =PRIu64=
-
 *** CUDA files
 Associate .cu files with c-mode
 
