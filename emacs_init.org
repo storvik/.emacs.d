@@ -195,7 +195,7 @@ If not default theme used is =doom-theme-one=.
 #+begin_src emacs-lisp
   (use-package doom-themes
     :config
-    (load-theme 'doom-one t)
+    (load-theme 'doom-nord t)
     (doom-themes-org-config))
 #+end_src
 
