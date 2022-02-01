@@ -14,6 +14,12 @@ Add name and E-mail.
 #+end_src
 
 * General settings
+
+#+begin_src emacs-lisp
+  ;; Avoid "warning" buffer pop-ups on native compile
+  (setq native-comp-async-report-warnings-errors 'silent)
+#+end_src
+
 ** System type
 Macro for setting different settings for OSX / Linux.
 [[https://gist.github.com/beyeran/4118401][Thanks to beyeran]].
