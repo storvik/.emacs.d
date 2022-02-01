@@ -1073,7 +1073,11 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     :commands lsp-ui-mode
     :custom
     (lsp-ui-doc-position 'top)
-    (lsp-ui-doc-show-with-cursor t))
+    (lsp-ui-doc-show-with-cursor t)
+    (lsp-ui-doc-show-with-mouse nil)
+    (lsp-ui-doc-use-webkit t)
+    :custom-face
+    (lsp-ui-doc-background ((t (:background nil)))))
 #+end_src
 
 *** [[https://github.com/gagbo/consult-lsp][consult-lsp]]
