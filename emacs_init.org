@@ -1516,6 +1516,12 @@ Use =M-x pyvenv-activate= to activate environment.
   (use-package pyvenv)
 #+end_src
 
+** [[https://github.com/openscad/openscad/blob/master/contrib/scad-mode.el][scad mode]]
+
+#+begin_src emacs-lisp
+  (use-package scad-mode)
+#+end_src
+
 ** SQL mode
 Bind file extentions to sql mode.
 

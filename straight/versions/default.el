@@ -86,6 +86,7 @@
  ("nginx-mode" . "6e9d96f58eddd69f62f7fd443d9b9753e16e0e96")
  ("nix-mode" . "3d04d92d9c3896d07bc9fed7e4f40032025fbe7b")
  ("nix-update-el" . "fc6c39c2da3fcfa62f4796816c084a6389c8b6e7")
+ ("openscad" . "d0be100cd25ab314e26aa0ed6d112098d6ae9bc2")
  ("orderless" . "1ccf74ffdbb0dd34caa63022e92f947c09c49c86")
  ("org" . "04f9fa314c60361d886624fa9d49589528e06a38")
  ("org-bullets" . "767f55feb58b840a5a04eabfc3fbbf0d257c4792")
