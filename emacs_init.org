@@ -1336,6 +1336,14 @@ Mode for interacting with gomacro REPL.
     :hook (go-mode . gomacro-mode))
 #+end_src
 
+** [[https://github.com/kmonad/kbd-mode][KBD mode]]
+
+#+begin_src emacs-lisp
+  (use-package kbd-mode
+    :straight (kbd-mode :type git :host github :repo "kmonad/kbd-mode")
+    :mode "\\.kbd\\'")
+#+end_src
+
 ** Lisp
 *** [[https://github.com/emacsmirror/paredit][Paredit]]
 

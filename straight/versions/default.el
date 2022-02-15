@@ -58,6 +58,7 @@
  ("hydra" . "2d553787aca1aceb3e6927e426200e9bb9f056f1")
  ("inf-clojure" . "765653dc23dc2a2c1520a1e24332ab9d4b49dd47")
  ("inheritenv" . "7e4c8b0d0a43b6f1c6c4d6dbd2f3bf5ce7f20067")
+ ("kbd-mode" . "0d4abb689678813a66a7ba0a1216bf58700b87e3")
  ("key-chord" . "7f7fd7c5bd2b996fa054779357e1566f7989e07d")
  ("kind-icon" . "cc55e10af7086ea4c62cfca921907360196817da")
  ("let-alist" . "d2d0cac92851d4480328bc3f41d30c518beb1f99")
