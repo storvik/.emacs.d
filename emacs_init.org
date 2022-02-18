@@ -1786,6 +1786,13 @@ Use org-mode to write letters.
   (setq org-plantuml-exec-mode 'plantuml)
 #+end_src
 
+** [[https://github.com/abo-abo/org-download][org-download]]
+
+#+begin_src emacs-lisp
+  (use-package org-download
+    :after org)
+#+end_src
+
 ** [[https://org-roam.readthedocs.io][org-roam]]
 My roam config, trying to use roam as a personal knowledge base and daily note taking.
 

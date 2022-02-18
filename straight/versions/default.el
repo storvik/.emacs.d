@@ -87,6 +87,7 @@
  ("org" . "04f9fa314c60361d886624fa9d49589528e06a38")
  ("org-bullets" . "767f55feb58b840a5a04eabfc3fbbf0d257c4792")
  ("org-contrib" . "65821e47bfc5865a80be5d8a442dce5ff369a6ea")
+ ("org-download" . "947ca223643d28e189480e607df68449c15786cb")
  ("org-roam" . "abe63b436035049923ae96639b9b856697047779")
  ("org-roam-ui" . "9ed0c5705a302a91fab2b8bcc777a12dcf9b3682")
  ("org-super-agenda" . "fb5e2ef277bc811a3b061106c99e4c47b6b86f80")
