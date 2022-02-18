@@ -1807,6 +1807,14 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
     (interactive)
     (consult-ripgrep org-roam-dailies-directory))
 
+  (defun storvik/org-roam-deadgrep (search-term)
+    (interactive (list (deadgrep--read-search-term)))
+    (deadgrep search-term org-roam-directory))
+
+  (defun storvik/org-roam-dailies-deadgrep (search-term)
+    (interactive (list (deadgrep--read-search-term)))
+    (deadgrep search-term org-roam-dailies-directory))
+
   (use-package org-roam
     :after org
     :custom
@@ -1874,7 +1882,6 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
 #+end_src
 
 ** Org hydra and keybinding
-Useful hydra for org-mode stuff.
 
 #+begin_src emacs-lisp
   (use-package emacs
@@ -1887,7 +1894,8 @@ Useful hydra for org-mode stuff.
   _a_: agenda               _l_: buffer toggle        _f_: find              _j_: capture dailies
   _C_: capture              _c_: capture              _i_: insert node       _t_: goto today
   ^ ^                       _u_: roam ui              ^ ^                    _y_: goto yesterday
-  ^ ^                       _s_: roam ripgrep         _S_: search dailies    _d_: goto day
+  ^ ^                       _r_: ripgrep roam         _R_: ripgrep dailies   _d_: goto day
+  ^ ^                       _s_: deadgrep roam        _S_: deadgrep dailies
   "
       ("a" org-agenda)
       ("C" org-capture)
@@ -1896,8 +1904,10 @@ Useful hydra for org-mode stuff.
       ("f" org-roam-node-find)
       ("i" org-roam-node-insert)
       ("u" org-roam-ui-mode)
-      ("s" storvik/org-roam-ripgrep)
-      ("S" storvik/org-roam-dailies-ripgrep)
+      ("r" storvik/org-roam-ripgrep)
+      ("R" storvik/org-roam-dailies-ripgrep)
+      ("s" storvik/org-roam-deadgrep)
+      ("S" storvik/org-roam-dailies-deadgrep)
       ("j" org-roam-dailies-capture-today)
       ("t" org-roam-dailies-goto-today)
       ("y" org-roam-dailies-goto-yesterday)
