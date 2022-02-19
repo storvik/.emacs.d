@@ -1890,12 +1890,11 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
     (defhydra hydra-org-mode (:color pink :exit t :hint nil)
       "
   ^org^                     ^roam^                                         ^dailies
-  ^^^^^^^^---------------------------------------------------------------------------------------------
-  _a_: agenda               _l_: buffer toggle        _f_: find              _j_: capture dailies
-  _C_: capture              _c_: capture              _i_: insert node       _t_: goto today
-  ^ ^                       _u_: roam ui              ^ ^                    _y_: goto yesterday
-  ^ ^                       _r_: ripgrep roam         _R_: ripgrep dailies   _d_: goto day
-  ^ ^                       _s_: deadgrep roam        _S_: deadgrep dailies
+  ^^^^^^^^------------------------------------------------------------------------------------------------------------------
+  _a_: agenda               _l_: buffer toggle        _f_: find              _j_: capture dailies   _k_: capture date
+  _C_: capture              _c_: capture              _i_: insert node       _t_: goto today        _R_: ripgrep dailies
+  ^ ^                       _r_: ripgrep roam         _s_: deadgrep roam     _y_: goto yesterday    _S_: deadgrep dailies
+  ^ ^                       _u_: roam ui              ^ ^                    _d_: goto day
   "
       ("a" org-agenda)
       ("C" org-capture)
@@ -1909,6 +1908,7 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
       ("s" storvik/org-roam-deadgrep)
       ("S" storvik/org-roam-dailies-deadgrep)
       ("j" org-roam-dailies-capture-today)
+      ("k" org-roam-dailies-capture-date)
       ("t" org-roam-dailies-goto-today)
       ("y" org-roam-dailies-goto-yesterday)
       ("d" org-roam-dailies-goto-date)
