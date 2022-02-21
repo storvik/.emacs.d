@@ -910,8 +910,8 @@ Set default ispell language to English.
     :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
 
-* [[https://magit.vc/][Magit]]
-Brilliant interface to git.
+* Git
+** [[https://magit.vc/][Magit]]
 
 #+begin_src emacs-lisp
   (use-package magit
@@ -927,7 +927,6 @@ Brilliant interface to git.
 #+end_src
 
 ** [[https://github.com/alphapapa/magit-todos][Magit todos]]
-Shows todo in magit buffers.
 
 #+begin_src elisp
   (use-package magit-todos
@@ -948,7 +947,6 @@ Shows todo in magit buffers.
 #+end_src
 
 ** [[https://gitlab.com/pidu/git-timemachine][git-timemachine]]
-Travel through time!
 
 #+begin_src emacs-lisp
   (use-package git-timemachine)
