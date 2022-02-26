@@ -352,18 +352,6 @@ or
     :after org)
 #+end_src
 
-** [[https://github.com/emacsorphanage/god-mode][God mode]]
-
-#+begin_src emacs-lisp
-  (use-package god-mode
-    :bind (:map storvik/prefix-map
-           ("SPC" . god-mode-all)
-           :map god-local-mode-map
-           ("q" . god-mode-all)
-           ("z" . repeat))
-    :custom
-    (god-exempt-major-modes nil)
-    (god-exempt-predicates nil))
 #+end_src
 
 * Misc
