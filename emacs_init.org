@@ -697,7 +697,9 @@ Annotations in minibuffer.
   (use-package kind-icon
     :after corfu
     :custom
-    (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+    (kind-icon-default-face 'corfu-default)
+    (kind-icon-blend-background nil)
+    (kind-icon-blend-frac 0.08)
     :config
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+end_src
