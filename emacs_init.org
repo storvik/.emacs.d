@@ -566,12 +566,31 @@ Annotations in minibuffer.
   (use-package corfu
     :after orderless
     :custom
-    (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    (corfu-auto t)                 ;; Enable auto completion
-    (corfu-quit-at-boundary nil)   ;; Automatically quit at word boundary, nil due to orderless
-    (corfu-quit-no-match t)        ;; Quit if no match
-    (corfu-preview-current nil)    ;; Disable current candidate preview
+    (corfu-cycle t)                   ;; Enable cycling for `corfu-next/previous'
+    (corfu-auto t)                    ;; Enable auto completion
+    (corfu-quit-at-boundary nil)      ;; Automatically quit at word boundary, nil due to orderless
+    (corfu-separator ?\s)             ;; Separator, in order to use with ordeless
+    (corfu-quit-no-match 'separator)  ;; Quit if no match
+    (tab-always-indent 'complete)
+    :bind
+    (:map corfu-map
+     ("C-SPC" . corfu-insert-separator)
+     ("C-n" . corfu-next)
+     ("C-p" . corfu-previous)
+     ("M-d" . corfu-show-location)
+     ("M-d" . corfu-show-documentation))
     :init
+    (defun corfu-enable-always-in-minibuffer ()
+    "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+    (unless (or (bound-and-true-p mct--active)
+                (bound-and-true-p vertico--input))
+      (setq-local corfu-auto nil) ;; Enable/disable auto completion
+      (corfu-mode 1)))
+    (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
+    (with-eval-after-load 'storvik/gui
+      (set-face-attribute 'corfu-current nil
+                          :background (color-darken-name (face-background 'corfu-current) 2)))
+    ;; Enable corfu globally
     (corfu-global-mode))
 #+end_src
 
