@@ -604,6 +604,16 @@ Annotations in minibuffer.
       (all-the-icons-completion-marginalia-setup)))
 #+end_src
 
+** [[https://github.com/Qkessler/consult-project-extra][Consult project extra]]
+
+#+begin_src emacs-lisp
+  (use-package consult-project-extra
+    :straight (consult-project-extra :type git :host github :repo "Qkessler/consult-project-extra")
+    :bind
+    (("C-c p f" . consult-project-extra-find)
+     ("C-c p o" . consult-project-extra-find-other-window)))
+#+end_src
+
 * Navigation and editing
 ** [[https://github.com/abo-abo/ace-window][Ace-window]]
 Easier window movement, bind it to default other-window =C-x o=.

@@ -14,6 +14,7 @@
  ("cmake" . "6ff7cb3a80ff4354b625b00cc7375d261bd13496")
  ("consult" . "cb016db0654fbce4112b0a9f124fc0cfc4c809de")
  ("consult-lsp" . "f4f195046b97be5ce0406e0723921b3393d9442e")
+ ("consult-project-extra" . "897f2f71a94ce1b72c3bf823e14791a332befbb7")
  ("corfu" . "997fb0b8a6e41d4210e3d6d3f910b551a1bb3d9f")
  ("csv-mode" . "a4ad2e59d4039bf3b1bdbebdfab21c122ad5b487")
  ("dap-mode" . "1880ac680cd7389d2169886dff09f79017e1d28e")
