@@ -418,6 +418,14 @@ Enable mouse clicks in terminal.
 
 #+begin_src emacs-lisp
   (use-package vertico
+    :custom
+    (vertico-count 20)
+    (vertico-resize t)
+    (vertico-cycle t)
+    :bind
+    (:map vertico-map
+     ("C-M-n" . vertico-next-group)
+     ("C-M-p" . vertico-previous-group))
     :init
     (vertico-mode))
 
