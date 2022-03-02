@@ -605,6 +605,21 @@ Annotations in minibuffer.
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+end_src
 
+** [[https://github.com/galeo/corfu-doc][Corfu doc]]
+
+#+begin_src emacs-lisp
+  (use-package corfu-doc
+    :straight (corfu-doc :type git :host github :repo "galeo/corfu-doc")
+    :after corfu
+    ;; :hook (corfu-mode . corfu-doc-mode)
+    :bind (:map corfu-map
+           ([remap corfu-show-documentation] . corfu-doc-toggle)
+           ("M-n" . corfu-doc-scroll-up)
+           ("M-p" . corfu-doc-scroll-down))
+    :custom
+    (corfu-doc-delay 0.5))
+#+end_src
+
 ** [[https://github.com/minad/affe][Affe]]
 
 #+begin_src emacs-lisp
