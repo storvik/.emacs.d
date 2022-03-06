@@ -1387,6 +1387,13 @@ Use =emmet-expand-line= to do this.
   (use-package fish-mode)
 #+end_src
 
+** [[https://github.com/godotengine/emacs-gdscript-mode][GDscrip mode]]
+
+#+begin_src emacs-lisp
+  (use-package gdscript-mode
+      :straight (gdscript-mode :type git :host github :repo "godotengine/emacs-gdscript-mode"))
+#+end_src
+
 ** Go
 *** [[https://github.com/dominikh/go-mode.el][Go mode]]
 Major mode for Go.

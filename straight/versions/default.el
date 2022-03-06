@@ -31,6 +31,7 @@
  ("elisp-tree-sitter" . "5e1091658d625984c6c5756e3550c4d2eebd73a1")
  ("emacs-async" . "0d52411d3accc3e11a2c64838703a8ce9755c77c")
  ("emacs-fish" . "a7c953b1491ac3a3e00a7b560f2c9f46b3cb5c04")
+ ("emacs-gdscript-mode" . "4badcf6a0c951daba4d7259db3913b78254c0423")
  ("emacs-spell-fu" . "8185467b24f05bceb428a0e9909651ec083cc54e")
  ("emacs-web-server" . "6357a1c2d1718778503f7ee0909585094117525b")
  ("emacs-websocket" . "fda4455333309545c0787a79d73c19ddbeb57980")
