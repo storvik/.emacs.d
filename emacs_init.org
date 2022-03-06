@@ -998,6 +998,22 @@ This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multip
       ("q" nil)))
 #+end_src
 
+** [[https://github.com/minad/tempel][TempEL]]
+
+#+begin_src emacs-lisp
+  (use-package tempel
+    :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
+           ("M-*" . tempel-insert))
+
+    :init
+    (defun tempel-setup-capf ()
+      (setq-local completion-at-point-functions
+                  (cons #'tempel-expand
+                        completion-at-point-functions)))
+    :hook ((prog-mode . tempel-setup-capf)
+           (text-mode . tempel-setup-capf)))
+#+end_src
+
 * Language
 Set default ispell language to English.
 
