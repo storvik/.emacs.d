@@ -157,6 +157,8 @@ Delete trailing whitespaces on save.
 #+begin_src emacs-lisp
   (when (boundp 'pgtk-initialized)
     (setq default-frame-alist '((undecorated . t)))) ;; Remove title bar when using pgtk
+  (when (fboundp 'pixel-scroll-precision-mode)
+    (pixel-scroll-precision-mode 1))
   (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
   (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
   (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
