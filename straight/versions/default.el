@@ -53,6 +53,7 @@
  ("go-dlv.el" . "0a296bc3b7b4dcf0c140a78c5ca3e1a8c6b7ea1a")
  ("go-mode.el" . "3273fcece5d9ab7edd4f15b2d6bce61f4e5a0666")
  ("go-stacktracer.el" . "a2ac6d801b389f80ca4e2fcc1ab44513a9e55976")
+ ("goggles" . "5d10b00b5f4ee686683c48804235f62d644ae2ef")
  ("gomacro-mode" . "3112e56d2d5e645a3e0fd877f3e810dbccbf989f")
  ("gotest.el" . "298335fab797d0465516ed396f6e2acbe8f2ed93")
  ("hl-todo" . "42f744ffb513cf2b95517144c64dbf3fc69f711a")

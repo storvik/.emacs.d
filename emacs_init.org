@@ -248,6 +248,15 @@ Smoother scrolling, with a margin of 5.
     (setq smooth-scroll-margin 5))
 #+end_src
 
+** [[https://github.com/minad/goggles][Googles]]
+
+#+begin_src emacs-lisp
+  (use-package goggles
+    :hook ((prog-mode text-mode) . goggles-mode)
+    :config
+    (setq-default goggles-pulse t))
+#+end_src
+
 ** Tab width
 Use tabs, set default tab width to 4.
 
