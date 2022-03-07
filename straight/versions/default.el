@@ -8,6 +8,7 @@
  ("auctex-latexmk" . "4d353522650d7685acbf1d38f7dbc504f734bd84")
  ("avy" . "ba5f035be33693d1a136a5cbeedb24327f551a92")
  ("bui.el" . "f3a137628e112a91910fd33c0cff0948fa58d470")
+ ("cape" . "8726bc7246cda99b85a4bf84ff7681f1bfff0d4b")
  ("cfrs" . "f3a21f237b2a54e6b9f8a420a9da42b4f0a63121")
  ("cider" . "7afa8ac74b1e511387ac9bfe5b0bee83c1dbb943")
  ("clojure-mode" . "913e2450a77a6ddda051f55ac651c99337147db1")
