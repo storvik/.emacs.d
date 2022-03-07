@@ -1803,10 +1803,6 @@ Install org mode package
   ;; Archive location
   (setq org-archive-location "archive/%s_archive::")
 
-  ;; Indentation
-  (setq org-startup-indented t)
-  (setq org-indent-mode t)
-  (setq org-adapt-indentation t)
   (setq org-catch-invisible-edit 'nil)
 
   ;; File locations
@@ -1840,13 +1836,6 @@ Install org mode package
 
   ;; Misc
   (setq org-export-allow-bind-keywords t)
-#+end_src
-
-** [[https://github.com/sabof/org-bullets][Bullets]]
-
-#+begin_src emacs-lisp
-  (use-package org-bullets
-    :hook (org-mode . org-bullets-mode))
 #+end_src
 
 ** Capture
@@ -1966,10 +1955,17 @@ Use org-mode to write letters.
     '(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t) t))
 #+end_src
 
-** org plantuml
+** org-plantuml
 
 #+begin_src emacs-lisp
   (setq org-plantuml-exec-mode 'plantuml)
+#+end_src
+
+** [[https://github.com/minad/org-modern][org-modern]]
+
+#+begin_src emacs-lisp
+  (use-package org-modern
+    :hook (org-mode . org-modern-mode))
 #+end_src
 
 ** [[https://github.com/abo-abo/org-download][org-download]]
