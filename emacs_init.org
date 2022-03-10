@@ -292,7 +292,7 @@ or
     :after org)
 #+end_src
 
-** Meow modal editing
+** [[https://github.com/meow-edit/meow][Meow modal editing]]
 
 #+begin_src emacs-lisp
   (defun meow-setup ()
