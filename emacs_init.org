@@ -196,6 +196,7 @@ Smoother scrolling, with a margin of 5.
 
 #+begin_src emacs-lisp
   (use-package smooth-scrolling
+    :unless (fboundp 'pixel-scroll-precision-mode)
     :config
     (smooth-scrolling-mode 1)
     (setq smooth-scroll-margin 5))
