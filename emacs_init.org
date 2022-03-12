@@ -211,8 +211,23 @@ Smoother scrolling, with a margin of 5.
     (setq-default goggles-pulse t))
 #+end_src
 
+** [[https://github.com/rougier/svg-tag-mode][SVG Tag Mode]]
 
 #+begin_src emacs-lisp
+  (use-package svg-tag-mode
+    :hook ((prog-mode org-mode) . svg-tag-mode)
+    :custom
+    (svg-tag-tags
+     '(("[/|#|;]* FIXME:" . ((lambda (tag) (svg-lib-tag "FIXME" nil
+                                                       :background "#d08770"
+                                                       :foreground "white"))))
+       ("[/|#|;]* TODO:" . ((lambda (tag) (svg-lib-tag "TODO" nil
+                                                       :background "#d08770"
+                                                       :foreground "white"))))))
+    :config
+    ;; Load style after gui init, needed when running in daemon
+    (with-eval-after-load 'storvik/gui
+      (setq svg-lib-style-default (svg-lib-style-compute-default))))
 #+end_src
 
 * Keybindings
