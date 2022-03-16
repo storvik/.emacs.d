@@ -411,7 +411,7 @@ or
      '("y" . meow-save)
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
-     '("'" . repeat)
+     '("ø" . repeat)
      '("<escape>" . ignore)))
 
   (use-package meow
