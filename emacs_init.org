@@ -211,6 +211,20 @@ Smoother scrolling, with a margin of 5.
     (setq-default goggles-pulse t))
 #+end_src
 
+** [[https://gitlab.com/protesilaos/pulsar/][Pulsar]]
+
+#+begin_src emacs-lisp
+  (use-package pulsar
+    :straight (pulsar :type git :host gitlab :repo "protesilaos/pulsar")
+    :config
+    (setq pulsar-pulse-functions (append pulsar-pulse-functions
+                                         '(ace-window)))
+    (setq pulsar-delay 0.06)
+    (with-eval-after-load 'storvik/gui
+      ;; Must run pulsar-setup when customizing pulsar-pulse-functions with setq
+      (pulsar-setup)))
+#+end_src
+
 ** [[https://github.com/rougier/svg-tag-mode][SVG Tag Mode]]
 
 #+begin_src emacs-lisp

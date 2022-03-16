@@ -107,6 +107,7 @@
  ("powershell.el" . "ce1f0ae0b2e41cd0934a9dfbf2ff016b1d14e9c0")
  ("project" . "9da020ba63c4d72b06c04fac585d5e15eed92311")
  ("protobuf" . "2f91da585e96a7efe43505f714f03c7716a94ecb")
+ ("pulsar" . "d654e552f04a633f2a8d50d9ae72be0bd2e78ace")
  ("pyvenv" . "31ea715f2164dd611e7fc77b26390ef3ca93509b")
  ("queue" . "130c2d656cd5d7376552272fab9e50a7c37d0c4a")
  ("rainbow-delimiters" . "a32b39bdfe6c61c322c37226d66e1b6d4f107ed0")
