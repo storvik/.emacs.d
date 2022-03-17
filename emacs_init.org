@@ -77,15 +77,15 @@ Configure load-path to include =~/.emacs.d/elisp/=.
 ** Custom after gui hook
 - source :: https://www.reddit.com/r/emacs/comments/j2xezg/usepackage_best_practices/
 
-Now I can =:after storvik/gui= to make sure to load packages after gui is loaded, useful when running as daemon.
-In order to run custom elisp after GUI is loaded it's possible to =(with-eval-after-load 'storvik/gui (...))= or with use-package =(use-package emacs :after storvik/gui :config (...))=.
+Now I can =:after st/gui= to make sure to load packages after gui is loaded, useful when running as daemon.
+In order to run custom elisp after GUI is loaded it's possible to =(with-eval-after-load 'st/gui (...))= or with use-package =(use-package emacs :after st/gui :config (...))=.
 When =with-eval-after-load= is used from =use-package= it should be placed in =:init=.
 
 #+begin_src emacs-lisp
-  (defun storvik/first-graphical-frame-hook-function ()
-    (remove-hook 'focus-in-hook #'storvik/first-graphical-frame-hook-function)
-    (provide 'storvik/gui))
-  (add-hook 'focus-in-hook #'storvik/first-graphical-frame-hook-function)
+  (defun st/first-graphical-frame-hook-function ()
+    (remove-hook 'focus-in-hook #'st/first-graphical-frame-hook-function)
+    (provide 'st/gui))
+  (add-hook 'focus-in-hook #'st/first-graphical-frame-hook-function)
 #+end_src
 
 ** [[https://github.com/purcell/exec-path-from-shell][Exec path from shell]]
@@ -107,12 +107,12 @@ Use exec-path-from-shell on unix computers.
   (setq explicit-shell-file-name "/bin/bash")
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
-  (defun storvik/tramp-parse-sconfigs (path)
+  (defun st/tramp-parse-sconfigs (path)
     (mapcan 'tramp-parse-sconfig
             (directory-files path t "[^\.].+$")))
 
   (map-put tramp-completion-function-alist-ssh
-           'storvik/tramp-parse-sconfigs "~/.ssh/config.d")
+           'st/tramp-parse-sconfigs "~/.ssh/config.d")
 
   (mapc (lambda (method)
           (tramp-set-completion-function method
@@ -125,16 +125,15 @@ Use exec-path-from-shell on unix computers.
              (tramp-parse-rhosts "/etc/shosts.equiv")
              (tramp-parse-shosts "/etc/ssh_known_hosts")
              (tramp-parse-sconfig "/etc/ssh_config")
-             (storvik/tramp-parse-sconfigs "~/.ssh/config.d"))))
+             (st/tramp-parse-sconfigs "~/.ssh/config.d"))))
         '("scp" "scpc" "ssh"))
-
 #+end_src
 
 * Appearance settings
 ** Font
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'storvik/gui
+  (with-eval-after-load 'st/gui
     (set-face-attribute 'default nil :font (sys-diversification
                                             "Iosevka Nerd Font-10" ;
                                             "Iosevka Nerd Font-10"
@@ -220,7 +219,7 @@ Smoother scrolling, with a margin of 5.
     (setq pulsar-pulse-functions (append pulsar-pulse-functions
                                          '(ace-window)))
     (setq pulsar-delay 0.06)
-    (with-eval-after-load 'storvik/gui
+    (with-eval-after-load 'st/gui
       ;; Must run pulsar-setup when customizing pulsar-pulse-functions with setq
       (pulsar-setup)))
 #+end_src
@@ -230,7 +229,7 @@ Smoother scrolling, with a margin of 5.
 #+begin_src emacs-lisp
   (use-package svg-tag-mode
     :hook ((prog-mode . svg-tag-mode)
-           (org-mode . storvik/svg-tag-org-mode-setup))
+           (org-mode . st/svg-tag-org-mode-setup))
     :custom
     (svg-tag-tags
      '(("\\/\\/\\W?FIXME\\b:\\|FIXME\\b:" . ((lambda (tag)
@@ -241,10 +240,10 @@ Smoother scrolling, with a margin of 5.
        ("[\\/\\|#].\\W?TODO\\b:\\(.*\\)" . ((lambda (tag) (svg-tag-make tag :face 'org-todo :crop-left t))))
        ))
     :init
-    (defconst storvik/date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
-    (defconst storvik/time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
-    (defconst storvik/day-re "[A-Za-z\\|ø.]*")
-    (setq storvik/svg-tag-org-mode-tags
+    (defconst st/date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+    (defconst st/time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
+    (defconst st/day-re "[A-Za-z\\|ø.]*")
+    (setq st/svg-tag-org-mode-tags
           `(("TODO\\b" . ((lambda (tag) (svg-tag-make "TODO" :face 'org-done :inverse t :margin 0))))
             ("NEXT\\b" . ((lambda (tag) (svg-tag-make "NEXT" :face 'org-todo :inverse t :margin 0))))
             ("FOLLOWUP\\b" . ((lambda (tag) (svg-tag-make "FOLLOWUP" :face 'org-todo :inverse t :margin 0))))
@@ -255,29 +254,29 @@ Smoother scrolling, with a margin of 5.
             ("DELEGATED\\b" . ((lambda (tag) (svg-tag-make "DELEGATED" :face 'org-cite :inverse t :margin 0))))
             ("PHONE\\b" . ((lambda (tag) (svg-tag-make "📞" :face 'org-todo :inverse t :padding 3 :crop-right t))))
             ("PHONE\\b\\(.*\\)" . ((lambda (tag) (svg-tag-make tag :face 'org-todo :crop-left t))))
-            (,(format "\\(MEETING\\)\\W<%s\\W%s\\W%s>" storvik/date-re storvik/day-re storvik/time-re) .
+            (,(format "\\(MEETING\\)\\W<%s\\W%s\\W%s>" st/date-re st/day-re st/time-re) .
              ((lambda (tag) (svg-tag-make "📎" :face 'org-todo :inverse t :padding 3 :crop-right t))))
-            (,(format "MEETING\\(\\W<%s\\W%s\\W%s>\\)" storvik/date-re storvik/day-re storvik/time-re) .
+            (,(format "MEETING\\(\\W<%s\\W%s\\W%s>\\)" st/date-re st/day-re st/time-re) .
              ((lambda (tag) (svg-tag-make tag :face 'org-todo :inverse t :crop-right t :crop-left t :beg 1 :end -1))))
-            (,(format "MEETING\\W<%s\\W%s\\W%s>\\(\\W.*\\)" storvik/date-re storvik/day-re storvik/time-re) .
+            (,(format "MEETING\\W<%s\\W%s\\W%s>\\(\\W.*\\)" st/date-re st/day-re st/time-re) .
              ((lambda (tag) (svg-tag-make tag :face 'org-todo :crop-left t))))
             ))
     :config
-    (defun storvik/svg-tag-org-mode-setup ()
+    (defun st/svg-tag-org-mode-setup ()
       "org-mode setup hook which sets up svg-tag-mode"
       (interactive)
-      (setq-local svg-tag-tags storvik/svg-tag-org-mode-tags)
+      (setq-local svg-tag-tags st/svg-tag-org-mode-tags)
       (svg-tag-mode))
     ;; Load style after gui init, needed when running in daemon
-    (with-eval-after-load 'storvik/gui
+    (with-eval-after-load 'st/gui
       (setq svg-lib-style-default (svg-lib-style-compute-default))))
 #+end_src
 
 * Keybindings
 
-All overrides (key bindings that overrides existing ones) are [[https://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][placed in a minor mode]], =storvik/overrides-minor-mode=.
+All overrides (key bindings that overrides existing ones) are [[https://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][placed in a minor mode]], =st/overrides-minor-mode=.
 This way it's easy to completely disable all overrides if default behaviour is needed.
-Other custom keybindings are placed behind a prefix map, =storvik/prefix-map=, making it easy to maintain and discover using whick-key.
+Other custom keybindings are placed behind a prefix map, =st/prefix-map=, making it easy to maintain and discover using whick-key.
 Inspired by [[https://karl-voit.at/2018/07/08/emacs-key-bindings/][this post]].
 
 *Adding keybindings to map can be done the following ways:*
@@ -296,32 +295,32 @@ or
 :   :bind (:map map-name
 :         ("f" . function-name)))
 
-** storvik/overrides-minor-mode
+** st/overrides-minor-mode
 
 #+begin_src emacs-lisp
-  (defvar storvik/overrides-minor-mode-map
+  (defvar st/overrides-minor-mode-map
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "RET") 'newline-and-indent)
       (define-key map (kbd "C-j") 'newline-and-indent)
       map)
-    "storvik/overrides-minor-mode keymap.")
+    "st/overrides-minor-mode keymap.")
 
-  (define-minor-mode storvik/overrides-minor-mode
+  (define-minor-mode st/overrides-minor-mode
     "A minor mode so that my key settings override major modes."
     :init-value t
-    :lighter " storvik-key-overrides")
+    :lighter " st-key-overrides")
 
   ;; Enable minor mode, maybe it should
-  (storvik/overrides-minor-mode 1)
+  (st/overrides-minor-mode 1)
 
   ;; Disable overrides minor mode in minibuffer
-  (defun storvik/overrides-minor-mode-disable-hook ()
-    (storvik/overrides-minor-mode 0))
+  (defun st/overrides-minor-mode-disable-hook ()
+    (st/overrides-minor-mode 0))
 
   ;; Disable overrides in some modes
   (mapc
    (lambda (hook)
-     (add-hook hook 'storvik/overrides-minor-mode-disable-hook))
+     (add-hook hook 'st/overrides-minor-mode-disable-hook))
    '(minibuffer-setup-hook
      eshell-mode-hook
      mu4e-headers-mode-hook
@@ -337,14 +336,14 @@ or
      cider-repl-mode-hook))
 #+end_src
 
-** storvik/prefix-map
+** st/prefix-map
 
 #+begin_src emacs-lisp
   (global-unset-key (kbd "C-z"))
-  (define-prefix-command 'storvik/prefix-map)
+  (define-prefix-command 'st/prefix-map)
 
   (use-package bind-key
-    :bind (:prefix-map storvik/prefix-map
+    :bind (:prefix-map st/prefix-map
            :prefix-docstring "Storviks keyboard map"
            :prefix "C-z")
     :after org)
@@ -363,7 +362,7 @@ or
      ;; SPC j/k will run the original command in MOTION state.
      '("j" . "H-j")
      '("k" . "H-k")
-     '("z" . storvik/prefix-map)
+     '("z" . st/prefix-map)
      ;; Use SPC (0-9) for digit arguments.
      '("1" . meow-digit-argument)
      '("2" . meow-digit-argument)
@@ -459,7 +458,7 @@ or
            ([remap async-shell-command] . dtache-shell-command)
            ([remap compile] . dtache-compile)
            ([remap recompile] . dtache-compile-recompile)
-           :map storvik/prefix-map
+           :map st/prefix-map
            ("d" . st/dtache-hydra/body))
     :config
     (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
@@ -585,7 +584,7 @@ Enable mouse clicks in terminal.
 
 #+begin_src emacs-lisp
   (use-package consult
-    :bind (:map storvik/overrides-minor-mode-map
+    :bind (:map st/overrides-minor-mode-map
            ;; C-c bindings (mode-specific-map)
            ("C-c h" . consult-history)
            ("C-c b" . consult-bookmark)
@@ -720,7 +719,7 @@ Annotations in minibuffer.
       (setq-local corfu-auto nil) ;; Enable/disable auto completion
       (corfu-mode 1)))
     (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
-    (with-eval-after-load 'storvik/gui
+    (with-eval-after-load 'st/gui
       (set-face-attribute 'corfu-current nil
                           :background (color-darken-name (face-background 'corfu-current) 2)))
     ;; Enable corfu globally
@@ -759,7 +758,7 @@ Annotations in minibuffer.
 
 #+begin_src emacs-lisp
   (use-package cape
-    :bind (:map storvik/prefix-map ("p" . hydra-cape/body))
+    :bind (:map st/prefix-map ("p" . hydra-cape/body))
     :init
     ;; Add `completion-at-point-functions', used by `completion-at-point'.
     (add-to-list 'completion-at-point-functions #'cape-file)
@@ -797,7 +796,7 @@ Annotations in minibuffer.
 
 #+begin_src emacs-lisp
   (use-package affe
-    :bind (:map storvik/overrides-minor-mode-map
+    :bind (:map st/overrides-minor-mode-map
            ("M-s r" . affe-grep))
     :preface
     (defun affe-orderless-regexp-compiler (input _type)
@@ -815,7 +814,7 @@ Annotations in minibuffer.
     :after marginalia
     :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
     :init
-    (with-eval-after-load 'storvik/gui
+    (with-eval-after-load 'st/gui
       (all-the-icons-completion-marginalia-setup)))
 #+end_src
 
@@ -835,7 +834,7 @@ Easier window movement, bind it to default other-window =C-x o=.
 
 #+begin_src emacs-lisp
   (use-package ace-window
-    :bind (:map storvik/overrides-minor-mode-map ("C-x o" . ace-window))
+    :bind (:map st/overrides-minor-mode-map ("C-x o" . ace-window))
     :init
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
@@ -845,7 +844,7 @@ Tool for jumping to a given char on the screen.
 
 #+begin_src emacs-lisp
   (use-package avy
-    :bind (:map storvik/overrides-minor-mode-map
+    :bind (:map st/overrides-minor-mode-map
            ("M-g g" . avy-goto-line)
            ("M-j" . avy-goto-char-timer))
     :config
@@ -933,7 +932,7 @@ Use ripgrep from Emacs.
 
 #+begin_src emacs-lisp
   (use-package deadgrep
-    :bind (:map storvik/prefix-map ("s" . deadgrep)))
+    :bind (:map st/prefix-map ("s" . deadgrep)))
 #+end_src
 
 ** [[https://github.com/magnars/expand-region.el][Expand region]]
@@ -941,7 +940,7 @@ This package expands region by semantic units.
 
 #+begin_src emacs-lisp
   (use-package expand-region
-    :bind (:map storvik/prefix-map ("e" . hydra-expand-region/body))
+    :bind (:map st/prefix-map ("e" . hydra-expand-region/body))
     :config
     (defhydra hydra-expand-region (:color pink :exit t :hint nil)
       "
@@ -966,7 +965,7 @@ This package expands region by semantic units.
 #+begin_src emacs-lisp
   (use-package fancy-dabbrev
     :commands (fancy-dabbrev-mode)
-    :bind (:map storvik/overrides-minor-mode-map
+    :bind (:map st/overrides-minor-mode-map
            ("C-<tab>" . fancy-dabbrev-expand))
     :custom
     (fancy-dabbrev-preview-delay 0.0)
@@ -974,7 +973,7 @@ This package expands region by semantic units.
     (fancy-dabbrev-expansion-on-preview-only t)
     (fancy-dabbrev-indent-command 'indent-for-tab-command)
     :init
-    (with-eval-after-load 'storvik/gui
+    (with-eval-after-load 'st/gui
       (global-fancy-dabbrev-mode)))
 #+end_src
 
@@ -997,7 +996,7 @@ Moves region if marked.
 
 #+begin_src emacs-lisp
   (use-package move-text
-    :bind (:map storvik/prefix-map ("m" . hydra-move-text/body))
+    :bind (:map st/prefix-map ("m" . hydra-move-text/body))
     :config
     (defhydra hydra-move-text (:hint nil)
       "Move line or region"
@@ -1035,7 +1034,7 @@ This is an awesome function from Endless.
            (LaTeX-narrow-to-environment))
           (t (narrow-to-defun))))
 
-  (bind-key "n" #'narrow-or-widen-dwim storvik/prefix-map)
+  (bind-key "n" #'narrow-or-widen-dwim st/prefix-map)
 #+end_src
 
 ** [[https://github.com/magnars/multiple-cursors.el][Multiple cursors]]
@@ -1044,7 +1043,7 @@ This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multip
 
 #+begin_src emacs-lisp
   (use-package multiple-cursors
-    :bind (:map storvik/prefix-map ("c" . hydra-multiple-cursors/body))
+    :bind (:map st/prefix-map ("c" . hydra-multiple-cursors/body))
     :config
     (defhydra hydra-multiple-cursors (:hint nil)
       "
@@ -1122,7 +1121,7 @@ Set default ispell language to English.
   (use-package magit
     :demand t
     :when (executable-find "git")
-    :bind (:map storvik/prefix-map
+    :bind (:map st/prefix-map
            ("g" . magit-status)
            :map magit-status-mode-map
            ("TAB" . magit-section-toggle)
@@ -1147,7 +1146,7 @@ Set default ispell language to English.
            (magit-pre-refresh . diff-hl-magit-pre-refresh)
            (magit-post-refresh . diff-hl-magit-post-refresh))
     :init
-    (with-eval-after-load 'storvik/gui
+    (with-eval-after-load 'st/gui
       (global-diff-hl-mode)))
 #+end_src
 
@@ -1176,7 +1175,7 @@ SSH with =cd /ssh:remote-server:=.
 Custom prompt inspired by [[http://www.modernemacs.com/post/custom-eshell/][this post]].
 
 #+begin_src emacs-lisp
-  (defun storvik/eshell-fishy-path (path)
+  (defun st/eshell-fishy-path (path)
     "Takes eshell path and makes it fishy."
     (let ((pathlist (split-string (replace-regexp-in-string
                                    (file-truename "~") "~" path) "/")))
@@ -1190,7 +1189,7 @@ Custom prompt inspired by [[http://www.modernemacs.com/post/custom-eshell/][this
                 "/")
               (car (last pathlist)))))
 
-  (defun storvik/eshell-prompt-function ()
+  (defun st/eshell-prompt-function ()
     "Custom eshell prompt function."
     (concat
      (if (file-remote-p default-directory)
@@ -1200,7 +1199,7 @@ Custom prompt inspired by [[http://www.modernemacs.com/post/custom-eshell/][this
                "@"
                (propertize system-name 'face font-lock-keyword-face)))
      (propertize (concat "  "
-                         (storvik/eshell-fishy-path (eshell/pwd)))
+                         (st/eshell-fishy-path (eshell/pwd)))
                  'face font-lock-string-face)
      (when (magit-get-current-branch)
        (propertize (concat " ( "
@@ -1209,7 +1208,7 @@ Custom prompt inspired by [[http://www.modernemacs.com/post/custom-eshell/][this
                    'face font-lock-comment-face))
      "> "))
 
-  (setq eshell-prompt-function 'storvik/eshell-prompt-function)
+  (setq eshell-prompt-function 'st/eshell-prompt-function)
   (setq eshell-prompt-regexp "[a-zA-Z0-9-_@:/]+\\ \\ [a-zA-Z0-9-_/~]+\\( \( [a-zA-Z0-9-_@/.]+\)\\)*>\\ ")
 #+end_src
 
@@ -1217,7 +1216,7 @@ Custom prompt inspired by [[http://www.modernemacs.com/post/custom-eshell/][this
 Custom buffer names =*eshell*<path/to/eshell>=.
 
 #+begin_src emacs-lisp
-  (defun storvik/eshell-rename-buffer ()
+  (defun st/eshell-rename-buffer ()
     "Rename buffer based on path."
     (interactive)
     (rename-buffer (concat "*eshell*<"
@@ -1225,8 +1224,8 @@ Custom buffer names =*eshell*<path/to/eshell>=.
                             (file-truename "~") "~" (eshell/pwd))
                            ">") t))
 
-  (add-hook 'eshell-mode-hook 'storvik/eshell-rename-buffer)
-  (add-hook 'eshell-directory-change-hook 'storvik/eshell-rename-buffer)
+  (add-hook 'eshell-mode-hook 'st/eshell-rename-buffer)
+  (add-hook 'eshell-directory-change-hook 'st/eshell-rename-buffer)
 #+end_src
 
 * Programming
@@ -1263,15 +1262,15 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     (lsp-enable-snippet nil)
     (lsp-completion-provider :none) ;; we use Corfu!
     :init
-    (defun storvik/orderless-dispatch-flex-first (_pattern index _total)
+    (defun st/orderless-dispatch-flex-first (_pattern index _total)
       (and (eq index 0) 'orderless-flex))
-    (defun storvik/lsp-mode-setup-completion ()
+    (defun st/lsp-mode-setup-completion ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
             '(orderless)))
     ;; Optionally configure the first word as flex filtered.
-    (add-hook 'orderless-style-dispatchers #'storvik/orderless-dispatch-flex-first nil 'local)
+    (add-hook 'orderless-style-dispatchers #'st/orderless-dispatch-flex-first nil 'local)
     :hook
-    (lsp-completion-mode . storvik/lsp-mode-setup-completion))
+    (lsp-completion-mode . st/lsp-mode-setup-completion))
 
   (use-package lsp-ui
     :commands lsp-ui-mode
@@ -1420,7 +1419,7 @@ Major mode for editing dart files.
 Setup lsp-dart, thanks to [[https://github.com/ericdallo/dotfiles/blob/master/.doom.d/config.el#L150-L155][ericdallo]] for the snippet in :config.
 
 #+begin_src emacs-lisp
-  (defun storvik/lsp-dart ()
+  (defun st/lsp-dart ()
     (interactive)
     (envrc-reload-all)
     (when-let (dart-exec (executable-find "dart"))
@@ -1917,7 +1916,7 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
   (use-package org-super-agenda
     :after org
     :config
-    (defun storvik/agenda-context-emoji ()
+    (defun st/agenda-context-emoji ()
       "Should insert emoji for given context, but alignment never worked."
       (let ((tags (concat (org-entry-get (point) "TAGS"))))
         (concat (when (string-match-p "@computer" tags)
@@ -1938,7 +1937,7 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
                         '((:discard (:not (:tag ("avanti"))))
                           (:name "This week")))))
               (alltodo ""
-                       ((org-agenda-prefix-format "  %i %-16:c %-10(storvik/agenda-context-emoji) %-6e ")
+                       ((org-agenda-prefix-format "  %i %-16:c %-10(st/agenda-context-emoji) %-6e ")
                         (org-agenda-hide-tags-regexp "@") ;; remove context tags from tag list
                         (org-agenda-remove-tags t)
                         (org-agenda-overriding-header "")
@@ -2008,21 +2007,21 @@ Use org-mode to write letters.
 My roam config, trying to use roam as a personal knowledge base and daily note taking.
 
 #+begin_src emacs-lisp
-  (defun storvik/org-roam-ripgrep ()
+  (defun st/org-roam-ripgrep ()
     "Search org roam files with ripgrep"
     (interactive)
     (consult-ripgrep org-roam-directory))
 
-  (defun storvik/org-roam-dailies-ripgrep ()
+  (defun st/org-roam-dailies-ripgrep ()
     "Search org roam files with ripgrep"
     (interactive)
     (consult-ripgrep org-roam-dailies-directory))
 
-  (defun storvik/org-roam-deadgrep (search-term)
+  (defun st/org-roam-deadgrep (search-term)
     (interactive (list (deadgrep--read-search-term)))
     (deadgrep search-term org-roam-directory))
 
-  (defun storvik/org-roam-dailies-deadgrep (search-term)
+  (defun st/org-roam-dailies-deadgrep (search-term)
     (interactive (list (deadgrep--read-search-term)))
     (deadgrep search-term org-roam-dailies-directory))
 
@@ -2064,7 +2063,7 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
            ("C-c n c" . org-roam-capture)
            ;; Dailies
            ("C-c n j" . org-roam-dailies-capture-today)
-           ("C-c n s" . storvik/org-roam-ripgrep))
+           ("C-c n s" . st/org-roam-ripgrep))
     :init
     (setq org-roam-v2-ack t)
     :config
@@ -2096,7 +2095,7 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
 
 #+begin_src emacs-lisp
   (use-package emacs
-    :bind (:map storvik/prefix-map ("o" . hydra-org-mode/body))
+    :bind (:map st/prefix-map ("o" . hydra-org-mode/body))
     :config
     (defhydra hydra-org-mode (:color pink :exit t :hint nil)
       "
@@ -2114,10 +2113,10 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
       ("f" org-roam-node-find)
       ("i" org-roam-node-insert)
       ("u" org-roam-ui-mode)
-      ("r" storvik/org-roam-ripgrep)
-      ("R" storvik/org-roam-dailies-ripgrep)
-      ("s" storvik/org-roam-deadgrep)
-      ("S" storvik/org-roam-dailies-deadgrep)
+      ("r" st/org-roam-ripgrep)
+      ("R" st/org-roam-dailies-ripgrep)
+      ("s" st/org-roam-deadgrep)
+      ("S" st/org-roam-dailies-deadgrep)
       ("j" org-roam-dailies-capture-today)
       ("k" org-roam-dailies-capture-date)
       ("t" org-roam-dailies-goto-today)
@@ -2129,10 +2128,10 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
 * Email
 
 #+begin_src emacs-lisp
-  (let ((storvik/mu4e-config "~/.emacs.d-mu4e/mu4e-config.org"))
+  (let ((st/mu4e-config "~/.emacs.d-mu4e/mu4e-config.org"))
     (when (and (executable-find "mu")
-               (file-exists-p (expand-file-name storvik/mu4e-config)))
-      (org-babel-load-file (expand-file-name storvik/mu4e-config))))
+               (file-exists-p (expand-file-name st/mu4e-config)))
+      (org-babel-load-file (expand-file-name st/mu4e-config))))
 #+end_src
 
 * Functions
@@ -2190,7 +2189,7 @@ Reindents the entire buffer. Use =C-c /=.
             (tabify (point-min) (point-max)))
         (untabify (point-min) (point-max)))))
 
-  (bind-key "/" #'indent-buffer storvik/prefix-map)
+  (bind-key "/" #'indent-buffer st/prefix-map)
 #+end_src
 
 ** Rename current file
