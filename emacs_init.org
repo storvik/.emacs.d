@@ -758,7 +758,7 @@ Annotations in minibuffer.
 
 #+begin_src emacs-lisp
   (use-package cape
-    :bind (:map st/prefix-map ("p" . hydra-cape/body))
+    :bind (:map st/prefix-map ("p" . st/cape-hydra/body))
     :init
     ;; Add `completion-at-point-functions', used by `completion-at-point'.
     (add-to-list 'completion-at-point-functions #'cape-file)
@@ -766,7 +766,7 @@ Annotations in minibuffer.
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
     (add-to-list 'completion-at-point-functions #'cape-keyword)
     :config
-    (defhydra hydra-cape (:color pink :exit t :hint nil)
+    (defhydra st/cape-hydra (:color pink :exit t :hint nil)
       "
   ^cape completion
   ^^^^^^^^-------------------------------------------------------------------
@@ -940,9 +940,9 @@ This package expands region by semantic units.
 
 #+begin_src emacs-lisp
   (use-package expand-region
-    :bind (:map st/prefix-map ("e" . hydra-expand-region/body))
+    :bind (:map st/prefix-map ("e" . st/expand-region-hydra/body))
     :config
-    (defhydra hydra-expand-region (:color pink :exit t :hint nil)
+    (defhydra st/expand-region-hydra (:color pink :exit t :hint nil)
       "
   ^mark^                     ^region
   ^^^^^^^^-------------------------------------------
@@ -996,9 +996,9 @@ Moves region if marked.
 
 #+begin_src emacs-lisp
   (use-package move-text
-    :bind (:map st/prefix-map ("m" . hydra-move-text/body))
+    :bind (:map st/prefix-map ("m" . st/move-text-hydra/body))
     :config
-    (defhydra hydra-move-text (:hint nil)
+    (defhydra st/move-text-hydra (:hint nil)
       "Move line or region"
       ("p" move-text-up "Up")
       ("n" move-text-down "Down")))
@@ -1043,9 +1043,9 @@ This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multip
 
 #+begin_src emacs-lisp
   (use-package multiple-cursors
-    :bind (:map st/prefix-map ("c" . hydra-multiple-cursors/body))
+    :bind (:map st/prefix-map ("c" . st/multiple-cursors-hydra/body))
     :config
-    (defhydra hydra-multiple-cursors (:hint nil)
+    (defhydra st/multiple-cursors-hydra (:hint nil)
       "
    Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
   ------------------------------------------------------------------
@@ -2095,9 +2095,9 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
 
 #+begin_src emacs-lisp
   (use-package emacs
-    :bind (:map st/prefix-map ("o" . hydra-org-mode/body))
+    :bind (:map st/prefix-map ("o" . st/org-hydra/body))
     :config
-    (defhydra hydra-org-mode (:color pink :exit t :hint nil)
+    (defhydra st/org-hydra (:color pink :exit t :hint nil)
       "
   ^org^                     ^roam^                                         ^dailies
   ^^^^^^^^------------------------------------------------------------------------------------------------------------------
