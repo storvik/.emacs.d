@@ -27,6 +27,7 @@
  ("dired-plus" . "8e09cc67cbbcd9277927acfa765d325da382493b")
  ("dockerfile-mode" . "5db94549ce8b000ae35adf511c820ad228178052")
  ("doom-modeline" . "d9b64bc56283c7816f8124dcb3a5c7ea22732643")
+ ("dtache" . "9b39e9ebbfd19bae1b0b30e98b574f0e8a952bec")
  ("edit-indirect" . "e3d86416bcf8ddca951d7d112e57ad30c5f9a081")
  ("el-get" . "9353309744e4f8a7c9b1adf22ec99536fb2146b0")
  ("elisp-tree-sitter" . "5e1091658d625984c6c5756e3550c4d2eebd73a1")
