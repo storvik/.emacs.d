@@ -25,6 +25,7 @@
  ("deadgrep" . "0a3ba239c458ffc4f63a180b43d0e70b81742a3e")
  ("diff-hl" . "4a08b02afec1fc6b1e84de46cc34f75f6c9c3bcc")
  ("dired-plus" . "8e09cc67cbbcd9277927acfa765d325da382493b")
+ ("dired-rsync" . "b327971d197e95e9b78e7ef92539bd4196a12797")
  ("dockerfile-mode" . "b63a3d12b7dea0cb9efc7f78d7ad5672ceab2a3f")
  ("doom-modeline" . "b95340d24a37ac8b76b7934ff9508ff58f577a96")
  ("dtache" . "9b39e9ebbfd19bae1b0b30e98b574f0e8a952bec")

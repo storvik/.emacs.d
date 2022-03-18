@@ -1112,6 +1112,14 @@ Set default ispell language to English.
     :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
 
+** [[https://github.com/stsquad/dired-rsync][direc rsync]]
+
+#+begin_src emacs-lisp
+  (use-package dired-rsync
+    :config
+    (bind-key "C-c C-r" 'dired-rsync dired-mode-map))
+#+end_src
+
 * Git
 ** [[https://magit.vc/][Magit]]
 
