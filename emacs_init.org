@@ -443,6 +443,7 @@ or
      '("<escape>" . ignore)))
 
   (use-package meow
+    :demand t
     :hook (git-commit-setup . meow-insert)
     :config
     (meow-setup)
