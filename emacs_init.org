@@ -449,44 +449,6 @@ or
 #+end_src
 
 * Misc
-** [[https://gitlab.com/niklaseklund/dtache][dtache]]
-
-#+begin_src emacs-lisp
-  (use-package dtache
-    :hook (after-init . dtache-setup)
-    :bind (([remap dtache-open-session] . dtache-consult-session)
-           ([remap async-shell-command] . dtache-shell-command)
-           ([remap compile] . dtache-compile)
-           ([remap recompile] . dtache-compile-recompile)
-           :map st/prefix-map
-           ("d" . st/dtache-hydra/body))
-    :config
-    (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
-    (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map))
-    (defhydra st/dtache-hydra (:color pink :exit t :hint nil)
-      "
-  ^dtache
-  ^^^^^^^^-----------------------------------------------------------------
-  _o_: open                 _v_: view                 _t_: tail
-  _a_: attach               _d_: delete               _=_: diff
-  _c_: compile              _W_: copy                 _i_: insert command
-  _k_: kill                 _r_: rerun                _w_: copy command
-  "
-      ("o" dtache-open-session)
-      ("a" dtache-attach-session)
-      ("c" dtache-compile-session)
-      ("k" dtache-kill-session)
-      ("v" dtache-view-session)
-      ("d" dtache-delete-session)
-      ("W" dtache-copy-session)
-      ("r" dtache-rerun-session)
-      ("t" dtache-tail-session)
-      ("=" dtache-diff-session)
-      ("i" dtache-insert-session-command)
-      ("w" dtache-copy-session-command)
-      ("q" nil "cancel")))
-#+end_src
-
 ** [[https://github.com/joddie/pcre2el][pcre2el]]
 
 #+begin_src emacs-lisp
@@ -1118,6 +1080,51 @@ Set default ispell language to English.
   (use-package dired-rsync
     :config
     (bind-key "C-c C-r" 'dired-rsync dired-mode-map))
+#+end_src
+
+* [[https://gitlab.com/niklaseklund/dtache][Dtache]]
+
+#+begin_src emacs-lisp
+  (use-package dtache
+    :when (executable-find "dtach")
+    :hook (after-init . dtache-setup)
+    :bind (([remap dtache-open-session] . dtache-consult-session)
+           ([remap async-shell-command] . dtache-shell-command)
+           ([remap compile] . dtache-compile)
+           ([remap recompile] . dtache-compile-recompile)
+           :map st/prefix-map
+           ("d" . st/dtache-hydra/body))
+    :config
+    (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
+    (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map))
+    (defun st/dtache-dired-rsync (command _details)
+      "Run COMMAND with `dtache'."
+      (let ((dtache-local-session t)
+            (dtache-session-origin 'rsync))
+        (dtache-start-session command t)))
+    (advice-add #'dired-rsync--do-run :override #'st/dtache-dired-rsync)
+    (defhydra st/dtache-hydra (:color pink :exit t :hint nil)
+      "
+  ^dtache
+  ^^^^^^^^-----------------------------------------------------------------
+  _o_: open                 _v_: view                 _t_: tail
+  _a_: attach               _d_: delete               _=_: diff
+  _c_: compile              _W_: copy                 _i_: insert command
+  _k_: kill                 _r_: rerun                _w_: copy command
+  "
+      ("o" dtache-open-session)
+      ("a" dtache-attach-session)
+      ("c" dtache-compile-session)
+      ("k" dtache-kill-session)
+      ("v" dtache-view-session)
+      ("d" dtache-delete-session)
+      ("W" dtache-copy-session)
+      ("r" dtache-rerun-session)
+      ("t" dtache-tail-session)
+      ("=" dtache-diff-session)
+      ("i" dtache-insert-session-command)
+      ("w" dtache-copy-session-command)
+      ("q" nil "cancel")))
 #+end_src
 
 * Git
