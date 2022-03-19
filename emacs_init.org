@@ -1978,11 +1978,12 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
                         (org-agenda-overriding-header "")
                         (org-super-agenda-groups
                          '((:discard (:tag ("avanti")))
-                           (:name "🛠️ Work in progress" :todo "WIP")
-                           (:name "⏳ Next" :todo "NEXT")
-                           (:name "🗒️ Todo" :todo "TODO")
-                           (:name "🕙 Waiting" :todo "WAITING")
-                           (:name "📌 Someday" :tag "someday")
+                           (:name "🛠️ Work in progress" :and (:todo "WIP" :not (:scheduled future)))
+                           (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
+                           (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future)))
+                           (:name "🕙 Waiting" :and (:todo "WAITING" :not (:scheduled future)))
+                           (:name "📌 Someday" :and (:tag "someday"  :not (:scheduled future)))
+                           (:name "⚠️ Scheduled for later" :scheduled future)
                            (:discard (:todo ("PHONE" "MEETING")))))))))))
     (org-super-agenda-mode))
 #+end_src
