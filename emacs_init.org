@@ -444,7 +444,8 @@ or
 
   (use-package meow
     :demand t
-    :hook (git-commit-setup . meow-insert)
+    :hook ((git-commit-setup . meow-insert)
+           (org-capture-mode . meow-insert))
     :config
     (meow-setup)
     (meow-global-mode 1))
