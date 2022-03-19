@@ -333,7 +333,8 @@ or
      dired-mode-hook
      deadgrep-mode-hook
      help-mode-hook
-     cider-repl-mode-hook))
+     cider-repl-mode-hook
+     calendar-mode-hook))
 #+end_src
 
 ** st/prefix-map
