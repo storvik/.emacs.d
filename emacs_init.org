@@ -98,6 +98,12 @@ Use exec-path-from-shell on unix computers.
     (exec-path-from-shell-initialize))
 #+end_src
 
+** [[https://github.com/abo-abo/hydra][Hydra]]
+
+#+begin_src emacs-lisp
+  (use-package hydra)
+#+end_src
+
 * Tramp settings
 
 #+begin_src emacs-lisp
