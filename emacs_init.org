@@ -1273,6 +1273,8 @@ Some performance enhancing settings, see lsp-mode README.md for details.
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :bind-keymap ("C-c l" . lsp-command-map)
+    :bind (:map st/prefix-map ("l" . st/hydra-lsp/body))
+    :hook (lsp-completion-mode . st/lsp-mode-setup-completion)
     :custom
     (lsp-keymap-prefix "C-c l")
     (lsp-prefer-flymake nil)
@@ -1288,8 +1290,32 @@ Some performance enhancing settings, see lsp-mode README.md for details.
             '(orderless)))
     ;; Optionally configure the first word as flex filtered.
     (add-hook 'orderless-style-dispatchers #'st/orderless-dispatch-flex-first nil 'local)
-    :hook
-    (lsp-completion-mode . st/lsp-mode-setup-completion))
+    (defhydra st/hydra-lsp (:exit t :hint nil)
+      "
+   Buffer^^               Server^^                   Symbol
+  -------------------------------------------------------------------------------------
+   [_f_] format           [_M-r_] restart            [_d_] declaration  [_i_] implementation  [_o_] documentation
+   [_m_] imenu            [_S_]   shutdown           [_D_] definition   [_t_] type            [_r_] rename
+   [_x_] execute action   [_M-s_] describe session   [_R_] references   [_s_] signature"
+      ("d" lsp-find-declaration)
+      ("D" lsp-ui-peek-find-definitions)
+      ("R" lsp-ui-peek-find-references)
+      ("i" lsp-ui-peek-find-implementation)
+      ("t" lsp-find-type-definition)
+      ("s" lsp-signature-help)
+      ("o" lsp-describe-thing-at-point)
+      ("r" lsp-rename)
+
+      ("f" lsp-format-buffer)
+      ("m" lsp-ui-imenu)
+      ("x" lsp-execute-code-action)
+
+      ("M-s" lsp-describe-session)
+      ("M-r" lsp-restart-workspace)
+      ("S" lsp-shutdown-workspace)
+
+      ("g" nil)
+      ("q" nil)))
 
   (use-package lsp-ui
     :commands lsp-ui-mode
