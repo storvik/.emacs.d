@@ -61,10 +61,10 @@ Macro for setting different settings for OSX / Linux.
     (eq system-type name))
 
   (defmacro sys-diversification (gnu/linux &optional darwin win)
-     (cond ((sys-type-p 'gnu/linux) gnu/linux)
-           ((sys-type-p 'darwin) darwin)
-           ((sys-type-p 'windows-nt) win)
-           (t nil)))
+    (cond ((sys-type-p 'gnu/linux) gnu/linux)
+          ((sys-type-p 'darwin) darwin)
+          ((sys-type-p 'windows-nt) win)
+          (t nil)))
 #+end_src
 
 ** Initial settings
@@ -236,7 +236,7 @@ Smoother scrolling, with a margin of 5.
                                                (svg-tag-make "FIXME" :face 'org-todo :inverse t :margin 0 :crop-right t))))
        ("FIXME\\b:\\(.*\\)" . ((lambda (tag) (svg-tag-make tag :face 'org-todo :crop-left t))))
        ("[\\/\\|#].\\W?TODO\\b:\\|TODO\\b:" . ((lambda (tag)
-                                             (svg-tag-make "TODO" :face 'org-todo :inverse t :margin 0 :crop-right t))))
+                                                 (svg-tag-make "TODO" :face 'org-todo :inverse t :margin 0 :crop-right t))))
        ("[\\/\\|#].\\W?TODO\\b:\\(.*\\)" . ((lambda (tag) (svg-tag-make tag :face 'org-todo :crop-left t))))
        ))
     :init
@@ -505,7 +505,7 @@ Enable mouse clicks in terminal.
     (with-eval-after-load 'vertico
       (require 'consult-vertico))
     (advice-add #'completing-read-multiple
-          :override #'consult-completing-read-multiple))
+                :override #'consult-completing-read-multiple))
 #+end_src
 
 ** [[https://github.com/oantolin/orderless][Orderless]]
@@ -575,11 +575,11 @@ Annotations in minibuffer.
      ("M-d" . corfu-show-documentation))
     :init
     (defun corfu-enable-always-in-minibuffer ()
-    "Enable Corfu in the minibuffer if Vertico/Mct are not active."
-    (unless (or (bound-and-true-p mct--active)
-                (bound-and-true-p vertico--input))
-      (setq-local corfu-auto nil) ;; Enable/disable auto completion
-      (corfu-mode 1)))
+      "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+      (unless (or (bound-and-true-p mct--active)
+                  (bound-and-true-p vertico--input))
+        (setq-local corfu-auto nil) ;; Enable/disable auto completion
+        (corfu-mode 1)))
     (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
     (with-eval-after-load 'st/gui
       (set-face-attribute 'corfu-current nil
@@ -844,9 +844,9 @@ Open hyperlinks at point. =C-c B(rowse)=.
 
 #+begin_src emacs-lisp
   (setq browse-url-browser-function (sys-diversification
-                                      'browse-url-generic
-                                      'browse-url-default-macosx-browser
-                                      'browse-url-default-windows-browser)
+                                     'browse-url-generic
+                                     'browse-url-default-macosx-browser
+                                     'browse-url-default-windows-browser)
         browse-url-generic-program "firefox")
 
   (bind-key "C-c B" 'browse-url-at-point)
@@ -1279,7 +1279,7 @@ I use LatexMk to compile my latex documents. Replace default latex command with 
     (auctex-latexmk-setup)
     (setq auctex-latexmk-inherit-TeX-PDF-mode t)
     (add-hook 'TeX-mode-hook (lambda ()
-                              (setq TeX-command-default "LatexMk"))))
+                               (setq TeX-command-default "LatexMk"))))
 #+end_src
 
 ** C/C++
@@ -1295,12 +1295,12 @@ Set default indentation to 4.
 
 #+begin_src emacs-lisp
   (defun my-c-mode-common-hook ()
-      (c-set-offset 'substatement-open 0)
-      ;;(setq c++-tab-always-indent nil)
-      (setq c-basic-offset 4)
-      (setq c-indent-level 4)
-      (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
-      (setq tab-width 4))
+    (c-set-offset 'substatement-open 0)
+    ;;(setq c++-tab-always-indent nil)
+    (setq c-basic-offset 4)
+    (setq c-indent-level 4)
+    (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
+    (setq tab-width 4))
   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 #+end_src
 
@@ -1339,10 +1339,10 @@ Setup lsp-dart, thanks to [[https://github.com/ericdallo/dotfiles/blob/master/.d
     (envrc-reload-all)
     (when-let (dart-exec (executable-find "dart"))
       (let ((dart-sdk-path (-> dart-exec
-                             file-chase-links
-                             file-name-directory
-                             directory-file-name
-                             file-name-directory)))
+                               file-chase-links
+                               file-name-directory
+                               directory-file-name
+                               file-name-directory)))
         (setq lsp-dart-sdk-dir dart-sdk-path
               lsp-dart-dap-flutter-hot-reload-on-save t)))
     (lsp))
@@ -1369,7 +1369,6 @@ Use =emmet-expand-line= to do this.
 #+end_src
 
 ** [[https://github.com/wwwjfy/emacs-fish/][Fish mode]]
-   Edit fish shell files.
 
 #+begin_src emacs-lisp
   (use-package fish-mode)
@@ -1379,7 +1378,7 @@ Use =emmet-expand-line= to do this.
 
 #+begin_src emacs-lisp
   (use-package gdscript-mode
-      :straight (gdscript-mode :type git :host github :repo "godotengine/emacs-gdscript-mode"))
+    :straight (gdscript-mode :type git :host github :repo "godotengine/emacs-gdscript-mode"))
 #+end_src
 
 ** Go
@@ -1405,10 +1404,10 @@ To install lsp support for Go gopls must be installed:
 #+begin_src emacs-lisp
   ;; Add LSP remote client for golang
   (lsp-register-client
-      (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
-                       :major-modes '(go-mode)
-                       :remote? t
-                       :server-id 'gopls-remote))
+   (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
+                    :major-modes '(go-mode)
+                    :remote? t
+                    :server-id 'gopls-remote))
 #+end_src
 
 *** [[https://github.com/syohex/emacs-go-add-tags][Go add tags]]
@@ -1470,18 +1469,6 @@ Mode for interacting with gomacro REPL.
 #+end_src
 
 ** Lisp
-*** [[https://github.com/emacsmirror/paredit][Paredit]]
-
-#+begin_src emacs-lisp
-  (use-package paredit
-    :hook ((emacs-lisp-mode . paredit-mode)
-           (sly-mode . paredit-mode)
-           (clojure-mode . paredit-mode)
-           (clojurescript-mode . paredit-mode))
-    :config
-    (unbind-key "M-s" paredit-mode-map))
-#+end_src
-
 *** [[https://github.com/joaotavora/sly][SLY]]
 SLY is a [[https://github.com/slime/slime][Slime]] fork with lots of improvements!
 To choose between multiple lisps use =C-- M-x sly=.
