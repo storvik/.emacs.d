@@ -346,13 +346,13 @@ or
 ** st/prefix-map
 
 #+begin_src emacs-lisp
-  (global-unset-key (kbd "C-z"))
+  (global-unset-key (kbd "C-M-s"))
   (define-prefix-command 'st/prefix-map)
 
   (use-package bind-key
     :bind (:prefix-map st/prefix-map
            :prefix-docstring "Storviks keyboard map"
-           :prefix "C-z")
+           :prefix "C-M-s")
     :after org)
 #+end_src
 
@@ -943,17 +943,17 @@ This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multip
 
 #+begin_src emacs-lisp
   (use-package smartparens
-    :bind (:map st/overrides-minor-mode-map
-                ("C-M-s" . st/hydra-smartparens/body)
-                :map smartparens-mode-map
-                ("C-M-a" . sp-beginning-of-sexp)
-                ("C-M-e" . sp-end-of-sexp)
+    :bind (:map st/prefix-map
+           ("S" . st/hydra-smartparens/body)
+           :map smartparens-mode-map
+           ("C-M-a" . sp-beginning-of-sexp)
+           ("C-M-e" . sp-end-of-sexp)
 
-                ("C-M-f" . sp-forward-sexp)
-                ("C-M-b" . sp-backward-sexp)
+           ("C-M-f" . sp-forward-sexp)
+           ("C-M-b" . sp-backward-sexp)
 
-                ("C-M-n" . sp-next-sexp)
-                ("C-M-p" . sp-previous-sexp))
+           ("C-M-n" . sp-next-sexp)
+           ("C-M-p" . sp-previous-sexp))
     :init
     (require 'smartparens-config)
     (smartparens-global-strict-mode)
