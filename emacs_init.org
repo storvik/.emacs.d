@@ -1175,6 +1175,28 @@ Set default ispell language to English.
   (use-package git-timemachine)
 #+end_src
 
+** Git hydra
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :after (magit diff-hl git-timemachine)
+    :bind (:map st/prefix-map ("G" . st/hydra-git/body))
+    :config
+    (defhydra st/hydra-git (:color pink :exit t :hint nil)
+      "
+    Magit                   Diff hl                Timemachine
+   ------------------------------------------------------------------------
+    [_g_] magit             [_n_] next hunk        [_t_] git timemachine
+    [_b_] blame             [_p_] previous hunk    [_q_] cancel
+    "
+      ("t" git-timemachine)
+      ("g" magit)
+      ("b" magit-blame)
+      ("n" diff-hl-next-hunk)
+      ("p" diff-hl-previous-hunk)
+      ("q" nil)))
+#+end_src
+
 * Eshell
 SSH with =cd /ssh:remote-server:=.
 
