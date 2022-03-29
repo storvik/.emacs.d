@@ -1320,9 +1320,9 @@ Some performance enhancing settings, see lsp-mode README.md for details.
    [_m_] imenu            [_S_]   shutdown           [_D_] definition   [_t_] type            [_r_] rename
    [_x_] execute action   [_M-s_] describe session   [_R_] references   [_s_] signature"
       ("d" lsp-find-declaration)
-      ("D" lsp-ui-peek-find-definitions)
-      ("R" lsp-ui-peek-find-references)
-      ("i" lsp-ui-peek-find-implementation)
+      ("D" lsp-find-definition)
+      ("R" lsp-find-references)
+      ("i" lsp-find-implementation)
       ("t" lsp-find-type-definition)
       ("s" lsp-signature-help)
       ("o" lsp-describe-thing-at-point)
