@@ -1977,7 +1977,6 @@ Use org-mode to write letters.
 #+end_src
 
 ** [[https://org-roam.readthedocs.io][org-roam]]
-My roam config, trying to use roam as a personal knowledge base and daily note taking.
 
 #+begin_src emacs-lisp
   (defun st/org-roam-ripgrep ()
@@ -1988,7 +1987,8 @@ My roam config, trying to use roam as a personal knowledge base and daily note t
   (defun st/org-roam-dailies-ripgrep ()
     "Search org roam files with ripgrep"
     (interactive)
-    (consult-ripgrep org-roam-dailies-directory))
+    (let ((consult-ripgrep-args (concat consult-ripgrep-args " --sort path")))
+      (consult-ripgrep org-roam-dailies-directory)))
 
   (defun st/org-roam-deadgrep (search-term)
     (interactive (list (deadgrep--read-search-term)))
