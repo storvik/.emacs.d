@@ -356,8 +356,41 @@ Smoother scrolling, with a margin of 5.
       (setq svg-lib-style-default (svg-lib-style-compute-default))))
 #+end_src
 
+** Window management hydra
 
 #+begin_src emacs-lisp
+  (use-package emacs
+    :bind (:map st/prefix-map ("w" . st/hydra-window/body))
+    :config
+    (defhydra st/hydra-window (:color blue :hint nil)
+      "
+                                                                                                    ╭─────────┐
+      Move to              Size            Scroll                Split                        Do    │ Windows │
+   ╭────────────────────────────────────────────────────────────────────────────────────────────────┴─────────╯
+         ^_k_^                   ^_K_^               ^_p_^            ╭─┬─┐^ ^        ╭─┬─┐^ ^             ✗ [_d_] close window
+         ^^↑^^                   ^^↑^^               ^^↑^^            │ │ │_v_ertical ├─┼─┤_b_alance       ⇋ [_w_] cycle window
+     _h_ ←   → _l_           _H_ ←   → _L_           ^^ ^^            ╰─┴─╯^ ^        ╰─┴─╯^ ^
+         ^^↓^^                   ^^↓^^               ^^↓^^            ╭───┐^ ^        ╭───┐^ ^
+         ^_j_^                   ^_J_^               ^_n_^            ├───┤_s_tack    │   │_z_oom
+         ^^ ^^                   ^^ ^^               ^^ ^^            ╰───╯^ ^        ╰───╯^ ^               [_q_] quit
+      "
+      ("h" windmove-left :color red)
+      ("j" windmove-down :color red)
+      ("k" windmove-up :color red)
+      ("l" windmove-right :color red)
+      ("H" shrink-window-horizontally :color red)
+      ("J" shrink-window :color red)
+      ("K" enlarge-window :color red)
+      ("L" enlarge-window-horizontally :color red)
+      ("s" split-window-vertically :color red)
+      ("v" split-window-horizontally :color red)
+      ("b" balance-windows)
+      ("z" delete-other-windows)
+      ("n" scroll-up :color red)
+      ("p" scroll-down :color red)
+      ("d" delete-window)
+      ("w" other-window)
+      ("q" nil)))
 #+end_src
 
 * Misc
