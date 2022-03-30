@@ -104,6 +104,84 @@ Use exec-path-from-shell on unix computers.
   (use-package hydra)
 #+end_src
 
+* Keybindings
+
+All overrides (key bindings that overrides existing ones) are [[https://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][placed in a minor mode]], =st/overrides-minor-mode=.
+This way it's easy to completely disable all overrides if default behaviour is needed.
+Other custom keybindings are placed behind a prefix map, =st/prefix-map=, making it easy to maintain and discover using whick-key.
+Inspired by [[https://karl-voit.at/2018/07/08/emacs-key-bindings/][this post]].
+
+*Adding keybindings to map can be done the following ways:*
+
+: (bind-key "m w" #'function-name map-name)
+
+or
+
+: (bind-keys
+:  :map map-name
+:  ("f" . function-name))
+
+or
+
+: (use-package example-package
+:   :bind (:map map-name
+:         ("f" . function-name)))
+
+** st/overrides-minor-mode
+
+#+begin_src emacs-lisp
+  (defvar st/overrides-minor-mode-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "RET") 'newline-and-indent)
+      (define-key map (kbd "C-j") 'newline-and-indent)
+      map)
+    "st/overrides-minor-mode keymap.")
+
+  (define-minor-mode st/overrides-minor-mode
+    "A minor mode so that my key settings override major modes."
+    :init-value t
+    :lighter " st-key-overrides")
+
+  ;; Enable minor mode, maybe it should
+  (st/overrides-minor-mode 1)
+
+  ;; Disable overrides minor mode in minibuffer
+  (defun st/overrides-minor-mode-disable-hook ()
+    (st/overrides-minor-mode 0))
+
+  ;; Disable overrides in some modes
+  (mapc
+   (lambda (hook)
+     (add-hook hook 'st/overrides-minor-mode-disable-hook))
+   '(minibuffer-setup-hook
+     eshell-mode-hook
+     mu4e-headers-mode-hook
+     magit-post-display-buffer-hook
+     python-shell-first-prompt-hook
+     org-agenda-mode-hook
+     mu4e-main-mode-hook
+     sly-db-hook
+     sly-mrepl-mode-hook
+     dired-mode-hook
+     deadgrep-mode-hook
+     help-mode-hook
+     cider-repl-mode-hook
+     calendar-mode-hook))
+#+end_src
+
+** st/prefix-map
+
+#+begin_src emacs-lisp
+  (global-unset-key (kbd "C-M-s"))
+  (define-prefix-command 'st/prefix-map)
+
+  (use-package bind-key
+    :bind (:prefix-map st/prefix-map
+           :prefix-docstring "Storviks keyboard map"
+           :prefix "C-M-s")
+    :after org)
+#+end_src
+
 * Tramp settings
 
 #+begin_src emacs-lisp
@@ -278,82 +356,8 @@ Smoother scrolling, with a margin of 5.
       (setq svg-lib-style-default (svg-lib-style-compute-default))))
 #+end_src
 
-* Keybindings
-
-All overrides (key bindings that overrides existing ones) are [[https://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][placed in a minor mode]], =st/overrides-minor-mode=.
-This way it's easy to completely disable all overrides if default behaviour is needed.
-Other custom keybindings are placed behind a prefix map, =st/prefix-map=, making it easy to maintain and discover using whick-key.
-Inspired by [[https://karl-voit.at/2018/07/08/emacs-key-bindings/][this post]].
-
-*Adding keybindings to map can be done the following ways:*
-
-: (bind-key "m w" #'function-name map-name)
-
-or
-
-: (bind-keys
-:  :map map-name
-:  ("f" . function-name))
-
-or
-
-: (use-package example-package
-:   :bind (:map map-name
-:         ("f" . function-name)))
-
-** st/overrides-minor-mode
 
 #+begin_src emacs-lisp
-  (defvar st/overrides-minor-mode-map
-    (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "RET") 'newline-and-indent)
-      (define-key map (kbd "C-j") 'newline-and-indent)
-      map)
-    "st/overrides-minor-mode keymap.")
-
-  (define-minor-mode st/overrides-minor-mode
-    "A minor mode so that my key settings override major modes."
-    :init-value t
-    :lighter " st-key-overrides")
-
-  ;; Enable minor mode, maybe it should
-  (st/overrides-minor-mode 1)
-
-  ;; Disable overrides minor mode in minibuffer
-  (defun st/overrides-minor-mode-disable-hook ()
-    (st/overrides-minor-mode 0))
-
-  ;; Disable overrides in some modes
-  (mapc
-   (lambda (hook)
-     (add-hook hook 'st/overrides-minor-mode-disable-hook))
-   '(minibuffer-setup-hook
-     eshell-mode-hook
-     mu4e-headers-mode-hook
-     magit-post-display-buffer-hook
-     python-shell-first-prompt-hook
-     org-agenda-mode-hook
-     mu4e-main-mode-hook
-     sly-db-hook
-     sly-mrepl-mode-hook
-     dired-mode-hook
-     deadgrep-mode-hook
-     help-mode-hook
-     cider-repl-mode-hook
-     calendar-mode-hook))
-#+end_src
-
-** st/prefix-map
-
-#+begin_src emacs-lisp
-  (global-unset-key (kbd "C-M-s"))
-  (define-prefix-command 'st/prefix-map)
-
-  (use-package bind-key
-    :bind (:prefix-map st/prefix-map
-           :prefix-docstring "Storviks keyboard map"
-           :prefix "C-M-s")
-    :after org)
 #+end_src
 
 * Misc
