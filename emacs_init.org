@@ -2105,12 +2105,13 @@ Use org-mode to write letters.
     :config
     (defhydra st/org-hydra (:color pink :exit t :hint nil)
       "
-  ^org^                     ^roam^                                         ^dailies
-  ^^^^^^^^------------------------------------------------------------------------------------------------------------------
-  _a_: agenda               _l_: buffer toggle        _f_: find              _j_: capture dailies   _k_: capture date
-  _C_: capture              _c_: capture              _i_: insert node       _t_: goto today        _R_: ripgrep dailies
-  ^ ^                       _r_: ripgrep roam         _s_: deadgrep roam     _y_: goto yesterday    _S_: deadgrep dailies
-  ^ ^                       _u_: roam ui              ^ ^                    _d_: goto day
+    ^^^^^^                                                                                                              ╭──────────┐
+    org^^                     roam^^^^                                           dailies                                │ org mode │
+   ╭^^^^^^──────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
+    [_a_] agenda              [_l_] buffer toggle        [_f_] find              [_j_] capture dailies   [_k_] capture date
+    [_C_] capture             [_c_] capture              [_i_] insert node       [_t_] goto today        [_R_] ripgrep dailies
+    ^ ^                       [_r_] ripgrep roam         [_s_] deadgrep roam     [_y_] goto yesterday    [_S_] deadgrep dailies
+    [_q_] cancel              [_u_] roam ui              ^ ^                     [_d_] goto day
   "
       ("a" org-agenda)
       ("C" org-capture)
@@ -2128,7 +2129,7 @@ Use org-mode to write letters.
       ("t" org-roam-dailies-goto-today)
       ("y" org-roam-dailies-goto-yesterday)
       ("d" org-roam-dailies-goto-date)
-      ("q" nil "cancel")))
+      ("q" nil)))
 #+end_src
 
 * Functions
