@@ -1271,11 +1271,12 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     (add-hook 'orderless-style-dispatchers #'st/orderless-dispatch-flex-first nil 'local)
     (defhydra st/hydra-lsp (:exit t :hint nil)
       "
-   Buffer^^               Server^^                   Symbol
-  -------------------------------------------------------------------------------------
-   [_f_] format           [_M-r_] restart            [_d_] declaration  [_i_] implementation  [_o_] documentation
-   [_m_] imenu            [_S_]   shutdown           [_D_] definition   [_t_] type            [_r_] rename
-   [_x_] execute action   [_M-s_] describe session   [_R_] references   [_s_] signature"
+    ^^^^^^                                                                                                     ╭──────────┐
+    Buffer^^               Server^^                   Symbol^^                                                 │ LSP mode │
+   ╭^^^^^^─────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
+    [_f_] Format           [_M-r_] Restart            [_d_] Declaration  [_i_] Implementation  [_o_] Documentation
+    [_m_] Imenu            [_S_]   Shutdown           [_D_] Definition   [_t_] Type            [_r_] Rename
+    [_x_] Execute action   [_M-s_] Describe session   [_R_] References   [_s_] Signature"
       ("d" lsp-find-declaration)
       ("D" lsp-find-definition)
       ("R" lsp-find-references)
