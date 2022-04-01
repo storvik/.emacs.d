@@ -58,6 +58,7 @@
  ("goggles" . "5d10b00b5f4ee686683c48804235f62d644ae2ef")
  ("gomacro-mode" . "3112e56d2d5e645a3e0fd877f3e810dbccbf989f")
  ("gotest.el" . "78be56c0f210224b1e3a7d58239e2a32f8f84bf4")
+ ("grammatical-edit" . "5a17c7d1495fa0326057583aad58ca57feb2a577")
  ("hl-todo" . "ef153c7368e2614f23ce413a3bbd1dfc66cc70aa")
  ("ht.el" . "c4c1be487d6ecb353d07881526db05d7fc90ea87")
  ("hydra" . "9e9e00cb240ea1903ffd36a54956b3902c379d29")
