@@ -943,8 +943,6 @@ This is an awesome function from Endless.
 #+end_src
 
 ** [[https://github.com/magnars/multiple-cursors.el][Multiple cursors]]
-Multiple cursors is an awesome package thats makes editing multiple entries with similar structure a breeze.
-This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multiple-cursors][hydra wiki]].
 
 #+begin_src emacs-lisp
   (use-package multiple-cursors
@@ -952,12 +950,15 @@ This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multip
     :config
     (defhydra st/multiple-cursors-hydra (:hint nil)
       "
-   Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
-  ------------------------------------------------------------------
-   [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
-   [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
-   [_M-p_] Unmark   [_M-n_] Unmark   [_s_] Search
-   [Click] Cursor at point       [_q_] Quit"
+   ^^^^^^                                                                                     ╭──────────────────┐
+    Up^^                     Down^^                    Miscellaneous^^                        │ multiple cursors │
+  ╭^^^^^^─────────────────────────────────────────────────────────────────────────────────────┴──────────────────╯
+   [_p_]   Next              [_n_]   Next              [_l_] Edit lines         [_0_] Insert numbers
+   [_P_]   Skip              [_N_]   Skip              [_a_] Mark all           [_A_] Insert letters
+   [_M-p_] Unmark            [_M-n_] Unmark            [_s_] Search             [_r_] Sort regions
+   [Click] Cursor at point^^  ^  ^                     [_v_] Vertical align     [_R_] Reverse regions
+   [_q_]   Cancel
+  "
       ("l" mc/edit-lines :exit t)
       ("a" mc/mark-all-like-this :exit t)
       ("n" mc/mark-next-like-this)
@@ -967,6 +968,9 @@ This awesome hydra is stolen from [[https://github.com/abo-abo/hydra/wiki/multip
       ("P" mc/skip-to-previous-like-this)
       ("M-p" mc/unmark-previous-like-this)
       ("s" mc/mark-all-in-region-regexp :exit t)
+      ("v" mc/vertical-align)
+      ("r" mc/sort-regions)
+      ("R" mc/reverse-regions)
       ("0" mc/insert-numbers :exit t)
       ("A" mc/insert-letters :exit t)
       ("<mouse-1>" mc/add-cursor-on-click)
