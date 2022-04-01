@@ -986,7 +986,9 @@ This is an awesome function from Endless.
   (use-package puni
     :bind (:map puni-mode-map
            ("C-<right>" . puni-slurp-forward)
-           ("C-<left>" . puni-slurp-backward))
+           ("C-<left>" . puni-slurp-backward)
+           ("M-r" . puni-raise)
+           ("M-?" . puni-convolute))
     :init
     (puni-global-mode)
     (add-hook 'term-mode-hook #'puni-disable-puni-mode))
