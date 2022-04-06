@@ -768,9 +768,8 @@ Annotations in minibuffer.
 #+begin_src emacs-lisp
   (use-package consult-project-extra
     :straight (consult-project-extra :type git :host github :repo "Qkessler/consult-project-extra")
-    :bind
-    (("C-c p f" . consult-project-extra-find)
-     ("C-c p o" . consult-project-extra-find-other-window)))
+    :bind (([remap project-find-file] . consult-project-extra-find)
+           ("C-x p o" . consult-project-extra-find-other-window)))
 #+end_src
 
 * Navigation and editing
