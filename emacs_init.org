@@ -616,7 +616,8 @@ Orderless completion style.
     (setq prefix-help-command #'embark-prefix-help-command))
 
   (use-package embark-consult
-    :after (embark consult))
+    :after (embark consult)
+    :hook (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 
 ** [[https://github.com/minad/marginalia][Marginalia]]
