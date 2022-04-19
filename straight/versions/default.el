@@ -90,6 +90,7 @@
  ("openscad" . "a6392b3ec6ae2a0390612137f840ca083698929d")
  ("orderless" . "f2c78c4a6059c5f892e48a3887d4368a547515ff")
  ("org" . "91681fc03334285dc0879fcb9a27583bd7ab9782")
+ ("org-cliplink" . "13e0940b65d22bec34e2de4bc8cba1412a7abfbc")
  ("org-contrib" . "8c138dc5375dc13a0d1952e61c638ef4d57df368")
  ("org-download" . "947ca223643d28e189480e607df68449c15786cb")
  ("org-modern" . "0b7fc3742000431390a2de6be159f547dc4bd436")

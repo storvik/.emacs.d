@@ -1926,7 +1926,6 @@ YAML editing improved.
 #+end_src
 
 ** [[https://github.com/purcell/envrc][envrc]]
-Use purcell's envrc, must be late in config as per instructions.
 
 #+begin_src emacs-lisp
   (use-package envrc
@@ -1997,6 +1996,8 @@ Capture templates and such
                  "* TODO Respond to %:from on %:subject\n\t%a\n" :immediate-finish t)
                 ("e" "E-mail todo, must be run from mu4e" entry (file "~/developer/org/org/refile.org")
                  "* TODO %?\n%a\n")
+                ("k" "Cliplink bookmark" entry (file "~/developer/org/org/bookmarks.org")
+                 "* %(org-cliplink-capture)%?\n" :unnarrowed t :empty-lines-before 0)
                 )))
 #+end_src
 
@@ -2094,6 +2095,12 @@ Use org-mode to write letters.
   (eval-after-load 'ox '(require 'ox-koma-letter))
   (eval-after-load 'ox-latex
     '(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t) t))
+#+end_src
+
+** [[https://github.com/rexim/org-cliplink][org-cliplink]]
+
+#+begin_src emacs-lisp
+  (use-package org-cliplink)
 #+end_src
 
 ** org-plantuml
