@@ -1373,20 +1373,26 @@ Some performance enhancing settings, see lsp-mode README.md for details.
     (add-hook 'orderless-style-dispatchers #'st/orderless-dispatch-flex-first nil 'local)
     (defhydra st/hydra-lsp (:exit t :hint nil)
       "
-    ^^^^^^                                                                                                     ╭──────────┐
-    Buffer^^               Server^^                   Symbol^^                                                 │ LSP mode │
-   ╭^^^^^^─────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
-    [_f_] Format           [_M-r_] Restart            [_d_] Declaration  [_i_] Implementation  [_o_] Documentation
-    [_m_] Imenu            [_S_]   Shutdown           [_D_] Definition   [_t_] Type            [_r_] Rename
-    [_x_] Execute action   [_M-s_] Describe session   [_R_] References   [_s_] Signature"
+    ^^^^^^^^^^                                                                                                                 ╭──────────┐
+    Symbol^^            ^ ^                      Consult^^                 Buffer^^                  LSP Server^^              │ LSP mode │
+   ╭^^^^^^^^^^─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
+    [_d_] Declaration  [_i_] Implementation      [_s_] Symbol              [_f_] Format              [_M-r_] Restart
+    [_D_] Definition   [_t_] Type                [_S_] Symbol current file [_m_] Imenu               [_M-S_] Shutdown
+    [_R_] References   [_x_] Signature           [_h_] Diagnostic          [_x_] Execute action      [_M-s_] Describe session
+    [_r_] Rename       [_o_] Documentation
+  "
       ("d" lsp-find-declaration)
       ("D" lsp-find-definition)
       ("R" lsp-find-references)
       ("i" lsp-find-implementation)
       ("t" lsp-find-type-definition)
-      ("s" lsp-signature-help)
+      ("x" lsp-signature-help)
       ("o" lsp-describe-thing-at-point)
       ("r" lsp-rename)
+
+      ("s" consult-lsp-symbols)
+      ("S" consult-lsp-file-symbols)
+      ("h" consult-lsp-diagnostics)
 
       ("f" lsp-format-buffer)
       ("m" lsp-ui-imenu)
@@ -1394,7 +1400,7 @@ Some performance enhancing settings, see lsp-mode README.md for details.
 
       ("M-s" lsp-describe-session)
       ("M-r" lsp-restart-workspace)
-      ("S" lsp-shutdown-workspace)
+      ("M-S" lsp-shutdown-workspace)
 
       ("g" nil)
       ("q" nil)))
@@ -1976,7 +1982,6 @@ Install org mode package
 #+end_src
 
 ** Capture
-Capture templates and such
 
 #+begin_src emacs-lisp
   (setq org-capture-templates
