@@ -277,7 +277,7 @@ or
 #+begin_src emacs-lisp
   (use-package doom-themes
     :config
-    (load-theme 'doom-nord t)
+    (load-theme 'doom-one t)
     (doom-themes-org-config))
 #+end_src
 
