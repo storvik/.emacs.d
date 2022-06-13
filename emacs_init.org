@@ -1942,7 +1942,7 @@ Install org mode package
                 ("e" "E-mail todo, must be run from mu4e" entry (file "~/developer/org/org/refile.org")
                  "* TODO %?\n%a\n")
                 ("k" "Cliplink bookmark" entry (file "~/developer/org/org/bookmarks.org")
-                 "* %(org-cliplink-capture)%?\n" :unnarrowed t :empty-lines-before 0)
+                 "* %(org-cliplink-capture)%?\n" :empty-lines-before 0)
                 )))
 #+end_src
 
@@ -1996,7 +1996,7 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
                        (org-agenda-overriding-header "")
                        (org-agenda-remove-tags t) ;; remove tags from agenda view
                        (org-super-agenda-groups
-                        '((:discard (:not (:tag ("avanti"))))
+                        '((:discard (:not (:tag ("goodtech"))))
                           (:name "This week")))))
               (alltodo ""
                        ((org-agenda-prefix-format "  %i %-16:c %-10(st/agenda-context-emoji) %-6e ")
@@ -2004,7 +2004,7 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
                         (org-agenda-remove-tags t)
                         (org-agenda-overriding-header "")
                         (org-super-agenda-groups
-                         '((:discard (:not (:tag ("avanti"))))
+                         '((:discard (:not (:tag ("goodtech"))))
                            (:name "🛠️ Work in progress" :todo "WIP")
                            (:name "⏳ Next" :todo "NEXT")
                            (:name "🗒️ Todo" :todo "TODO")
@@ -2015,14 +2015,14 @@ Agenda view using [[https://github.com/alphapapa/org-super-agenda][org-super-age
                       ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
                        (org-agenda-overriding-header "")
                        (org-super-agenda-groups
-                        '((:discard (:tag ("avanti")))
+                        '((:discard (:tag ("goodtech")))
                           (:name "This week")))))
               (alltodo ""
                        ((org-agenda-prefix-format " %i %-22:c")
                         (org-agenda-remove-tags t)
                         (org-agenda-overriding-header "")
                         (org-super-agenda-groups
-                         '((:discard (:tag ("avanti")))
+                         '((:discard (:tag ("goodtech")))
                            (:name "🛠️ Work in progress" :and (:todo "WIP" :not (:scheduled future)))
                            (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
                            (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future)))
@@ -2096,6 +2096,7 @@ Use org-mode to write letters.
 
   (use-package org-roam
     :after org
+    :demand t
     :custom
     (org-roam-completion-everywhere t)
     (org-roam-directory (file-truename "~/developer/org/roam-notes"))
