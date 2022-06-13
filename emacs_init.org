@@ -667,7 +667,7 @@ Annotations in minibuffer.
       (set-face-attribute 'corfu-current nil
                           :background (color-darken-name (face-background 'corfu-current) 2)))
     ;; Enable corfu globally
-    (corfu-global-mode))
+    (global-corfu-mode))
 #+end_src
 
 ** [[https://github.com/jdtsmith/kind-icon][Kind-icons]]
@@ -922,69 +922,6 @@ This package expands region by semantic units.
       (global-fancy-dabbrev-mode)))
 #+end_src
 
-** [[https://github.com/manateelazycat/grammatical-edit][Grammatical edit]]
-
-#+begin_src emacs-lisp
-  (use-package grammatical-edit
-    :straight (grammatical-edit :type git :host github :repo "manateelazycat/grammatical-edit")
-    :after (tree-sitter)
-    :hook ((c-mode-common
-            c-mode
-            c++-mode
-            java-mode
-            haskell-mode
-            emacs-lisp-mode
-            lisp-interaction-mode
-            lisp-mode
-            maxima-mode
-            ielm-mode
-            sh-mode
-            makefile-gmake-mode
-            php-mode
-            python-mode
-            js-mode
-            go-mode
-            qml-mode
-            jade-mode
-            css-mode
-            ruby-mode
-            coffee-mode
-            rust-mode
-            qmake-mode
-            lua-mode
-            swift-mode
-            minibuffer-inactive-mode
-            typescript-mode) . grammatical-edit-mode)
-    :bind ((:map grammatical-edit-mode-map
-            ("(" . grammatical-edit-open-round)
-            ("[" . grammatical-edit-open-bracket)
-            ("{" . grammatical-edit-open-curly)
-            (")" . grammatical-edit-close-round)
-            ("]" . grammatical-edit-close-bracket)
-            ("}" . grammatical-edit-close-curly)
-            ("=" . grammatical-edit-equal)
-
-            ("%" . grammatical-edit-match-paren)
-            ("\"" . grammatical-edit-double-quote)
-
-            ("SPC" . grammatical-edit-space)
-            ("RET" . grammatical-edit-newline)
-
-            ("M-o" . grammatical-edit-backward-delete)
-            ("C-d" . grammatical-edit-forward-delete)
-            ("C-k" . grammatical-edit-kill)
-
-            ("C-M-\"" . grammatical-edit-wrap-double-quote)
-            ("C-M-[" . grammatical-edit-wrap-bracket)
-            ("C-M-{" . grammatical-edit-wrap-curly)
-            ("C-M-(" . grammatical-edit-wrap-round)
-            ("C-M-)" . grammatical-edit-unwrap)
-
-            ("C-M-p" . grammatical-edit-jump-right)
-            ("C-M-n" . grammatical-edit-jump-left)
-            ("C-M-:" . grammatical-edit-jump-out-pair-and-newline))))
-#+end_src
-
 ** Hyperlinks
 Open hyperlinks at point. =C-c B(rowse)=.
 
@@ -1148,48 +1085,50 @@ Set default ispell language to English.
     (bind-key "C-c C-r" 'dired-rsync dired-mode-map))
 #+end_src
 
-* [[https://gitlab.com/niklaseklund/dtache][Dtache]]
+* [[https://git.sr.ht/~niklaseklund/detached.el][Detached]]
 
 #+begin_src emacs-lisp
-  (use-package dtache
+  (use-package detached
     :when (executable-find "dtach")
-    :hook (after-init . dtache-setup)
-    :bind (([remap dtache-open-session] . dtache-consult-session)
-           ([remap async-shell-command] . dtache-shell-command)
-           ([remap compile] . dtache-compile)
-           ([remap recompile] . dtache-compile-recompile)
+    :init
+    (detached-init)
+    :bind (([remap detached-open-session] . detached-consult-session)
+           ([remap async-shell-command] . detached-shell-command)
+           ([remap compile] . detached-compile)
+           ([remap recompile] . detached-compile-recompile)
            :map st/prefix-map
-           ("d" . st/dtache-hydra/body))
+           ("d" . st/detached-hydra/body))
+    :custom ((detached-show-output-on-attach t))
     :config
-    (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
-    (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map))
-    (defun st/dtache-dired-rsync (command _details)
-      "Run COMMAND with `dtache'."
-      (let ((dtache-local-session t)
-            (dtache-session-origin 'rsync))
-        (dtache-start-session command t)))
-    (advice-add #'dired-rsync--do-run :override #'st/dtache-dired-rsync)
-    (defhydra st/dtache-hydra (:color pink :exit t :hint nil)
+    (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))
+    (add-to-list 'embark-keymap-alist '(detached . embark-detached-map))
+    (defun st/detached-dired-rsync (command _details)
+      "Run COMMAND with `detached'."
+      (let ((detached-local-session t)
+            (detached-session-origin 'rsync))
+        (detached-start-session command t)))
+    (advice-add #'dired-rsync--do-run :override #'st/detached-dired-rsync)
+    (defhydra st/detached-hydra (:color pink :exit t :hint nil)
       "
-  ^dtache
-  ^^^^^^^^-----------------------------------------------------------------
-  _o_: open                 _v_: view                 _t_: tail
-  _a_: attach               _d_: delete               _=_: diff
-  _c_: compile              _W_: copy                 _i_: insert command
-  _k_: kill                 _r_: rerun                _w_: copy command
+                                                                                                      ╭──────────┐
+                                                                                                      │ detached │
+   ╭───────────────────────────────────────────────────────----------------------------───────────────┴──────────╯
+    [_o_] open                [_k_] kill                 [_t_] tail                  [_c_] compile
+    [_a_] attach              [_d_] delete               [_=_] diff                  [_w_] copy command
+    [_v_] view                [_r_] rerun                [_i_] insert command        [_W_] copy
   "
-      ("o" dtache-open-session)
-      ("a" dtache-attach-session)
-      ("c" dtache-compile-session)
-      ("k" dtache-kill-session)
-      ("v" dtache-view-session)
-      ("d" dtache-delete-session)
-      ("W" dtache-copy-session)
-      ("r" dtache-rerun-session)
-      ("t" dtache-tail-session)
-      ("=" dtache-diff-session)
-      ("i" dtache-insert-session-command)
-      ("w" dtache-copy-session-command)
+      ("o" detached-open-session)
+      ("a" detached-attach-session)
+      ("c" detached-compile-session)
+      ("k" detached-kill-session)
+      ("v" detached-view-session)
+      ("d" detached-delete-session)
+      ("W" detached-copy-session)
+      ("r" detached-rerun-session)
+      ("t" detached-tail-session)
+      ("=" detached-diff-session)
+      ("i" detached-insert-session-command)
+      ("w" detached-copy-session-command)
       ("q" nil "cancel")))
 #+end_src
 
