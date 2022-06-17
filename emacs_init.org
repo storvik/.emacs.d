@@ -1813,7 +1813,9 @@ Function to capitalize SQL keywords
 Edit systemd files with syntax highlightning.
 
 #+begin_src emacs-lisp
-  (use-package systemd)
+  (use-package systemd
+    :straight
+    (systemd :host github :type git :repo "holomorph/systemd-mode" :files( "*.el" "*.txt")))
 #+end_src
 
 ** [[http://web-mode.org/][Web mode]]
