@@ -19,8 +19,9 @@ Add name and E-mail.
   (use-package emacs
     :hook (before-save . delete-trailing-whitespace)
     :init
-    (when (boundp 'pgtk-initialized)
-      (setq default-frame-alist '((undecorated . t))))      ;; Remove title bar when using pgtk
+    (unless (getenv "WSL")
+      (when (boundp 'pgtk-initialized)
+        (setq default-frame-alist '((undecorated . t)))))   ;; Remove title bar when using pgtk, but not when WSL is set
     (when (fboundp 'pixel-scroll-precision-mode)
       (pixel-scroll-precision-mode 1))                      ;; Turn on pixel scroll precision mode if available
     (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))      ;; Turn off tool bar
