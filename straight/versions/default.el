@@ -33,6 +33,7 @@
  ("el-get" . "bf3dba444dcd240b8cb358a0850c8c5a92606134")
  ("elisp-tree-sitter" . "3cfab8a0e945db9b3df84437f27945746a43cc71")
  ("emacs-async" . "c78bab7506a70a735d2c3deab13fa87bf44a83d3")
+ ("emacs-emojify" . "1b726412f19896abf5e4857d4c32220e33400b55")
  ("emacs-fish" . "d04478c0aba018cb789d77d591bfe315cb25132a")
  ("emacs-gdscript-mode" . "d9e1f7f766c73115de8ce2815bc249069636c3db")
  ("emacs-spell-fu" . "1299bfca2ec9bdca0424fcaa330ddadc8f8d1143")

@@ -273,6 +273,15 @@ or
   (use-package all-the-icons)
 #+end_src
 
+** [[https://github.com/iqbalansari/emacs-emojify][Emojify]]
+When using WSL it seems like emojify is practical to render unicode emojis.
+
+#+begin_src emacs-lisp
+  (use-package emojify
+    :when (getenv "WSL")
+    :hook (after-init . global-emojify-mode))
+#+end_src
+
 ** Theme
 
 #+begin_src emacs-lisp
