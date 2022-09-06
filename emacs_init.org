@@ -1183,7 +1183,8 @@ Set default ispell language to English.
 ** [[https://gitlab.com/pidu/git-timemachine][git-timemachine]]
 
 #+begin_src emacs-lisp
-  (use-package git-timemachine)
+  (use-package git-timemachine
+    :commands (git-timemachine))
 #+end_src
 
 ** Git hydra
@@ -1681,7 +1682,8 @@ Major mode for editing matlab `.m` files.
 Mode to edit markdown files more efficiently.
 
 #+begin_src emacs-lisp
-  (use-package edit-indirect)
+  (use-package edit-indirect
+    :defer t)
 
   (use-package markdown-mode
     :after edit-indirect
