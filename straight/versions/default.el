@@ -129,7 +129,6 @@
  ("sudo-edit" . "74eb1e6986461baed9a9269566ff838530b4379b")
  ("svg-lib" . "1e7834642fb74d4d5b2b84973fbb2095d5b7618b")
  ("svg-tag-mode" . "efd22edf650fb25e665269ba9fed7ccad0771a2f")
- ("systemd-mode" . "b6ae63a236605b1c5e1069f7d3afe06ae32a7bae")
  ("tempel" . "dac7e7bcbda97560532c854888a3d51ac01829ae")
  ("themes" . "aa13e7fc713d458f46f4ab7cce367fd30d801765")
  ("transient" . "6b9c93af9c1d1646be4445656c46ee9390c9f129")

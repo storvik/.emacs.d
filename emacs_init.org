@@ -1821,15 +1821,6 @@ Function to capitalize SQL keywords
   ;;            (add-hook 'before-save-hook 'my-upcase-all-sql-keywords nil 'make-it-local)))
 #+end_src
 
-** [[https://github.com/holomorph/systemd-mode][Systemd mode]]
-Edit systemd files with syntax highlightning.
-
-#+begin_src emacs-lisp
-  (use-package systemd
-    :straight
-    (systemd :host github :type git :repo "holomorph/systemd-mode" :files( "*.el" "*.txt")))
-#+end_src
-
 ** [[http://web-mode.org/][Web mode]]
 Works with php files with html and js.
 
