@@ -81,6 +81,7 @@
  ("markdown-toc" . "3d724e518a897343b5ede0b976d6fb46c46bcc01")
  ("matlab-mode" . "5069e3ca0034e0da64eb9b3cd426f52992938d06")
  ("melpa" . "f3378c430b5c0b8dfdae3e5556b3caad11331535")
+ ("meow" . "5905f64b70169a7462d8c172802caf8812c7107f")
  ("meson-mode" . "1a2e2abb098c9288c2cdb3affbad76edd98abf59")
  ("move-text" . "bfc255110ad05732a43cf25d6a0e3b4a6710b58c")
  ("multiple-cursors.el" . "1e4842d1297241a5277bfd5c7bfab9e8711da60a")
