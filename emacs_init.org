@@ -183,7 +183,7 @@ or
     :after org)
 #+end_src
 
-** [[https://github.com/Kungsgeten/ryo-modal][RYO modal]]
+** [[https://github.com/meow-edit/meow][Meow]]
 
 #+begin_src emacs-lisp
   (defun meow-setup ()
@@ -275,44 +275,6 @@ or
     :config
     (meow-setup)
     (meow-global-mode 1))
-
-  (use-package ryo-modal
-    :commands ryo-modal-mode
-    :bind ("C-z" . ryo-modal-mode)
-    :config
-    (ryo-modal-keys
-     ("ø" ryo-modal-repeat)
-     ("q" ryo-modal-mode)
-
-     ;; Movement
-     ("n" next-line)
-     ("p" previous-line)
-     ("f" forward-word)
-     ("F" forward-char)
-     ("b" backward-word)
-     ("B" backward-char)
-     ("a" beginning-of-line)
-     ("e" end-of-line)
-     ("N" scroll-up-command)
-     ("P" scroll-down-command)
-
-     ;; Editing
-     ("k" kill-line))
-
-    (ryo-modal-keys
-     ;; First argument to ryo-modal-keys may be a list of keywords.
-     ;; These keywords will be applied to all keybindings.
-     (:norepeat t)
-     ("0" "M-0")
-     ("1" "M-1")
-     ("2" "M-2")
-     ("3" "M-3")
-     ("4" "M-4")
-     ("5" "M-5")
-     ("6" "M-6")
-     ("7" "M-7")
-     ("8" "M-8")
-     ("9" "M-9")))
 #+end_src
 
 * Tramp settings
@@ -869,7 +831,8 @@ Annotations in minibuffer.
 #+begin_src emacs-lisp
   (use-package consult-project-extra
     :straight (consult-project-extra :type git :host github :repo "Qkessler/consult-project-extra")
-    :bind (([remap project-find-file] . consult-project-extra-find)
+    :bind (:map st/overrides-minor-mode-map
+           ("C-x p f" . consult-project-extra-find)
            ("C-x p o" . consult-project-extra-find-other-window)))
 #+end_src
 
@@ -892,8 +855,6 @@ Tool for jumping to a given char on the screen.
     :bind (:map st/overrides-minor-mode-map
            ("M-g g" . avy-goto-line)
            ("M-j" . avy-goto-char-timer))
-    :ryo
-    ("j" avy-goto-char-timer :name "Avy jump")
     :config
     (defun avy-action-mark-to-char (pt)
       (activate-mark)
