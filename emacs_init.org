@@ -2323,31 +2323,6 @@ Function that sends region or buffer to termbin and puts URL in kill ring.
        "\n"))))
 #+end_src
 
-** Kmonad service
-
-#+begin_src emacs-lisp
-  (defun kmonad-start ()
-    "Restart kmonad service"
-    (interactive)
-    (if (eq (call-process-shell-command "systemctl --user start kmonad.service" nil nil nil) 0)
-        (message "Successfully started kmonad service")
-      (message "[Error] Could not start kmonad service")))
-
-  (defun kmonad-restart ()
-    "Restart kmonad service"
-    (interactive)
-    (if (eq (call-process-shell-command "systemctl --user restart kmonad.service" nil nil nil) 0)
-        (message "Successfully restarted kmonad service")
-      (message "[Error] Could not restart kmonad service")))
-
-  (defun kmonad-stop ()
-    "Stop kmonad service"
-    (interactive)
-    (if (eq (call-process-shell-command "systemctl --user stop kmonad.service" nil nil nil) 0)
-        (message "Successfully stop kmonad service")
-      (message "[Error] Could not stop kmonad service")))
-#+end_src
-
 * Daemon
 Start emacs server
 
