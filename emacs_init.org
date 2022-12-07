@@ -495,6 +495,13 @@ Smoother scrolling, with a margin of 5.
       ("q" nil)))
 #+end_src
 
+** Ansi color
+
+ #+begin_src emacs-lisp
+  (use-package ansi-color
+     :hook (compilation-filter . ansi-color-compilation-filter))
+ #+end_src
+
 * Misc
 ** [[https://github.com/joddie/pcre2el][pcre2el]]
 
