@@ -40,3 +40,5 @@ eln-cache/*
 spell-fu/*
 var/*
 history
+detached-*
+*.elc
