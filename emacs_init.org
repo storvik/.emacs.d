@@ -2180,14 +2180,14 @@ Use org-mode to write letters.
     org^^                     roam^^^^                                           dailies                                │ org mode │
    ╭^^^^^^──────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
     [_a_] agenda              [_l_] buffer toggle        [_f_] find              [_j_] capture dailies   [_k_] capture date
-    [_C_] capture             [_c_] capture              [_i_] insert node       [_t_] goto today        [_R_] ripgrep dailies
+    [_c_] capture             [_C_] capture              [_i_] insert node       [_t_] goto today        [_R_] ripgrep dailies
     ^ ^                       [_r_] ripgrep roam         [_s_] deadgrep roam     [_y_] goto yesterday    [_S_] deadgrep dailies
     [_q_] cancel              [_u_] roam ui              ^ ^                     [_d_] goto day
   "
       ("a" org-agenda)
-      ("C" org-capture)
+      ("c" org-capture)
       ("l" org-roamd-buffer-toggle)
-      ("c" org-roam-capture)
+      ("C" org-roam-capture)
       ("f" org-roam-node-find)
       ("i" org-roam-node-insert)
       ("u" org-roam-ui-mode)
