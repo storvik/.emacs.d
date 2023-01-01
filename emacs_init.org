@@ -313,11 +313,28 @@ or
 ** Font
 
 #+begin_src emacs-lisp
+  (setq storvik/font-lodpi (sys-diversification
+                            "Iosevka Nerd Font-10" ;
+                            "Iosevka Nerd Font-10"
+                            "Courier New-10"))
+
+  (setq storvik/font-hidpi (sys-diversification
+                            "Iosevka Nerd Font-15" ;
+                            "Iosevka Nerd Font-15"
+                            "Courier New-15"))
+
+  (defun storvik/wsl-hidpi ()
+    ;; Adjust font to fit hidpi
+    (interactive)
+    (set-face-attribute 'default nil :font storvik/font-hidpi))
+
+  (defun storvik/wsl-lodpi ()
+    ;; Adjust font to fit lodpi
+    (interactive)
+    (set-face-attribute 'default nil :font storvik/font-lodpi))
+
   (with-eval-after-load 'st/gui
-    (set-face-attribute 'default nil :font (sys-diversification
-                                            "Iosevka Nerd Font-10" ;
-                                            "Iosevka Nerd Font-10"
-                                            "Courier New-10")))
+    (set-face-attribute 'default nil :font storvik/font-lodpi))
 #+end_src
 
 ** [[https://github.com/domtronn/all-the-icons.el][All the icons]]
