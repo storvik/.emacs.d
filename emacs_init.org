@@ -428,54 +428,6 @@ Smoother scrolling, with a margin of 5.
     (pulsar-global-mode 1))
 #+end_src
 
-** [[https://github.com/rougier/svg-tag-mode][SVG Tag Mode]]
-
-#+begin_src emacs-lisp
-  (use-package svg-tag-mode
-    :hook ((prog-mode . svg-tag-mode)
-           (org-mode . st/svg-tag-org-mode-setup))
-    :custom
-    (svg-tag-tags
-     '(("\\/\\/\\W?FIXME\\b:\\|FIXME\\b:" . ((lambda (tag)
-                                               (svg-tag-make "FIXME" :face 'org-todo :inverse t :margin 0 :crop-right t))))
-       ("FIXME\\b:\\(.*\\)" . ((lambda (tag) (svg-tag-make tag :face 'org-todo :crop-left t))))
-       ("[\\/\\|#].\\W?TODO\\b:\\|TODO\\b:" . ((lambda (tag)
-                                                 (svg-tag-make "TODO" :face 'org-todo :inverse t :margin 0 :crop-right t))))
-       ("[\\/\\|#].\\W?TODO\\b:\\(.*\\)" . ((lambda (tag) (svg-tag-make tag :face 'org-todo :crop-left t))))
-       ))
-    :init
-    (defconst st/date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
-    (defconst st/time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
-    (defconst st/day-re "[A-Za-z\\|ø.]*")
-    (setq st/svg-tag-org-mode-tags
-          `(("TODO\\b" . ((lambda (tag) (svg-tag-make "TODO" :face 'org-done :inverse t :margin 0))))
-            ("NEXT\\b" . ((lambda (tag) (svg-tag-make "NEXT" :face 'org-todo :inverse t :margin 0))))
-            ("FOLLOWUP\\b" . ((lambda (tag) (svg-tag-make "FOLLOWUP" :face 'org-todo :inverse t :margin 0))))
-            ("WIP\\b" . ((lambda (tag) (svg-tag-make "WIP" :face 'org-footnote :inverse t :margin 0))))
-            ("DONE\\b" . ((lambda (tag) (svg-tag-make "DONE" :face 'org-done :margin 0))))
-            ("CANCELLED\\b" . ((lambda (tag) (svg-tag-make "CANCELLED" :face 'org-done :margin 0))))
-            ("WAITING\\b" . ((lambda (tag) (svg-tag-make "WAITING" :face 'org-cite :inverse t :margin 0))))
-            ("DELEGATED\\b" . ((lambda (tag) (svg-tag-make "DELEGATED" :face 'org-cite :inverse t :margin 0))))
-            ("PHONE\\b" . ((lambda (tag) (svg-tag-make "📞" :face 'org-todo :inverse t :padding 3 :crop-right t))))
-            ("PHONE\\b\\(.*\\)" . ((lambda (tag) (svg-tag-make tag :face 'org-todo :crop-left t))))
-            (,(format "\\(MEETING\\)\\W<%s\\W%s\\W%s>" st/date-re st/day-re st/time-re) .
-             ((lambda (tag) (svg-tag-make "📎" :face 'org-todo :inverse t :padding 3 :crop-right t))))
-            (,(format "MEETING\\(\\W<%s\\W%s\\W%s>\\)" st/date-re st/day-re st/time-re) .
-             ((lambda (tag) (svg-tag-make tag :face 'org-todo :inverse t :crop-right t :crop-left t :beg 1 :end -1))))
-            (,(format "MEETING\\W<%s\\W%s\\W%s>\\(\\W.*\\)" st/date-re st/day-re st/time-re) .
-             ((lambda (tag) (svg-tag-make tag :face 'org-todo :crop-left t))))
-            ))
-    :config
-    (defun st/svg-tag-org-mode-setup ()
-      "org-mode setup hook which sets up svg-tag-mode"
-      (interactive)
-      (setq-local svg-tag-tags st/svg-tag-org-mode-tags)
-      (svg-tag-mode))
-    ;; Load style after gui init, needed when running in daemon
-    (with-eval-after-load 'st/gui
-      (setq svg-lib-style-default (svg-lib-style-compute-default))))
-#+end_src
-
 ** Window management hydra
 
 #+begin_src emacs-lisp
@@ -2114,17 +2066,17 @@ Use org-mode to write letters.
 #+begin_src emacs-lisp
   (use-package org-modern
     :hook ((org-mode . org-modern-mode)
-           (org-agenda-finalize . org-modern-agenda))
-    :custom
-    (org-modern-todo nil)
-    (org-modern-tag nil))
+           (org-agenda-finalize . org-modern-agenda)))
 #+end_src
 
 ** [[https://github.com/abo-abo/org-download][org-download]]
 
 #+begin_src emacs-lisp
   (use-package org-download
-    :after org)
+    :after org
+    :config
+    (when (getenv "WSL")
+      (setq org-download-screenshot-method "powershell.exe -Command \"(Get-Clipboard -Format image).Save('$(wslpath -w %s)')\"")))
 #+end_src
 
 ** [[https://org-roam.readthedocs.io][org-roam]]
