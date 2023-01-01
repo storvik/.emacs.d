@@ -35,6 +35,7 @@ Add name and E-mail.
     (setq-default tab-width 4)                              ;; Default tab width
     (fset 'yes-or-no-p 'y-or-n-p)                           ;; Use y/n prompts instead of yes/no
     (require 'uniquify)                                     ;; Make sure buffers have unique names
+    (setq project-vc-extra-root-markers '(".project"))
     :config
     (recentf-mode 1)                                        ;; Recentf mode
     :custom
