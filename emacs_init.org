@@ -1899,7 +1899,7 @@ Install org mode package
 
   ;; File locations
   (setq org-directory "~/developer/org/org")
-  (setq org-default-notes-file "~/developer/org/org/refile.org")
+  (setq org-default-notes-file "~/developer/org/org/inbox-computer.org")
   (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
 
   ;; Refile
@@ -1934,19 +1934,19 @@ Install org mode package
 
 #+begin_src emacs-lisp
   (setq org-capture-templates
-        (quote (("t" "Todo" entry (file "~/developer/org/org/refile.org")
+        (quote (("t" "Todo" entry (file "~/developer/org/org/inbox-computer.org")
                  "* TODO %?\n")
-                ("c" "Todo code" entry (file "~/developer/org/org/refile.org")
+                ("c" "Todo code" entry (file "~/developer/org/org/inbox-computer.org")
                  "* TODO %?\n%l\n")
-                ("n" "Note" entry (file "~/developer/org/org/refile.org")
+                ("n" "Note" entry (file "~/developer/org/org/inbox-computer.org")
                  "* %? :NOTE:\n")
-                ("m" "Meeting" entry (file "~/developer/org/org/refile.org")
+                ("m" "Meeting" entry (file "~/developer/org/org/inbox-computer.org")
                  "* MEETING %t %? :meeting:\n" :clock-in t :clock-resume t)
-                ("p" "Phone Call" entry (file "~/developer/org/org/refile.org")
+                ("p" "Phone Call" entry (file "~/developer/org/org/inbox-computer.org")
                  "* PHONE %T %? :phone:\n" :clock-in t :clock-resume t)
-                ("r" "Respond to email, must be run from mu4e" entry (file "~/developer/org/org/refile.org")
+                ("r" "Respond to email, must be run from mu4e" entry (file "~/developer/org/org/inbox-computer.org")
                  "* TODO Respond to %:from on %:subject\n\t%a\n" :immediate-finish t)
-                ("e" "E-mail todo, must be run from mu4e" entry (file "~/developer/org/org/refile.org")
+                ("e" "E-mail todo, must be run from mu4e" entry (file "~/developer/org/org/inbox-computer.org")
                  "* TODO %?\n%a\n")
                 ("k" "Cliplink bookmark" entry (file "~/developer/org/org/bookmarks.org")
                  "* %(org-cliplink-capture)%?\n" :empty-lines-before 0)
