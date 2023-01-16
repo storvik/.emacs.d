@@ -355,11 +355,21 @@ When using WSL it seems like emojify is practical to render unicode emojis.
 ** Theme
 
 #+begin_src emacs-lisp
-  (use-package doom-themes
+  (use-package modus-themes
+    :demand t
     :config
-    (load-theme 'doom-one t)
-    (doom-themes-org-config))
-#+end_src
+    ;; Add all your customizations prior to loading the themes
+    ;; (setq modus-themes-italic-constructs t
+    ;;       modus-themes-bold-constructs nil)
+
+    ;; Maybe define some palette overrides, such as by using our presets
+    (setq modus-themes-common-palette-overrides
+          modus-themes-preset-overrides-faint)
+
+    ;; Load the theme of your choice.
+    (load-theme 'modus-vivendi-tinted :no-confirm)
+    :bind ("<f5>" . modus-themes-toggle))
+ #+end_src
 
 ** [[https://github.com/seagle0128/doom-modeline][Doom modeline]]
 
