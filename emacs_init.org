@@ -635,9 +635,7 @@ Enable mouse clicks in terminal.
     ;; narrow key
     (setq consult-narrow-key "<")
     (with-eval-after-load 'vertico
-      (require 'consult-vertico))
-    (advice-add #'completing-read-multiple
-                :override #'consult-completing-read-multiple))
+      (require 'consult-vertico)))
 #+end_src
 
 ** [[https://github.com/oantolin/orderless][Orderless]]
