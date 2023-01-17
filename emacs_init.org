@@ -1211,6 +1211,8 @@ Set default ispell language to English.
     :hook ((dired-mode . diff-hl-dired-mode)
            (magit-pre-refresh . diff-hl-magit-pre-refresh)
            (magit-post-refresh . diff-hl-magit-post-refresh))
+    :custom
+    (diff-hl-side 'right)
     :init
     (with-eval-after-load 'st/gui
       (global-diff-hl-mode)))
