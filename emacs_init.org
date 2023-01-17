@@ -1245,6 +1245,51 @@ Set default ispell language to English.
       ("q" nil)))
 #+end_src
 
+** smerge hydra
+https://github.com/alphapapa/unpackaged.el
+
+#+begin_src emacs-lisp
+  (use-package smerge-mode
+    :config
+    (defhydra st/smerge-hydra
+      (:color pink :hint nil :post (smerge-auto-leave))
+      "
+  ^^^^^^^^                                                                                            ╭────────┐
+   move^^              keep^^              diff^^              other^^                                │ smerge │
+  ╭^^^^^^^^───────────────────────────────────────────────────────────────────────────────────────────┴────────╯
+   [_n_] next          [_b_] base          [_<_] upper/base    [_C_] combine
+   [_p_] prev          [_u_] lpper         [_=_] upper/lowe    [_r_] resolve
+    ^ ^                [_l_] lower         [_>_] base/lower    [_k_] kill current
+    ^ ^                [_a_] all           [_R_] efine
+    ^ ^                _RET_ current       [_E_] diff
+  "
+      ("n" smerge-next)
+      ("p" smerge-prev)
+      ("b" smerge-keep-base)
+      ("u" smerge-keep-upper)
+      ("l" smerge-keep-lower)
+      ("a" smerge-keep-all)
+      ("RET" smerge-keep-current)
+      ("\C-m" smerge-keep-current)
+      ("<" smerge-diff-base-upper)
+      ("=" smerge-diff-upper-lower)
+      (">" smerge-diff-base-lower)
+      ("R" smerge-refine)
+      ("E" smerge-ediff)
+      ("C" smerge-combine-with-next)
+      ("r" smerge-resolve)
+      ("k" smerge-kill-current)
+      ("ZZ" (lambda ()
+              (interactive)
+              (save-buffer)
+              (bury-buffer))
+       "Save and bury buffer" :color blue)
+      ("q" nil "cancel" :color blue))
+    :hook (magit-diff-visit-file . (lambda ()
+                                     (when smerge-mode
+                                       (st/smerge-hydra/body)))))
+#+end_src
+
 * Eshell
 SSH with =cd /ssh:remote-server:=.
 
