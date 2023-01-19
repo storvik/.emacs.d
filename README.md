@@ -1,17 +1,20 @@
-# Emacs configuration
+# Stormacs - Storviks Emacs config
 
-Cross platform emacs configuration.
-Should work in Linux/Mac OS X/Windows.
-For packages and features see `emacs_init.org`.
+!! Experimental config !!
 
-## Installation
+Decided to move from literate config using org-mode to elisp files. While doing this straight package manager, which is great, is replaced with elpaca, which is awesome. This config is a work in progress.
 
-Installation is as simple as cloning the repo and start Emacs.
-
-Linux/Mac: `cd && git clone https://github.com/storvik/.emacs.d`
-
-Windows Git Bash: `cd && cd AppData/Roaming && git clone https://github.com/storvik/.emacs.d`
-
-## Caps lock and Ctrl
-
-Remap caps lock to ctrl in windows by running `remapcapslock.reg`.
+``` text
+│
+├── early-init.el                       - early init file called before init.el
+│
+├── init.el                             - init.el, main init file
+│
+├── hosts/                              - host configs
+│
+├── site-lisp/                          - third party lisp code
+│
+├── stormacs-lisp/                      - general lisp code
+│
+└── stormacs-modules/                   - modules
+```

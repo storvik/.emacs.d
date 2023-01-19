@@ -1,8 +1,6 @@
 dtache.db
 multisession/*
-straight/build/*
-straight/repos/*
-straight/build-cache.el
+elpaca/*
 auto-save-list/*
 custom.el*
 elpa/*
