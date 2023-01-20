@@ -85,12 +85,12 @@
    '("<escape>" . ignore)))
 
 (elpaca-use-package
- (meow :host github :repo "meow-edit/meow")
- :demand t
- :hook ((git-commit-setup . meow-insert)
-        (org-capture-mode . meow-insert))
- :config
- (meow-setup)
- (meow-global-mode 1))
+    (meow :host github :repo "meow-edit/meow")
+  :demand t
+  :hook ((git-commit-setup . meow-insert)
+         (org-capture-mode . meow-insert))
+  :config
+  (meow-setup)
+  (meow-global-mode 1))
 
 (provide 'init-meow)

@@ -20,8 +20,18 @@
   (interactive)
   (set-face-attribute 'default nil :font stormacs-font-lodpi))
 
+;; TODO: Add a stormacs-wsl-dpi-dwim function
+
 (with-eval-after-load 'stormacs-gui
   (set-face-attribute 'default nil :font stormacs-font-lodpi))
+
+;; Remove title bar when using pgtk, but not when WSL is set
+(unless (getenv "WSL")
+  (when (boundp 'pgtk-initialized)
+    (setq default-frame-alist '((undecorated . t)))))
+
+(when (fboundp 'pixel-scroll-precision-mode)
+  (pixel-scroll-precision-mode 1))
 
 (elpaca-use-package
     (modus-themes :host sourcehut :repo "protesilaos/modus-themes")

@@ -8,8 +8,8 @@
   (vertico-cycle t)
   :bind
   (:map vertico-map
-        ("C-M-n" . vertico-next-group)
-        ("C-M-p" . vertico-previous-group))
+   ("C-M-n" . vertico-next-group)
+   ("C-M-p" . vertico-previous-group))
   :init
   (vertico-mode))
 
