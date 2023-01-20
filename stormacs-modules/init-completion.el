@@ -33,7 +33,7 @@
 
 (elpaca-use-package
  (consult :host github :repo "minad/consult")
- :bind (:map st/overrides-minor-mode-map
+ :bind (:map stormacs-overrides-minor-mode-map
         ;; C-c bindings (mode-specific-map)
         ("C-c h" . consult-history)
         ("C-c b" . consult-bookmark)
@@ -112,6 +112,7 @@
  :config
  (setq prefix-help-command #'embark-prefix-help-command))
 
+;; TODO: Fix this
 ;; (elpaca-use-package
 ;;  (embark-consult :host github :repo "oantolin/embark")
 ;;  :after (embark consult)
@@ -238,7 +239,7 @@ _k_: keyword              _w_: dict
 
 (elpaca-use-package
  (consult-project-extra :host github :repo "Qkessler/consult-project-extra")
- :bind (:map st/overrides-minor-mode-map
+ :bind (:map stormacs-overrides-minor-mode-map
         ("C-x p f" . consult-project-extra-find)
         ("C-x p o" . consult-project-extra-find-other-window)))
 

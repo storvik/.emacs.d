@@ -66,10 +66,8 @@
 (global-unset-key (kbd "C-M-s"))
 (define-prefix-command 'stormacs-prefix-map)
 
-(use-package bind-key
-  :bind (:prefix-map stormacs-prefix-map
-         :prefix-docstring "Stormacs keyboard map"
-         :prefix "C-M-s")
-  :after org)
+(bind-keys :prefix-map stormacs-prefix-map
+           :prefix-docstring "Stormacs keyboard map"
+           :prefix "C-M-s")
 
 (provide 'init-keybindings)
