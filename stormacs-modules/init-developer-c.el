@@ -12,11 +12,11 @@
 (add-hook 'c-mode-common-hook 'stormacs-c-mode-common-hook)
 
 (elpaca-use-package
- (meson-mode :host github :repo "wentasah/meson-mode"))
+    (meson-mode :host github :repo "wentasah/meson-mode"))
 
 ;; TODO: How to do this?
 ;; https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el
 ;; (elpaca-use-package
-;;  (cmake-mode :host gitlab :repo ""))
+;;     (cmake-mode :host gitlab :repo ""))
 
 (provide 'init-developer-c)

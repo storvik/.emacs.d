@@ -12,9 +12,7 @@
 (elpaca-use-package
  (protobuf-mode :host github :repo "protocolbuffers/protobuf"))
 
-;; TODO: Fix this
-;; (elpaca-use-package
-;;  (scad-mode :host github :repo "openscad/openscad/blob/master/contrib/scad-mode.el"))
+(elpaca-use-package scad-mode)
 
 (add-to-list 'auto-mode-alist '("\\.create\\'" . sql-mode))
 (add-to-list 'auto-mode-alist '("\\.drop\\'" . sql-mode))
