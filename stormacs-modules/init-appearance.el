@@ -21,7 +21,6 @@
   (set-face-attribute 'default nil :font stormacs-font-lodpi))
 
 ;; TODO: Add a stormacs-wsl-dpi-dwim function
-
 (with-eval-after-load 'stormacs-gui
   (set-face-attribute 'default nil :font stormacs-font-lodpi))
 

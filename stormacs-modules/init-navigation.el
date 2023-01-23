@@ -93,8 +93,8 @@
 
 (elpaca-use-package
     (deadgrep :host github :repo "Wilfred/deadgrep")
-  :bind (:map stormacs-prefix-map
-         ("s" . deadgrep)))
+  :bind (:map stormacs-overrides-minor-mode-map
+         ("M-s s" . deadgrep)))
 
 ;; TODO: Do I need this?
 ;; (elpaca-use-package
@@ -113,7 +113,7 @@
 
 (elpaca-use-package
     (move-text :host github :repo "emacsfodder/move-text")
-  :bind (:map st/prefix-map
+  :bind (:map stormacs-prefix-map
          ("m" . stormacs-move-text-hydra/body))
   :config
   (defhydra stoamacs-move-text-hydra (:hint nil)
