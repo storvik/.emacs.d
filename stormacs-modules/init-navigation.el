@@ -3,7 +3,7 @@
 (elpaca-use-package
     (ace-window :host github :repo "abo-abo/ace-window")
   :bind (:map stormacs-overrides-minor-mode-map
-         ("C-x o" . ace-window))
+         ("M-o" . ace-window))
   :init
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
