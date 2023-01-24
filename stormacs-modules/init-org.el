@@ -57,18 +57,18 @@
                  "* %(org-cliplink-capture)%?\n" :empty-lines-before 0))))
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n@/!)" "WIP(s@/!)" "|" "DONE(d)")
-          (sequence "WAITING(w@/!)" "DELEGATED(g@/!)" "FOLLOWUP(f@/!)" "|" "CANCELLED(c@/!)")
+        '((sequence "TODO(t)" "NEXT(n@/!)" "WIPS(s@/!)" "|" "DONE(d)")
+          (sequence "DEPENDSON(w@/!)" "FOLLOWUPS(f@/!)" "|" "DELEGATED(g@/!)" "CANCELLED(c@/!)")
           (sequence "PHONE" "MEETING")))
 
   (setq org-todo-keyword-faces
         '(("TODO" :foreground "orange red" :weight bold)
           ("NEXT" :foreground "dark orange" :wight bold)
-          ("WIP" :foreground "deep sky blue" :weight bold)
+          ("WIPS" :foreground "deep sky blue" :weight bold)
           ("DONE" :foreground "forest green" :weight bold)
-          ("WAITING" :foreground "orange" :weight bold)
+          ("DEPENDSON" :foreground "orange" :weight bold)
           ("DELEGATED" :foreground "light green" :weight bold)
-          ("FOLLOWUP" :foreground "deep sky blue" :weight bold)
+          ("FOLLOWUPS" :foreground "deep sky blue" :weight bold)
           ("CANCELLED" :foreground "forest green" :weight bold)
           ("MEETING" :foreground "hot pink" :weight bold)
           ("PHONE" :foreground "violet red" :weight bold))))
@@ -159,7 +159,19 @@
 (elpaca-use-package
     (org-modern :host github :repo "minad/org-modern")
   :hook ((org-mode . org-modern-mode)
-         (org-agenda-finalize . org-modern-agenda)))
+         (org-agenda-finalize . org-modern-agenda))
+  :config
+  (setq org-modern-todo-faces
+        '(("TODO" :foreground "gray10" :background "orange red")
+          ("NEXT" :foreground "gray10" :background "dark orange")
+          ("WIPS" :foreground "gray10" :background "deep sky blue")
+          ("DONE" :foreground "gray10" :background "forest green")
+          ("DEPENDSON" :foreground "gray10" :background "orange")
+          ("DELEGATED" :foreground "gray10" :background "forest green")
+          ("FOLLOWUPS" :foreground "gray10" :background "deep sky blue")
+          ("CANCELLED" :foreground "gray10" :background "forest green")
+          ("MEETING" :foreground "gray10" :background "hot pink")
+          ("PHONE" :foreground "gray10" :background "violet red"))))
 
 (elpaca-use-package
     (org-download :host github :repo "abo-abo/org-download")
