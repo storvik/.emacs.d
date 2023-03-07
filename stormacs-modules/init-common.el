@@ -81,4 +81,18 @@
     ("r" spell-fu-reset)
     ("q" nil)))
 
+(when (wsl-p)
+  (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
+        (cmd-args '("/c" "start")))
+    (when (file-exists-p cmd-exe)
+      (setq browse-url-generic-program  cmd-exe
+            browse-url-generic-args     cmd-args
+            browse-url-browser-function 'browse-url-generic
+            search-web-default-browser 'browse-url-generic)))
+
+  (defun stormacs-wsl-kill-ring-to-clipboard ()
+    (interactive)
+    (let ((text (substring-no-properties (car kill-ring))))
+      (shell-command (concat "echo '" text "' | clip.exe")))))
+
 (provide 'init-common)
