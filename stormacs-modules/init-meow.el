@@ -3,7 +3,6 @@
 
 ;; TODO: Should make it possible to choose qwerty?
 (defun meow-setup ()
-  (setq meow-cheatsheet-layout meow-cheatsheet-layout-colemak-dh)
   (meow-motion-overwrite-define-key
    ;; Use e to move up, n to move down.
    ;; Since special modes usually use n to move down, we only overwrite e here.
@@ -84,11 +83,14 @@
    '("'" . repeat)
    '("<escape>" . ignore)))
 
-(elpaca-use-package
-    (meow :host github :repo "meow-edit/meow")
+(use-package meow
+    :elpaca (meow :host github :repo "meow-edit/meow")
   :demand t
   :hook ((git-commit-setup . meow-insert)
          (org-capture-mode . meow-insert))
+  :custom
+  (meow-cheatsheet-layout meow-cheatsheet-layout-colemak-dh)
+  (meow-use-clipboard t)
   :config
   (meow-setup)
   (meow-global-mode 1))

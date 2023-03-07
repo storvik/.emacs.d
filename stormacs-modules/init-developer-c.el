@@ -11,8 +11,8 @@
   (setq tab-width 4))
 (add-hook 'c-mode-common-hook 'stormacs-c-mode-common-hook)
 
-(elpaca-use-package
-    (meson-mode :host github :repo "wentasah/meson-mode"))
+(use-package meson-mode
+  :elpaca (meson-mode :host github :repo "wentasah/meson-mode"))
 
 ;; TODO: How to do this?
 ;; https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el

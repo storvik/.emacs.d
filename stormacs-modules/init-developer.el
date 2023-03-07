@@ -1,14 +1,14 @@
 ;; init-developer.el --- Developer -*- lexical-binding: t; -*-
 
-(elpaca-use-package
-    (flycheck :host github :repo "flycheck/flycheck")
+(use-package flycheck
+  :elpaca (flycheck :host github :repo "flycheck/flycheck")
   :defer t
   :init
   ;;(add-hook 'prog-mode-hook #'flycheck-mode)
   :commands flycheck-mode)
 
-(elpaca-use-package
-    (lsp-mode :host github :repo "emacs-lsp/lsp-mode")
+(use-package lsp-mode
+  :elpaca (lsp-mode :host github :repo "emacs-lsp/lsp-mode")
   :bind-keymap ("C-c l" . lsp-command-map)
   :bind (:map stormacs-prefix-map ("l" . stormacs-hydra-lsp/body))
   :hook (lsp-completion-mode . stormacs-lsp-mode-setup-completion)
@@ -64,8 +64,8 @@
     ("g" nil)
     ("q" nil)))
 
-(elpaca-use-package
-    (lsp-ui :host github :repo "emacs-lsp/lsp-ui")
+(use-package lsp-ui
+  :elpaca (lsp-ui :host github :repo "emacs-lsp/lsp-ui")
   :commands lsp-ui-mode
   :custom
   (lsp-ui-doc-position 'top)
@@ -75,8 +75,8 @@
   :custom-face
   (lsp-ui-doc-background ((t (:background nil)))))
 
-(elpaca-use-package
-    (consult-lsp :host github :repo "gagbo/consult-lsp")
+(use-package consult-lsp
+  :elpaca (consult-lsp :host github :repo "gagbo/consult-lsp")
   :after (consult lsp-mode)
   :commands consult-lsp-symbols
   :config
@@ -92,8 +92,8 @@
 ;; (elpaca-use-package
 ;;  (tree-sitter-langs :repo "emacs-tree-sitter/tree-sitter-langs"))
 
-(elpaca-use-package
-    (apheleia :host github :repo "raxod502/apheleia")
+(use-package apheleia
+  :elpaca (apheleia :host github :repo "raxod502/apheleia")
   :config
   (setf (alist-get 'clang-format apheleia-formatters)
         '("clang-format" "-style={BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 120, SortIncludes: false}"))
@@ -120,8 +120,8 @@
 (require 'init-developer-tex)
 (require 'init-developer-web)
 
-(elpaca-use-package
-    (envrc :host github :repo "purcell/envrc")
+(use-package envrc
+  :elpaca (envrc :host github :repo "purcell/envrc")
   :when (executable-find "direnv")
   :config
   (envrc-global-mode))

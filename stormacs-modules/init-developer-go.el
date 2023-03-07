@@ -1,12 +1,12 @@
 ;; init-developer-go.el --- Developer go settings -*- lexical-binding: t; -*-
 
-(elpaca-use-package
-    (go-mode :host github :repo "dominikh/go-mode.el"))
+(use-package go-mode
+  :elpaca (go-mode :host github :repo "dominikh/go-mode.el"))
 
 (elpaca
     nil
-  (use-package
-    emacs
+  (use-package emacs
+    :elpaca nil
     :after lsp-mode
     :init
     (lsp-register-client
@@ -15,24 +15,24 @@
                       :remote? t
                       :server-id 'gopls-remote))))
 
-(elpaca-use-package
-    (go-add-tags :host github :repo "syohex/emacs-go-add-tags")
+(use-package go-add-tags
+  :elpaca (go-add-tags :host github :repo "syohex/emacs-go-add-tags")
   :requires go-mode)
 
-(elpaca-use-package
-    (go-dlv :host github :repo "benma/go-dlv.el")
+(use-package go-dlv
+  :elpaca (go-dlv :host github :repo "benma/go-dlv.el")
   :requires go-mode)
 
-(elpaca-use-package
-    (go-guru :host github :repo "dominikh/go-mode.el")
+(use-package go-guru
+  :elpaca (go-guru :host github :repo "dominikh/go-mode.el")
   :requires go-mode)
 
-(elpaca-use-package
-    (go-stacktracer :host github :repo "samertm/go-stacktracer.el")
+(use-package go-stacktracer
+  :elpaca (go-stacktracer :host github :repo "samertm/go-stacktracer.el")
   :requires go-mode)
 
-(elpaca-use-package
-    (gotest :host github :repo "nlamirault/gotest.el")
+(use-package gotest
+  :elpaca (gotest :host github :repo "nlamirault/gotest.el")
   :requires go-mode)
 
 (provide 'init-developer-go)

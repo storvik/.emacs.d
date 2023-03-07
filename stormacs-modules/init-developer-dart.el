@@ -1,7 +1,7 @@
 ;; init-developer-dart.el --- Developer dart settings -*- lexical-binding: t; -*-
 
-(elpaca-use-package
-    (dart-mode :host github :repo "bradyt/dart-mode"))
+(use-package dart-mode
+  :elpaca (dart-mode :host github :repo "bradyt/dart-mode"))
 
 (defun stormacs-lsp-dart ()
   (interactive)
@@ -16,7 +16,7 @@
             lsp-dart-dap-flutter-hot-reload-on-save t)))
   (lsp))
 
-(elpaca-use-package
-    (lsp-dart :host github :repo "emacs-lsp/lsp-dart"))
+(use-package lsp-dart
+  :elpaca (lsp-dart :host github :repo "emacs-lsp/lsp-dart"))
 
 (provide 'init-developer-dart)

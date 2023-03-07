@@ -1,7 +1,7 @@
 ;; init-developer-lisp.el --- Developer lisp settings -*- lexical-binding: t; -*-
 
-(elpaca-use-package
-    (sly "joaotavora/sly")
+(use-package sly
+  :elpaca (sly "joaotavora/sly")
   :init
   (cond ((and (executable-find "sbcl")
               (executable-find "ecl"))
@@ -13,23 +13,23 @@
         ((executable-find "ecl")
          (setq inferior-lisp-program "ecl"))))
 
-(elpaca-use-package
-    (sly-asdf :host github :repo "mmgeorge/sly-asdf")
+(use-package sly-asdf
+  :elpaca (sly-asdf :host github :repo "mmgeorge/sly-asdf")
   :after sly)
 
-(elpaca-use-package
-    (clojure-mode :host github :repo "clojure-emacs/clojure-mode"))
+(use-package clojure-mode
+  :elpaca (clojure-mode :host github :repo "clojure-emacs/clojure-mode"))
 
-(elpaca-use-package
-    (cider :host github :repo "clojure-emacs/cider"))
+(use-package cider
+  :elpaca (cider :host github :repo "clojure-emacs/cider"))
 
-(elpaca-use-package
-    (inf-clojure :host github :repo "clojure-emacs/inf-clojure")
+(use-package inf-clojure
+  :elpaca (inf-clojure :host github :repo "clojure-emacs/inf-clojure")
   :after clojure-mode)
 
 (global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
 
-(elpaca-use-package
-    (package-lint :host github :repo "purcell/package-lint"))
+(use-package package-lint
+  :elpaca (package-lint :host github :repo "purcell/package-lint"))
 
 (provide 'init-developer-lisp)

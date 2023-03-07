@@ -32,8 +32,8 @@
 (when (fboundp 'pixel-scroll-precision-mode)
   (pixel-scroll-precision-mode 1))
 
-(elpaca-use-package
-    (modus-themes :host sourcehut :repo "protesilaos/modus-themes")
+(use-package modus-themes
+  :elpaca (modus-themes :host sourcehut :repo "protesilaos/modus-themes")
   :demand t
   :config
   ;; Add all your customizations prior to loading the themes
@@ -48,43 +48,43 @@
   (load-theme 'modus-vivendi-tinted :no-confirm)
   :bind ("<f5>" . modus-themes-toggle))
 
-(elpaca-use-package
-    (all-the-icons :host github :repo "domtronn/all-the-icons.el"))
+(use-package all-the-icons
+  :elpaca (all-the-icons :host github :repo "domtronn/all-the-icons.el"))
 
-(elpaca-use-package
-    (doom-modeline :host github :repo "seagle0128/doom-modeline")
+(use-package doom-modeline
+  :elpaca (doom-modeline :host github :repo "seagle0128/doom-modeline")
   :hook (elpaca-after-init . doom-modeline-mode)
   :config
   (setq find-file-visit-truename t)
   (setq doom-modeline-icon t))
 
-(elpaca-use-package
-    (emojify :host github :repo "iqbalansari/emacs-emojify")
+(use-package emojify
+  :elpaca (emojify :host github :repo "iqbalansari/emacs-emojify")
   :when (getenv "WSL")
   :hook (elpaca-after-init . global-emojify-mode))
 
-(elpaca-use-package
-    (hl-todo :github :repo "tarsius/hl-todo")
+(use-package hl-todo
+  :elpaca (hl-todo :github :repo "tarsius/hl-todo")
   :hook (elpaca-after-init . global-hl-todo-mode)
   :config
   (setq hl-todo-highlight-punctuation ":"))
 
-(elpaca-use-package
-    (rainbow-delimiters :host github :repo "Fanael/rainbow-delimiters")
+(use-package rainbow-delimiters
+  :elpaca (rainbow-delimiters :host github :repo "Fanael/rainbow-delimiters")
   :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 (show-paren-mode 1)
 (electric-pair-mode 1)
 
-(elpaca-use-package
-    (goggles :host github :repo "minad/goggles")
+(use-package goggles
+  :elpaca (goggles :host github :repo "minad/goggles")
   :hook ((prog-mode text-mode) . goggles-mode)
   :config
   (setq-default goggles-pulse t))
 
-(elpaca-use-package
-    (pulsar :host sourcehut :repo "protesilaos/pulsar")
+(use-package pulsar
+  :elpaca (pulsar :host sourcehut :repo "protesilaos/pulsar")
   :config
   (setq pulsar-pulse-functions (append pulsar-pulse-functions
                                        '(ace-window)))
@@ -92,11 +92,13 @@
   (pulsar-global-mode 1))
 
 (use-package ansi-color
+  :elpaca nil
   :hook (compilation-filter . ansi-color-compilation-filter))
 
 (elpaca
     nil
   (use-package emacs
+    :elpaca nil
     :bind (:map stormacs-prefix-map
            ("w" . stormacs-hydra-window/body))
     :config

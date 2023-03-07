@@ -1,7 +1,7 @@
 ;; init-completion.el --- Completion framework and friends -*- lexical-binding: t; -*-
 
-(elpaca-use-package
-    (vertico :host github :repo "minad/vertico")
+(use-package vertico
+  :elpaca (vertico :host github :repo "minad/vertico")
   :custom
   (vertico-count 20)
   (vertico-resize t)
@@ -15,6 +15,7 @@
 
 ;; Preserve history avvross restarts
 (use-package savehist
+  :elpaca nil
   :init
   (savehist-mode))
 
@@ -31,8 +32,8 @@
 ;; Enable recursive minibuffers
 (setq enable-recursive-minibuffers t)
 
-(elpaca-use-package
-    (consult :host github :repo "minad/consult")
+(use-package consult
+  :elpaca (consult :host github :repo "minad/consult")
   :bind (:map stormacs-overrides-minor-mode-map
          ;; C-c bindings (mode-specific-map)
          ("C-c h" . consult-history)
@@ -92,15 +93,15 @@
   (with-eval-after-load 'vertico
     (require 'consult-vertico)))
 
-(elpaca-use-package
-    (orderless :host github :repo "oantolin/orderless")
+(use-package orderless
+  :elpaca (orderless :host github :repo "oantolin/orderless")
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         completion-category-overrides '((file (styles basic partial-completion)))))
 
-(elpaca-use-package
-    (embark :host github :repo "oantolin/embark")
+(use-package embark
+  :elpaca (embark :host github :repo "oantolin/embark")
   :after sudo-edit
   :demand t
   :bind (("C-." . embark-act)
@@ -111,13 +112,13 @@
   :config
   (setq prefix-help-command #'embark-prefix-help-command))
 
-(elpaca-use-package
-    (embark-consult :host github :repo "oantolin/embark")
+(use-package embark-consult
+  :elpaca (embark-consult :host github :repo "oantolin/embark")
   :after (embark consult)
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
-(elpaca-use-package
-    (marginalia :host github :repo "minad/marginalia")
+(use-package marginalia
+  :elpaca (marginalia :host github :repo "minad/marginalia")
   :after vertico
   :bind (("M-A" . marginalia-cycle)
          :map minibuffer-local-map
@@ -128,8 +129,8 @@
   :init
   (marginalia-mode))
 
-(elpaca-use-package
-    (corfu :host github :repo "minad/corfu")
+(use-package corfu
+  :elpaca (corfu :host github :repo "minad/corfu")
   :after orderless
   :custom
   (corfu-cycle t)                     ;; Enable cycling for `corfu-next/previous'
@@ -158,8 +159,8 @@
   ;; Enable corfu globally
   (global-corfu-mode))
 
-(elpaca-use-package
-    (kind-icon :host github :repo "jdtsmith/kind-icon")
+(use-package kind-icon
+  :elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
   :after corfu
   :custom
   (kind-icon-default-face 'corfu-default)
@@ -168,8 +169,8 @@
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
-(elpaca-use-package
-    (corfu-doc :host github :repo "galeo/corfu-doc")
+(use-package corfu-doc
+  :elpaca (corfu-doc :host github :repo "galeo/corfu-doc")
   :after corfu
   ;; :hook (corfu-mode . corfu-doc-mode)
   :bind (:map corfu-map
@@ -179,8 +180,8 @@
   :custom
   (corfu-doc-delay 0.5))
 
-(elpaca-use-package
-    (cape :host github :repo "minad/cape")
+(use-package cape
+  :elpaca (cape :host github :repo "minad/cape")
   :bind (:map stormacs-prefix-map ("p" . stormacs-cape-hydra/body))
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
@@ -214,8 +215,8 @@ _k_: keyword              _w_: dict
     ("r" cape-rfc1345)
     ("q" nil "cancel")))
 
-(elpaca-use-package
-    (affe :host github :repo "minad/affe")
+(use-package affe
+  :elpaca (affe :host github :repo "minad/affe")
   :bind (:map stormacs-overrides-minor-mode-map
          ("M-s r" . affe-grep))
   :preface
@@ -226,16 +227,16 @@ _k_: keyword              _w_: dict
   (setq affe-regexp-function #'orderless-pattern-compiler
         affe-highlight-function #'orderless-highlight-matches))
 
-(elpaca-use-package
-    (all-the-icons-completion :host github :repo "iyefrat/all-the-icons-completion")
+(use-package all-the-icons-completion
+  :elpaca (all-the-icons-completion :host github :repo "iyefrat/all-the-icons-completion")
   :after marginalia
   :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
   :init
   (with-eval-after-load 'stormacs-gui
     (all-the-icons-completion-marginalia-setup)))
 
-(elpaca-use-package
-    (consult-project-extra :host github :repo "Qkessler/consult-project-extra")
+(use-package consult-project-extra
+  :elpaca (consult-project-extra :host github :repo "Qkessler/consult-project-extra")
   :bind (:map stormacs-overrides-minor-mode-map
          ("C-x p f" . consult-project-extra-find)
          ("C-x p o" . consult-project-extra-find-other-window)))

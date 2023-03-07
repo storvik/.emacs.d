@@ -1,7 +1,7 @@
 ;; init-git.el --- Git and verion control -*- lexical-binding: t; -*-
 
-(elpaca-use-package
-    (magit :host github :repo "magit/magit")
+(use-package magit
+    :elpaca (magit :host github :repo "magit/magit")
   :bind (:map stormacs-prefix-map
          ("g" . magit-status)
          :map magit-status-mode-map
@@ -10,12 +10,12 @@
   :config
   (setq magit-git-executable "git"))
 
-(elpaca-use-package
-    (magit-todos :host github :repo "alphapapa/magit-todos")
+(use-package magit-todos
+    :elpaca (magit-todos :host github :repo "alphapapa/magit-todos")
   :hook (elpaca-after-init . magit-todos-mode))
 
-(elpaca-use-package
-    (diff-hl :host github :repo "dgutov/diff-hl")
+(use-package diff-hl
+    :elpaca (diff-hl :host github :repo "dgutov/diff-hl")
   :hook ((dired-mode . diff-hl-dired-mode)
          (magit-pre-refresh . diff-hl-magit-pre-refresh)
          (magit-post-refresh . diff-hl-magit-post-refresh))
@@ -25,12 +25,13 @@
   (with-eval-after-load 'stormacs-gui
     (global-diff-hl-mode)))
 
-(elpaca-use-package
-    (git-timemachine :host codeberg :repo "pidu/git-timemachine")
+(use-package git-timemachine
+    :elpaca (git-timemachine :host codeberg :repo "pidu/git-timemachine")
   :commands (git-timemachine))
 
 (elpaca nil
     (use-package emacs
+      :elpaca nil
       :bind (:map stormacs-prefix-map
              ("v" . stormacs-hydra-git/body))
       :config
@@ -51,6 +52,7 @@
 
 (elpaca nil
   (use-package emacs
+    :elpaca nil
     :hook (magit-diff-visit-file . (lambda ()
                                      (when smerge-mode
                                        (stormacs-smerge-hydra/body))))

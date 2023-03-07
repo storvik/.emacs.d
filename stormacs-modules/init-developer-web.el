@@ -1,13 +1,13 @@
 ;; init-developer-web.el --- Developer web settings -*- lexical-binding: t; -*-
 
-(elpaca-use-package
-    (emmet-mode :host github :repo "smihica/emmet-mode")
+(use-package emmet-mode
+  :elpaca (emmet-mode :host github :repo "smihica/emmet-mode")
   :hook (web-mode sgml-mode)
   :config
   (setq emmet-expand-jsx-className? t))
 
-(elpaca-use-package
-    (web-mode :host github :repo "fxbois/web-mode")
+(use-package web-mode
+  :elpaca (web-mode :host github :repo "fxbois/web-mode")
   :init
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))

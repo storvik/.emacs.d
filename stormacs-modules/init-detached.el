@@ -1,7 +1,7 @@
 ;; init-detached.el --- Detached -*- lexical-binding: t; -*-
 
-(elpaca-use-package
-    (detached :host sourcehut :repo "niklaseklund/detached.el")
+(use-package detached
+  :elpaca (detached :host sourcehut :repo "niklaseklund/detached.el")
   :when (executable-find "dtach")
   :init
   (detached-init)

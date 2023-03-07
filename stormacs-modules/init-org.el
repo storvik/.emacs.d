@@ -73,8 +73,8 @@
           ("MEETING" :foreground "hot pink" :weight bold)
           ("PHONE" :foreground "violet red" :weight bold))))
 
-(elpaca-use-package
-    (org-super-agenda :host github :repo "alphapapa/org-super-agenda")
+(use-package org-super-agenda
+  :elpaca (org-super-agenda :host github :repo "alphapapa/org-super-agenda")
   :after org
   :config
   (defun stormacs-agenda-context-emoji ()
@@ -151,13 +151,13 @@
   '(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t) t))
 
 
-(elpaca-use-package
-    (org-cliplink :host github :repo "rexim/org-cliplink"))
+(use-package org-cliplink
+  :elpaca (org-cliplink :host github :repo "rexim/org-cliplink"))
 
 (setq org-plantuml-exec-mode 'plantuml)
 
-(elpaca-use-package
-    (org-modern :host github :repo "minad/org-modern")
+(use-package org-modern
+  :elpaca (org-modern :host github :repo "minad/org-modern")
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
   :config
@@ -173,15 +173,15 @@
           ("MEETING" :foreground "gray10" :background "hot pink")
           ("PHONE" :foreground "gray10" :background "violet red"))))
 
-(elpaca-use-package
-    (org-download :host github :repo "abo-abo/org-download")
+(use-package org-download
+  :elpaca (org-download :host github :repo "abo-abo/org-download")
   :config
   (when (getenv "WSL")
     (setq org-download-screenshot-method "powershell.exe -Command \"(Get-Clipboard -Format image).Save('$(wslpath -w %s)')\"")))
 
 ;; TODO: denote dir must be configurable
-(elpaca-use-package
-    (denote :host sourcehut :repo "protesilaos/denote")
+(use-package denote
+  :elpaca (denote :host sourcehut :repo "protesilaos/denote")
   :demand t
   :custom
   (denote-directory (expand-file-name "~/developer/org/denote"))
@@ -243,8 +243,8 @@
 ;;     (insert text)))
 
 ;; TODO: Should be able to search my org notes too, not denote only
-(elpaca-use-package
-    (consult-notes :host github :repo "mclear-tools/consult-notes")
+(use-package consult-notes
+  :elpaca (consult-notes :host github :repo "mclear-tools/consult-notes")
   :commands (consult-notes
              consult-notes-search-in-all-notes)
   :custom
@@ -258,6 +258,7 @@
 
 (elpaca nil
   (use-package emacs
+    :elpaca nil
     :bind (:map stormacs-prefix-map ("o" . stormacs-org-hydra/body))
     :config
     (defhydra stormacs-org-hydra (:color pink :exit t :hint nil)

@@ -28,20 +28,20 @@
 (add-hook 'elpaca-after-init-hook (lambda () (recentf-mode 1)))
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(elpaca-use-package
-    (exec-path-from-shell :host github :repo "purcell/exec-path-from-shell")
+(use-package exec-path-from-shell
+  :elpaca (exec-path-from-shell :host github :repo "purcell/exec-path-from-shell")
   :when sys-unix-p
   :init
   (exec-path-from-shell-initialize))
 
-(elpaca-use-package
-    (hydra :host github :repo "abo-abo/hydra"))
+(use-package hydra
+    :elpaca (hydra :host github :repo "abo-abo/hydra"))
 
-(elpaca-use-package
-    (sudo-edit :host github :repo "nflath/sudo-edit"))
+(use-package sudo-edit
+    :elpaca (sudo-edit :host github :repo "nflath/sudo-edit"))
 
-(elpaca-use-package
-    (spell-fu :host codeberg :repo "ideasman42/emacs-spell-fu")
+(use-package spell-fu
+    :elpaca (spell-fu :host codeberg :repo "ideasman42/emacs-spell-fu")
   :bind (:map stormacs-prefix-map
          ("s" . stormacs-hydra-spell/body))
   :config

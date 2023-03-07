@@ -1,15 +1,15 @@
 ;; init-developer-config.el --- Developer config and doc file settings -*- lexical-binding: t; -*-
 
-(elpaca-use-package csv-mode)
+(use-package csv-mode)
 
-(elpaca-use-package
-    (dockerfile-mode :host github :repo "spotify/dockerfile-mode"))
+(use-package dockerfile-mode
+  :elpaca (dockerfile-mode :host github :repo "spotify/dockerfile-mode"))
 
-(elpaca-use-package
-    (edit-indirect :host github :repo "Fanael/edit-indirect"))
+(use-package edit-indirect
+  :elpaca (edit-indirect :host github :repo "Fanael/edit-indirect"))
 
-(elpaca-use-package
-    (markdown-mode :host github :repo "jrblevin/markdown-mode")
+(use-package markdown-mode
+  :elpaca (markdown-mode :host github :repo "jrblevin/markdown-mode")
   :after edit-indirect
   :commands (markdown-mode gfm-mode)
   :custom
@@ -18,24 +18,24 @@
          ("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . markdown-mode)))
 
-(elpaca-use-package
-    (markdown-toc :host github :repo "ardumont/markdown-toc"))
+(use-package markdown-toc
+  :elpaca (markdown-toc :host github :repo "ardumont/markdown-toc"))
 
-(elpaca-use-package
-    (markdown-preview-mode :host github :repo "ancane/markdown-preview-mode"))
+(use-package markdown-preview-mode
+  :elpaca (markdown-preview-mode :host github :repo "ancane/markdown-preview-mode"))
 
-(elpaca-use-package
-    (nginx-mode :host github :repo "ajc/nginx-mode"))
+(use-package nginx-mode
+  :elpaca (nginx-mode :host github :repo "ajc/nginx-mode"))
 
-(elpaca-use-package
-    (plantuml-mode :host github :repo "skuro/plantuml-mode")
+(use-package plantuml-mode
+  :elpaca (plantuml-mode :host github :repo "skuro/plantuml-mode")
   :custom
   (plantuml-default-exec-mode 'executable)
   :config
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode)))
 
-(elpaca-use-package
-    (yaml-mode :host github :repo "yoshiki/yaml-mode"))
+(use-package yaml-mode
+  :elpaca (yaml-mode :host github :repo "yoshiki/yaml-mode"))
 
 (provide 'init-developer-config)

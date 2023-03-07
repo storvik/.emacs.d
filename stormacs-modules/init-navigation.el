@@ -1,14 +1,14 @@
 ;; init-navigation.el --- Navigation and editing -*- lexical-binding: t; -*-
 
-(elpaca-use-package
-    (ace-window :host github :repo "abo-abo/ace-window")
+(use-package ace-window
+  :elpaca (ace-window :host github :repo "abo-abo/ace-window")
   :bind (:map stormacs-overrides-minor-mode-map
          ("M-o" . ace-window))
   :init
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-(elpaca-use-package
-    (avy :host github :repo "abo-abo/avy")
+(use-package avy
+  :elpaca (avy :host github :repo "abo-abo/avy")
   :bind (:map stormacs-overrides-minor-mode-map
          ("M-g g" . avy-goto-line)
          ("M-j" . avy-goto-char-timer))
@@ -91,8 +91,8 @@
                              (109 . avy-action-mark)
                              (87 . avy-action-copy-whole-line))))
 
-(elpaca-use-package
-    (deadgrep :host github :repo "Wilfred/deadgrep")
+(use-package deadgrep
+  :elpaca (deadgrep :host github :repo "Wilfred/deadgrep")
   :bind (:map stormacs-overrides-minor-mode-map
          ("M-s s" . deadgrep)))
 
@@ -111,8 +111,8 @@
 ;;  (with-eval-after-load 'stormacs-gui
 ;;    (global-fancy-dabbrev-mode)))
 
-(elpaca-use-package
-    (move-text :host github :repo "emacsfodder/move-text")
+(use-package move-text
+  :elpaca (move-text :host github :repo "emacsfodder/move-text")
   :bind (:map stormacs-prefix-map
          ("m" . stormacs-move-text-hydra/body))
   :config
@@ -121,8 +121,8 @@
     ("p" move-text-up "Up")
     ("n" move-text-down "Down")))
 
-(elpaca-use-package
-    (puni :host github :repo "AmaiKinono/puni")
+(use-package puni
+  :elpaca (puni :host github :repo "AmaiKinono/puni")
   :bind (:map puni-mode-map
          ("C-<right>" . puni-slurp-forward)
          ("C-<left>" . puni-slurp-backward)
@@ -132,8 +132,8 @@
   (puni-global-mode)
   (add-hook 'term-mode-hook #'puni-disable-puni-mode))
 
-(elpaca-use-package
-    (tempel :host github :repo "minad/tempel")
+(use-package tempel
+  :elpaca (tempel :host github :repo "minad/tempel")
   :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
          ("M-*" . tempel-insert))
   :init
