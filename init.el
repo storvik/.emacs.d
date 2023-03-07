@@ -95,7 +95,9 @@
   (provide 'stormacs-gui))
 (add-hook 'focus-in-hook #'stormacs-first-graphical-frame-hook-function)
 
-;; TODO: Custom method to detect wsl, should be possible to override
+(defun wsl-p ()
+  (when (and (eq system-type 'gnu/linux)
+             (getenv "WSLENV"))))
 
 (require 'init-common)
 (require 'init-appearance)

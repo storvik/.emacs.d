@@ -6,9 +6,9 @@
                            "Courier New-10"))
 
 (setq stormacs-font-hidpi (sys-diversification
-                           "Iosevka Nerd Font-15" ;
-                           "Iosevka Nerd Font-15"
-                           "Courier New-15"))
+                           "Iosevka Nerd Font-14" ;
+                           "Iosevka Nerd Font-14"
+                           "Courier New-14"))
 
 (defun stormacs-wsl-hidpi ()
   ;; Adjust font to fit hidpi
@@ -25,7 +25,7 @@
   (set-face-attribute 'default nil :font stormacs-font-lodpi))
 
 ;; Remove title bar when using pgtk, but not when WSL is set
-(unless (getenv "WSL")
+(unless (wsl-p)
   (when (boundp 'pgtk-initialized)
     (setq default-frame-alist '((undecorated . t)))))
 
@@ -60,7 +60,7 @@
 
 (use-package emojify
   :elpaca (emojify :host github :repo "iqbalansari/emacs-emojify")
-  :when (getenv "WSL")
+  :when (wsl-p)
   :hook (elpaca-after-init . global-emojify-mode))
 
 (use-package hl-todo

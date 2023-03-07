@@ -176,7 +176,7 @@
 (use-package org-download
   :elpaca (org-download :host github :repo "abo-abo/org-download")
   :config
-  (when (getenv "WSL")
+  (when (wsl-p)
     (setq org-download-screenshot-method "powershell.exe -Command \"(Get-Clipboard -Format image).Save('$(wslpath -w %s)')\"")))
 
 ;; TODO: denote dir must be configurable
