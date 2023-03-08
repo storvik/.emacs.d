@@ -32,7 +32,7 @@
              "@"
              (propertize system-name 'face font-lock-keyword-face)))
    (propertize (concat "  "
-                       (st/eshell-fishy-path (eshell/pwd)))
+                       (stormacs-eshell-fishy-path (eshell/pwd)))
                'face font-lock-string-face)
    (when (magit-get-current-branch)
      (propertize (concat " ( "
