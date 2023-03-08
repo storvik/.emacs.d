@@ -111,6 +111,10 @@
   (with-eval-after-load 'vertico
     (require 'consult-vertico)))
 
+(use-package consult-info
+  :elpaca (consult-info :host github :repo "minad/consult")
+  :after consult)
+
 (use-package orderless
   :elpaca (orderless :host github :repo "oantolin/orderless")
   :init
