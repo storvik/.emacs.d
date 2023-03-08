@@ -32,6 +32,17 @@
 ;; Enable recursive minibuffers
 (setq enable-recursive-minibuffers t)
 
+(use-package vertico-directory
+  :elpaca (vertico-directory :host github :repo "minad/vertico" :files (:defaults "extensions/vertico-directory.el"))
+  :after vertico
+  ;; More convenient directory navigation commands
+  :bind (:map vertico-map
+         ("C-M-m" . vertico-directory-enter)
+         ("DEL" . vertico-directory-delete-char)
+         ("C-M-i" . vertico-directory-delete-word))
+  ;; Tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
 (use-package consult
   :elpaca (consult :host github :repo "minad/consult")
   :bind (:map stormacs-overrides-minor-mode-map
