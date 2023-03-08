@@ -222,6 +222,13 @@
   ;;       ("C-c n x" . my/denote-split-org-subtree))
   )
 
+
+(defun stormacs-denote-people ()
+  (interactive)
+  (let ((title (denote-title-prompt))
+        (subdirectory (expand-file-name "people" denote-directory)))
+    (denote title nil nil subdirectory nil 'people)))
+
 (defun denote-subdirectory-with-template ()
   "Create note while also prompting for a template and subdirectory.
 
