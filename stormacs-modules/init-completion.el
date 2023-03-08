@@ -43,6 +43,13 @@
   ;; Tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
+(use-package vertico-quick
+  :elpaca (vertico-quick :host github :repo "minad/vertico" :files (:defaults "extensions/vertico-quick.el"))
+  :after vertico
+  :bind (:map vertico-map
+         ("C-q" . vertico-quick-insert)
+         ("M-q" . vertico-quick-exit)))
+
 (use-package consult
   :elpaca (consult :host github :repo "minad/consult")
   :bind (:map stormacs-overrides-minor-mode-map
