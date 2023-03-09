@@ -1,8 +1,17 @@
 # Stormacs - Storviks Emacs config
 
-!! Experimental config !!
+This is my opinionated Emacs config.
 
-Decided to move from literate config using org-mode to elisp files. While doing this straight package manager, which is great, is replaced with elpaca, which is awesome. This config is a work in progress.
+## Featuring
+
+- [Elpaca package manager](https://github.com/progfolio/elpaca)
+- [Vertico completion](https://github.com/minad/vertico)
+- [Consult completing-read](https://github.com/minad/consult)
+- [Orderless](https://github.com/oantolin/orderless)
+- [Meow modal editing](https://github.com/meow-edit/meow)
+- [Denote note taking](https://github.com/protesilaos/denote)
+
+## Config structure
 
 ``` text
 │
@@ -16,5 +25,5 @@ Decided to move from literate config using org-mode to elisp files. While doing 
 │
 ├── stormacs-lisp/                      - general lisp code
 │
-└── stormacs-modules/                   - modules
+└── stormacs-modules/                   - modules, consisting of packages and settings
 ```
