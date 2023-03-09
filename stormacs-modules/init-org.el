@@ -77,38 +77,47 @@
   :elpaca (org-super-agenda :host github :repo "alphapapa/org-super-agenda")
   :after org
   :config
+  (defun stormacs-agenda-title ()
+    "Pretty title in agenda, need filename similar to denote."
+    (interactive)
+    (let ((category (org-entry-get (point) "CATEGORY")))
+      (if (string-match "\\([0-9]\\{7\\}\\)--\\([a-z-]*\\)__\\([a-z]*\\)" category)
+          (concat (match-string 1 category)
+                  " - "
+                  (replace-regexp-in-string "-" " " (match-string 2 category)))
+        category)))
   (defun stormacs-agenda-context-emoji ()
     "Should insert emoji for given context, but alignment never worked."
     (let ((tags (concat (org-entry-get (point) "TAGS"))))
       (concat (when (string-match-p "@computer" tags)
-                "@computer")
+                (all-the-icons-faicon "laptop"))
               (when (string-match-p "@phone" tags)
-                "@phone")
+                (all-the-icons-faicon "phone"))
               (when (string-match-p "@work" tags)
-                "@work")
+                (all-the-icons-faicon "building-o"))
               (when (string-match-p "@home" tags)
-                "@home"))))
+                (all-the-icons-material "home")))))
   (setq org-agenda-custom-commands
         '(("w" " Work"
            ((agenda ""
-                    ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
-                     (org-agenda-overriding-header "")
-                     (org-agenda-remove-tags t) ;; remove tags from agenda view
-                     (org-super-agenda-groups
-                      '((:discard (:not (:tag ("goodtech"))))
-                        (:name "This week")))))
-            (alltodo ""
-                     ((org-agenda-prefix-format "  %i %-16:c %-10(stormacs-agenda-context-emoji) %-6e ")
-                      (org-agenda-hide-tags-regexp "@") ;; remove context tags from tag list
-                      (org-agenda-remove-tags t)
-                      (org-agenda-overriding-header "")
-                      (org-super-agenda-groups
-                       '((:discard (:not (:tag ("goodtech"))))
-                         (:name "🛠️ Work in progress" :todo "WIP")
-                         (:name "⏳ Next" :todo "NEXT")
-                         (:name "🗒️ Todo" :todo "TODO")
-                         (:name "🕙 Waiting" :todo "WAITING")
-                         (:discard (:todo ("PHONE" "MEETING")))))))))
+                  ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
+                   (org-agenda-overriding-header "")
+                   (org-agenda-remove-tags t) ;; remove tags from agenda view
+                   (org-super-agenda-groups
+                    '((:discard (:not (:tag ("goodtech"))))
+                      (:name "This week")))))
+          (alltodo ""
+                   ((org-agenda-prefix-format "  %i %-22(stormacs-agenda-title) %-10(stormacs-agenda-context-emoji)")
+                    (org-agenda-hide-tags-regexp "@") ;; remove context tags from tag list
+                    (org-agenda-remove-tags t)
+                    (org-agenda-overriding-header "")
+                    (org-super-agenda-groups
+                     '((:discard (:not (:tag ("goodtech"))))
+                       (:name "🛠️ Work in progress\n" :todo "WIPS")
+                       (:name "⏳ Next\n" :todo "NEXT")
+                       (:name "🗒️ Todo\n" :todo "TODO")
+                       (:name "🕙 Waiting\n" :and (:todo ("DEPENDSON" "FOLLOWUPS")))
+                       (:discard (:todo ("PHONE" "MEETING")))))))))
           ("p" " Private"
            ((agenda ""
                     ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
@@ -122,11 +131,11 @@
                       (org-agenda-overriding-header "")
                       (org-super-agenda-groups
                        '((:discard (:tag ("goodtech")))
-                         (:name "🛠️ Work in progress" :and (:todo "WIP" :not (:scheduled future)))
+                         (:name "🛠️ Work in progress" :and (:todo "WIPS" :not (:scheduled future)))
                          (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
                          (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future)))
-                         (:name "🕙 Waiting" :and (:todo "WAITING" :not (:scheduled future)))
-                         (:name "📌 Someday" :and (:tag "someday"  :not (:scheduled future)))
+                         (:name "🕙 Waiting" :and (:todo ("DEPENDSON" "FOLLOWUPS") :not (:scheduled future)))
+                         (:name "📌 Someday" :and (:tag "someday" :not (:scheduled future)))
                          (:name "⚠️ Scheduled for later" :scheduled future)
                          (:discard (:todo ("PHONE" "MEETING")))))))))
           ("r" " Weekly review"
@@ -136,11 +145,11 @@
                       (org-agenda-overriding-header "")
                       (org-super-agenda-groups
                        '((:discard (:tag ("goodtech")))
-                         (:name "🛠️ Work in progress" :and (:todo "WIP" :not (:scheduled future)))
+                         (:name "🛠️ Work in progress" :and (:todo "WIPS" :not (:scheduled future)))
                          (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
                          (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future)))
-                         (:name "🕙 Waiting" :and (:todo "WAITING" :not (:scheduled future)))
-                         (:name "📌 Someday" :and (:tag "someday"  :not (:scheduled future)))
+                         (:name "🕙 Waiting" :and (:todo ("DEPENDSON" "FOLLOWUPS") :not (:scheduled future)))
+                         (:name "📌 Someday" :and (:tag "someday" :not (:scheduled future)))
                          (:name "⚠️ Scheduled for later" :scheduled future)
                          (:discard (:todo ("PHONE" "MEETING")))))))))))
   (org-super-agenda-mode))
