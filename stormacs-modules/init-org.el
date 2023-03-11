@@ -182,6 +182,11 @@
           ("MEETING" :foreground "gray10" :background "hot pink")
           ("PHONE" :foreground "gray10" :background "violet red"))))
 
+(use-package org-modern-indent
+  :elpaca (org-modern-indent :host github :repo "jdtsmith/org-modern-indent")
+  :config
+  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
+
 (use-package org-download
   :elpaca (org-download :host github :repo "abo-abo/org-download")
   :config
