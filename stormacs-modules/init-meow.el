@@ -87,11 +87,16 @@
     :elpaca (meow :host github :repo "meow-edit/meow")
   :demand t
   :hook ((git-commit-setup . meow-insert)
-         (org-capture-mode . meow-insert))
+         (org-capture-mode . meow-insert)
+         (meow-insert-exit . meow--corfu-quit))
   :custom
   (meow-cheatsheet-layout meow-cheatsheet-layout-colemak-dh)
   (meow-use-clipboard t)
   :config
+  (defun meow--corfu-quit ()
+    "Quit corfu if candidates."
+	(when corfu--candidates
+	  (corfu-quit)))
   (meow-setup)
   (meow-global-mode 1))
 
