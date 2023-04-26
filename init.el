@@ -48,17 +48,17 @@
   ;; Assume :elpaca t for packages unless otherwise specified.
   (setq elpaca-use-package-by-default t))
 
-
 ;; Block until current queue processed.
 (elpaca-wait)
 
-(defgroup stormacs nil
-  "User options for my emacs config."
-  :group 'file)
+;; Load config file with options and default values
+(load-file (expand-file-name "config.el" user-emacs-directory))
 
+;; Add directories to load pahth
 (dolist (path '("site-lisp" "stormacs-lisp" "stormacs-modules"))
   (add-to-list 'load-path (locate-user-emacs-file path)))
 
+;; Load custom file if exists
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
@@ -71,7 +71,7 @@
   (if (file-exists-p host-cfg)
       (setq stormacs-host-config host-cfg)
     (setq stormacs-host-config (file-name-concat (file-name-directory host-cfg) "default.el"))))
-(load stormacs-host-config)
+(load-file stormacs-host-config)
 
 (setq sys-unix-p (or (eq system-type 'gnu/linux)
                      (eq system-type 'darwin)))
