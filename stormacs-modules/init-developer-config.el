@@ -8,6 +8,10 @@
 (use-package edit-indirect
   :elpaca (edit-indirect :host github :repo "Fanael/edit-indirect"))
 
+;; https://github.com/jrblevin/markdown-mode/issues/578
+(setq native-comp-deferred-compilation-deny-list '("markdown-mode\\.el$"))
+(setq native-comp-jit-compilation-deny-list '("markdown-mode\\.el$"))
+
 (use-package markdown-mode
   :elpaca (markdown-mode :host github :repo "jrblevin/markdown-mode")
   :after edit-indirect
