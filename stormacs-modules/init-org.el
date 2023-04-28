@@ -59,7 +59,7 @@
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n@/!)" "WIPS(s@/!)" "|" "DONE(d)")
           (sequence "DEPENDSON(w@/!)" "FOLLOWUPS(f@/!)" "|" "DELEGATED(g@/!)" "CANCELLED(c@/!)")
-          (sequence "PHONE" "MEETING")))
+          (sequence "PHONE" "MEETING" "|")))
 
   (setq org-todo-keyword-faces
         '(("TODO" :foreground "orange red" :weight bold)
@@ -81,7 +81,7 @@
     "Pretty title in agenda, need filename similar to denote."
     (interactive)
     (let ((category (org-entry-get (point) "CATEGORY")))
-      (if (string-match "\\([0-9]\\{7\\}\\)--\\([a-z-]*\\)__\\([a-z]*\\)" category)
+      (if (string-match "\\([0-9]\\{7\\}\\)--\\([a-z-0-9]*\\)__\\([a-z]*\\)" category)
           (concat (match-string 1 category)
                   " - "
                   (replace-regexp-in-string "-" " " (match-string 2 category)))
@@ -89,12 +89,18 @@
   (defun stormacs-agenda-context-emoji ()
     "Should insert emoji for given context, but alignment never worked."
     (let ((tags (concat (org-entry-get (point) "TAGS"))))
-      (concat (when (string-match-p "@computer" tags)
-                (all-the-icons-faicon "laptop"))
-              (when (string-match-p "@phone" tags)
-                (all-the-icons-faicon "phone"))
-              (when (string-match-p "@work" tags)
-                (all-the-icons-faicon "building-o"))
+      (concat (if (string-match-p "@phone" tags)
+                (all-the-icons-faicon "phone")
+                "  ")
+              "  "
+              (if (string-match-p "@computer" tags)
+                (all-the-icons-faicon "laptop")
+                "  ")
+              "  "
+              (if (string-match-p "@work" tags)
+                (all-the-icons-faicon "building-o")
+                "  ")
+              "  "
               (when (string-match-p "@home" tags)
                 (all-the-icons-material "home")))))
   (setq org-agenda-custom-commands
@@ -107,12 +113,12 @@
                     '((:discard (:not (:tag ("goodtech"))))
                       (:name "This week")))))
           (alltodo ""
-                   ((org-agenda-prefix-format "  %i %-22(stormacs-agenda-title) %-10(stormacs-agenda-context-emoji)")
+                   ((org-agenda-prefix-format "  %i %-22(stormacs-agenda-title) %-12(stormacs-agenda-context-emoji)")
                     (org-agenda-hide-tags-regexp "@") ;; remove context tags from tag list
                     (org-agenda-remove-tags t)
                     (org-agenda-overriding-header "")
                     (org-super-agenda-groups
-                     '((:discard (:not (:tag ("goodtech"))))
+                     '((:discard (:not (:tag ("goodtech"))) :file-path "inbox")
                        (:name "🛠️ Work in progress\n" :todo "WIPS")
                        (:name "⏳ Next\n" :todo "NEXT")
                        (:name "🗒️ Todo\n" :todo "TODO")
@@ -126,11 +132,11 @@
                       '((:discard (:tag ("goodtech")))
                         (:name "This week")))))
             (alltodo ""
-                     ((org-agenda-prefix-format " %i %-22:c")
+                     ((org-agenda-prefix-format " %i %-32:c")
                       (org-agenda-remove-tags t)
                       (org-agenda-overriding-header "")
                       (org-super-agenda-groups
-                       '((:discard (:tag ("goodtech")))
+                       '((:discard (:tag ("goodtech") :file-path "inbox"))
                          (:name "🛠️ Work in progress" :and (:todo "WIPS" :not (:scheduled future)))
                          (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
                          (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future)))
@@ -140,11 +146,12 @@
                          (:discard (:todo ("PHONE" "MEETING")))))))))
           ("r" " Weekly review"
            ((alltodo ""
-                     ((org-agenda-prefix-format " %i %-22:c")
+                     ((org-agenda-prefix-format " %i %-32:c")
                       (org-agenda-remove-tags t)
+                      (org-agenda-todo-ignore-with-date nil)
                       (org-agenda-overriding-header "")
                       (org-super-agenda-groups
-                       '((:discard (:tag ("goodtech")))
+                       '((:name "📬 Inbox" :and (:file-path "inbox"))
                          (:name "🛠️ Work in progress" :and (:todo "WIPS" :not (:scheduled future)))
                          (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
                          (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future)))
@@ -285,11 +292,11 @@
     (defhydra stormacs-org-hydra (:color pink :exit t :hint nil)
       "
   ^^^^^^                                                                                              ╭──────────┐
-  org^^                      roam^^^^                                                                  │ org mode │
+  org^^                      roam^^^^                                                                 │ org mode │
  ╭^^^^^^──────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
   [_a_] agenda               [_d_] denote                [_n_] consult notes
   [_c_] capture              [_t_] denote template       [_r_] consult notes ripgrep
-  ^ ^                        [_s_] denote subdirectory
+  ^ ^                        [_s_] denote subdirectory   [_b_] browse with dired
   [_q_] cancel
 "
       ("a" org-agenda)
@@ -299,6 +306,7 @@
       ("s" denote-subdirectory)
       ("n" consult-notes)
       ("r" consult-notes-search-in-all-notes)
+      ("b" (lambda () (interactive) (dired org-directory)))
       ("q" nil))))
 
 (provide 'init-org)
