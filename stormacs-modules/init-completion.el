@@ -107,9 +107,7 @@
           (when-let (project (project-current))
             (car (project-roots project)))))
   ;; narrow key
-  (setq consult-narrow-key "<")
-  (with-eval-after-load 'vertico
-    (require 'consult-vertico)))
+  (setq consult-narrow-key "<"))
 
 (use-package consult-info
   :elpaca (consult-info :host github :repo "minad/consult")
