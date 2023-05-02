@@ -99,6 +99,11 @@
   (provide 'stormacs-gui))
 (add-hook 'focus-in-hook #'stormacs-first-graphical-frame-hook-function)
 
+(with-eval-after-load 'stormacs-gui
+  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1)))
+
 (defun wsl-p ()
   (when (and (eq system-type 'gnu/linux)
              (getenv "WSLENV"))))
