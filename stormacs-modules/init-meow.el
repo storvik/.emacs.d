@@ -3,6 +3,7 @@
 
 ;; TODO: Should make it possible to choose qwerty?
 (defun meow-setup ()
+  (setq meow-cheatsheet-layout meow-cheatsheet-layout-colemak-dh)
   (meow-motion-overwrite-define-key
    ;; Use e to move up, n to move down.
    ;; Since special modes usually use n to move down, we only overwrite e here.
@@ -90,7 +91,6 @@
          (org-capture-mode . meow-insert)
          (meow-insert-exit . meow--corfu-quit))
   :custom
-  (meow-cheatsheet-layout meow-cheatsheet-layout-colemak-dh)
   (meow-use-clipboard t)
   :config
   (defun meow--corfu-quit ()
