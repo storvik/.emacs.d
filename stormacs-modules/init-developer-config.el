@@ -42,4 +42,7 @@
 (use-package yaml-mode
   :elpaca (yaml-mode :host github :repo "yoshiki/yaml-mode"))
 
+(use-package yuck-mode
+  :elpaca (yuck-mode :host github :repo "mmcjimsey26/yuck-mode"))
+
 (provide 'init-developer-config)
