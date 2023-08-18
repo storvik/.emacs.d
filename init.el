@@ -1,7 +1,7 @@
 ;;; init.el --- Storviks emacs config -*- lexical-binding: t -*-
 
 ;; Bootstrap elpaca
-(defvar elpaca-installer-version 0.3)
+(defvar elpaca-installer-version 0.5)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -16,6 +16,7 @@
   (add-to-list 'load-path (if (file-exists-p build) build repo))
   (unless (file-exists-p repo)
     (make-directory repo t)
+    (when (< emacs-major-version 28) (require 'subr-x))
     (condition-case-unless-debug err
         (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
                  ((zerop (call-process "git" nil buffer t "clone"
@@ -27,7 +28,7 @@
                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
                  ((require 'elpaca))
                  ((elpaca-generate-autoloads "elpaca" repo)))
-            (kill-buffer buffer)
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
           (error "%s" (with-current-buffer buffer (buffer-string))))
       ((error) (warn "%s" err) (delete-directory repo 'recursive))))
   (unless (require 'elpaca-autoloads nil t)
@@ -92,7 +93,7 @@
 ;; This neat little code let me run stuff after first gui frame is created.
 ;; Especially helpful when running in daemon mode. Usage:
 ;; - :after stormacs-gui
-;; - (with-eval-after-load 'st/gui (...)) - must be placed in :init when used in use-package
+;; - (with-eval-after-load 'stormacs-gui (...)) - must be placed in :init when used in use-package
 ;; TODO: Use (daemonp) to check if daemon
 (defun stormacs-first-graphical-frame-hook-function ()
   (remove-hook 'focus-in-hook #'stormacs-first-graphical-frame-hook-function)
