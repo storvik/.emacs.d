@@ -49,8 +49,11 @@
   (load-theme 'modus-vivendi-tinted :no-confirm)
   :bind ("<f5>" . modus-themes-toggle))
 
-(use-package all-the-icons
-  :elpaca (all-the-icons :host github :repo "domtronn/all-the-icons.el"))
+(use-package nerd-icons
+ :elpaca (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el")
+ :custom
+ ;; Had to set custom font as Symbols Nerd Font Mono made Emacs crash
+ (nerd-icons-font-family "Iosevka Nerd Font"))
 
 (use-package doom-modeline
   :elpaca (doom-modeline :host github :repo "seagle0128/doom-modeline")

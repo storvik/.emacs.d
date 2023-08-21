@@ -7,9 +7,9 @@
   :config
   (diredp-toggle-find-file-reuse-dir 1))
 
-(use-package all-the-icons-dired
-  :elpaca (all-the-icons-dired :host github :repo "wyuenho/all-the-icons-dired")
-  :hook (dired-mode . all-the-icons-dired-mode))
+(use-package nerd-icons-dired
+  :elpaca (nerd-icons-dired :host github :repo "rainstormstudio/nerd-icons-dired")
+  :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package dired-rsync
   :elpaca (dired-rsync :host github :repo "stsquad/dired-rsync")
