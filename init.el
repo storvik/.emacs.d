@@ -107,7 +107,7 @@
 
 (defun wsl-p ()
   (when (and (eq system-type 'gnu/linux)
-             (getenv "WSLENV"))))
+             (getenv "WSL"))))
 
 (require 'init-common)
 (require 'init-appearance)

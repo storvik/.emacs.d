@@ -20,9 +20,10 @@
   (interactive)
   (set-face-attribute 'default nil :font stormacs-font-lodpi))
 
-;; TODO: Add a stormacs-wsl-dpi-dwim function
 (with-eval-after-load 'stormacs-gui
-  (set-face-attribute 'default nil :font stormacs-font-lodpi))
+  (if (wsl-p)
+      (stormacs-wsl-hidpi)
+    (stormacs-wsl-lodpi)))
 
 ;; Remove title bar when using pgtk, but not when WSL is set
 (unless (wsl-p)
