@@ -164,7 +164,7 @@
               (signal 'quit nil))))
 
 ;; Make org capture templates with =%a= include link to selected email in mu4e.
-(require 'org-mu4e)
+(require 'mu4e-org)
 (setq org-mu4e-link-query-in-headers-mode nil)
 
 (provide 'init-email)
