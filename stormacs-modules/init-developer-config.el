@@ -42,6 +42,9 @@
 (use-package yaml-mode
   :elpaca (yaml-mode :host github :repo "yoshiki/yaml-mode"))
 
+(use-package kbd-mode
+  :elpaca (kbd-mode :host github :repo "kmonad/kbd-mode"))
+
 (use-package yuck-mode
   :elpaca (yuck-mode :host github :repo "mmcjimsey26/yuck-mode"))
 
