@@ -69,41 +69,42 @@
           ("FOLLOWUPS" :foreground "deep sky blue" :weight bold)
           ("CANCELLED" :foreground "forest green" :weight bold)
           ("MEETING" :foreground "hot pink" :weight bold)
-          ("PHONE" :foreground "violet red" :weight bold)))
+          ("PHONE" :foreground "violet red" :weight bold))))
 
-  (use-package org-super-agenda
-    :elpaca (org-super-agenda :host github :repo "alphapapa/org-super-agenda")
-    :after org
-    :config
-    (defun stormacs-agenda-title ()
-      "Pretty title in agenda, need filename similar to denote."
-      (interactive)
-      (let ((category (org-entry-get (point) "CATEGORY")))
-        (if (string-match "\\([0-9]\\{7\\}\\)--\\([a-z-0-9]*\\)__\\([a-z]*\\)" category)
-            (concat (match-string 1 category)
-                    " - "
-                    (replace-regexp-in-string "-" " " (match-string 2 category)))
-          category)))
-    (defun stormacs-agenda-context-emoji ()
-      "Should insert emoji for given context, but alignment never worked."
-      (let ((tags (concat (org-entry-get (point) "TAGS"))))
-        (concat (if (string-match-p "@phone" tags)
-                    ""
-                  "  ")
-                "  "
-                (if (string-match-p "@computer" tags)
-                    ""
-                  "  ")
-                "  "
-                (if (string-match-p "@work" tags)
-                    ""
-                  "  ")
-                "  "
-                (when (string-match-p "@home" tags)
-                  ""))))
-    (setq org-agenda-custom-commands
-          '(("w" " Work"
-             ((agenda ""
+(use-package org-super-agenda
+  :elpaca (org-super-agenda :host github :repo "alphapapa/org-super-agenda")
+  :after org
+  :config
+  (define-key org-super-agenda-header-map "e" nil)
+  (defun stormacs-agenda-title ()
+    "Pretty title in agenda, need filename similar to denote."
+    (interactive)
+    (let ((category (org-entry-get (point) "CATEGORY")))
+      (if (string-match "\\([0-9]\\{7\\}\\)--\\([a-z-0-9]*\\)__\\([a-z]*\\)" category)
+          (concat (match-string 1 category)
+                  " - "
+                  (replace-regexp-in-string "-" " " (match-string 2 category)))
+        category)))
+  (defun stormacs-agenda-context-emoji ()
+    "Should insert emoji for given context, but alignment never worked."
+    (let ((tags (concat (org-entry-get (point) "TAGS"))))
+      (concat (if (string-match-p "@phone" tags)
+                  ""
+                "  ")
+              "  "
+              (if (string-match-p "@computer" tags)
+                  ""
+                "  ")
+              "  "
+              (if (string-match-p "@work" tags)
+                  ""
+                "  ")
+              "  "
+              (when (string-match-p "@home" tags)
+                ""))))
+  (setq org-agenda-custom-commands
+        '(("w" " Work"
+           ((agenda ""
                     ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
                      (org-agenda-overriding-header "")
                      (org-agenda-remove-tags t) ;; remove tags from agenda view
@@ -122,43 +123,42 @@
                          (:name "🗒️ Todo\n" :todo "TODO")
                          (:name "🕙 Waiting\n" :and (:todo ("DEPENDSON" "FOLLOWUPS")))
                          (:discard (:todo ("PHONE" "MEETING")))))))))
-            ("p" " Private"
-             ((agenda ""
-                      ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
-                       (org-agenda-overriding-header "")
-                       (org-super-agenda-groups
-                        '((:discard (:tag ("goodtech")))
-                          (:name "This week")))))
-              (alltodo ""
-                       ((org-agenda-prefix-format " %i %-32:c")
-                        (org-agenda-remove-tags nil)
-                        (org-agenda-overriding-header "")
-                        (org-super-agenda-groups
-                         '((:discard (:tag ("goodtech") :file-path "inbox"))
-                           (:name "🛠️ Work in progress" :and (:todo "WIPS" :not (:scheduled future)))
-                           (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
-                           (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future) :not (:tag "someday")))
-                           (:name "🕙 Waiting" :and (:todo ("DEPENDSON" "FOLLOWUPS") :not (:scheduled future)))
-                           (:name "📌 Someday" :and (:tag "someday" :not (:scheduled future)))
-                           (:name "⚠️ Scheduled for later" :scheduled future)
-                           (:discard (:todo ("PHONE" "MEETING")))))))))
-            ("r" " Weekly review"
-             ((alltodo ""
-                       ((org-agenda-prefix-format " %i %-32:c")
-                        (org-agenda-remove-tags nil)
-                        (org-agenda-todo-ignore-with-date nil)
-                        (org-agenda-overriding-header "")
-                        (org-super-agenda-groups
-                         '((:name "📬 Inbox" :and (:file-path "inbox"))
-                           (:name "🛠️ Work in progress" :and (:todo "WIPS" :not (:scheduled future)))
-                           (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
-                           (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future) :not (:tag "someday")))
-                           (:name "🕙 Waiting" :and (:todo ("DEPENDSON" "FOLLOWUPS") :not (:scheduled future)))
-                           (:name "📌 Someday" :and (:tag "someday" :not (:scheduled future)))
-                           (:name "⚠️ Scheduled for later" :scheduled future)
-                           (:discard (:todo ("PHONE" "MEETING")))))))))))
-    (org-super-agenda-mode))
-  )
+          ("p" " Private"
+           ((agenda ""
+                    ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
+                     (org-agenda-overriding-header "")
+                     (org-super-agenda-groups
+                      '((:discard (:tag ("goodtech")))
+                        (:name "This week")))))
+            (alltodo ""
+                     ((org-agenda-prefix-format " %i %-32:c")
+                      (org-agenda-remove-tags nil)
+                      (org-agenda-overriding-header "")
+                      (org-super-agenda-groups
+                       '((:discard (:tag ("goodtech") :file-path "inbox"))
+                         (:name "🛠️ Work in progress" :and (:todo "WIPS" :not (:scheduled future)))
+                         (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
+                         (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future) :not (:tag "someday")))
+                         (:name "🕙 Waiting" :and (:todo ("DEPENDSON" "FOLLOWUPS") :not (:scheduled future)))
+                         (:name "📌 Someday" :and (:tag "someday" :not (:scheduled future)))
+                         (:name "⚠️ Scheduled for later" :scheduled future)
+                         (:discard (:todo ("PHONE" "MEETING")))))))))
+          ("r" " Weekly review"
+           ((alltodo ""
+                     ((org-agenda-prefix-format " %i %-32:c")
+                      (org-agenda-remove-tags nil)
+                      (org-agenda-todo-ignore-with-date nil)
+                      (org-agenda-overriding-header "")
+                      (org-super-agenda-groups
+                       '((:name "📬 Inbox" :and (:file-path "inbox"))
+                         (:name "🛠️ Work in progress" :and (:todo "WIPS" :not (:scheduled future)))
+                         (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
+                         (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future) :not (:tag "someday")))
+                         (:name "🕙 Waiting" :and (:todo ("DEPENDSON" "FOLLOWUPS") :not (:scheduled future)))
+                         (:name "📌 Someday" :and (:tag "someday" :not (:scheduled future)))
+                         (:name "⚠️ Scheduled for later" :scheduled future)
+                         (:discard (:todo ("PHONE" "MEETING")))))))))))
+  (org-super-agenda-mode))
 
 ;; Koma letter export
 (eval-after-load 'ox '(require 'ox-koma-letter))
