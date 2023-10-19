@@ -112,6 +112,7 @@
 (require 'init-developer-c)
 (require 'init-developer-config)
 (require 'init-developer-dart)
+(require 'init-developer-kotlin)
 (require 'init-developer-lisp)
 (require 'init-developer-go)
 (require 'init-developer-nix)
