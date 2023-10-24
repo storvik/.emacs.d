@@ -3,18 +3,6 @@
 (use-package go-mode
   :elpaca (go-mode :host github :repo "dominikh/go-mode.el"))
 
-(elpaca
-    nil
-  (use-package emacs
-    :elpaca nil
-    :after lsp-mode
-    :init
-    (lsp-register-client
-     (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
-                      :major-modes '(go-mode)
-                      :remote? t
-                      :server-id 'gopls-remote))))
-
 (use-package go-add-tags
   :elpaca (go-add-tags :host github :repo "syohex/emacs-go-add-tags")
   :requires go-mode)

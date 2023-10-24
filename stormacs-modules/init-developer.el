@@ -7,90 +7,44 @@
   ;;(add-hook 'prog-mode-hook #'flycheck-mode)
   :commands flycheck-mode)
 
-(use-package lsp-mode
-  :elpaca (lsp-mode :host github :repo "emacs-lsp/lsp-mode")
-  :bind-keymap ("C-c l" . lsp-command-map)
-  :bind (:map stormacs-prefix-map ("l" . stormacs-hydra-lsp/body))
-  :hook (lsp-completion-mode . stormacs-lsp-mode-setup-completion)
-  :custom
-  (lsp-keymap-prefix "C-c l")
-  (lsp-prefer-flymake nil)
-  (lsp-auto-execute-action nil)
-  (lsp-enable-indentation nil)
-  (lsp-enable-snippet nil)
-  (lsp-completion-provider :none) ;; we use Corfu!
-  :init
-  ;; Performance, see LSP wiki
-  (setq gc-cons-threshold 100000000)
-  (setq read-process-output-max (* 1024 1024)) ;; 1mb
-  (defun stormacs-orderless-dispatch-flex-first (_pattern index _total)
-    (and (eq index 0) 'orderless-flex))
-  (defun stormacs-lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless)))
-  ;; Optionally configure the first word as flex filtered.
-  (add-hook 'orderless-style-dispatchers #'stormacs-orderless-dispatch-flex-first nil 'local)
-  (defhydra stormacs-hydra-lsp (:exit t :hint nil)
+(elpaca nil
+  (use-package emacs
+    :elpaca nil
+    :bind (:map stormacs-prefix-map ("l" . stormacs-hydra-eglot/body))
+    :config
+    (defhydra stormacs-hydra-eglot (:exit t :hint nil)
     "
   ^^^^^^^^^^                                                                                                                 ╭──────────┐
-  Symbol^^            ^ ^                      Consult^^                 Buffer^^                  LSP Server^^              │ LSP mode │
+  Symbol^^            ^ ^                      Consult^^                 Buffer^^                  Server^^                  │ eglot    │
  ╭^^^^^^^^^^─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
   [_d_] Declaration  [_i_] Implementation      [_s_] Symbol              [_f_] Format              [_M-r_] Restart
-  [_D_] Definition   [_t_] Type                [_S_] Symbol current file [_m_] Imenu               [_M-S_] Shutdown
-  [_R_] References   [_x_] Signature           [_h_] Diagnostic          [_x_] Execute action      [_M-s_] Describe session
-  [_r_] Rename       [_o_] Documentation
+  [_D_] Definition   [_t_] Type                [_F_] Flymake             [_x_] Execute action      [_M-S_] Shutdown
+  [_R_] References   [_r_] Rename               ^ ^                      [_e_] Eldoc
   "
-    ("d" lsp-find-declaration)
-    ("D" lsp-find-definition)
-    ("R" lsp-find-references)
-    ("i" lsp-find-implementation)
-    ("t" lsp-find-type-definition)
-    ("x" lsp-signature-help)
-    ("o" lsp-describe-thing-at-point)
-    ("r" lsp-rename)
+    ("d" eglot-find-declaration)
+    ("D" xref-find-definitions)
+    ("R" xref-find-references)
+    ("i" eglot-find-implementation)
+    ("t" eglot-fint-typeDefinition)
+    ("r" eglot-rename)
 
-    ("s" consult-lsp-symbols)
-    ("S" consult-lsp-file-symbols)
-    ("h" consult-lsp-diagnostics)
+    ("s" consult-eglot-symbols)
+    ("F" consult-flymake)
 
-    ("f" lsp-format-buffer)
-    ("m" lsp-ui-imenu)
+    ("f" eglot-format-buffer)
     ("x" lsp-execute-code-action)
+    ("e" eldoc)
 
-    ("M-s" lsp-describe-session)
-    ("M-r" lsp-restart-workspace)
-    ("M-S" lsp-shutdown-workspace)
+    ("M-r" eglot-reconnect)
+    ("M-S" eglot-shutdown)
 
     ("g" nil)
-    ("q" nil)))
+    ("q" nil))))
 
-(use-package lsp-ui
-  :elpaca (lsp-ui :host github :repo "emacs-lsp/lsp-ui")
-  :commands lsp-ui-mode
-  :custom
-  (lsp-ui-doc-position 'top)
-  (lsp-ui-doc-show-with-cursor t)
-  (lsp-ui-doc-show-with-mouse nil)
-  (lsp-ui-doc-use-webkit t)
-  :custom-face
-  (lsp-ui-doc-background ((t (:background nil)))))
-
-(use-package consult-lsp
-  :elpaca (consult-lsp :host github :repo "gagbo/consult-lsp")
-  :after (consult lsp-mode)
-  :commands consult-lsp-symbols
-  :config
-  (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
-
-;; TODO: Check if integrated tree-sitter affects this
-;; (elpaca-use-package
-;;  (tree-sitter :host github :repo "emacs-tree-sitter/elisp-tree-sitter")
-;;  :hook (tree-sitter-after-on . tree-sitter-hl-mode)
-;;  :config
-;;  (global-tree-sitter-mode))
-
-;; (elpaca-use-package
-;;  (tree-sitter-langs :repo "emacs-tree-sitter/tree-sitter-langs"))
+(use-package consult-eglot
+  :elpaca (consult-eglot :host github :repo "mohkale/consult-eglot")
+  :after consult
+  :commands consult-eglot-symbols)
 
 (use-package apheleia
   :elpaca (apheleia :host github :repo "raxod502/apheleia")
