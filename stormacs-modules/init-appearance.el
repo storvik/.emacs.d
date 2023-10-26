@@ -136,4 +136,58 @@
       ("w" other-window)
       ("q" nil))))
 
+(use-package dashboard
+  :elpaca (dashboard :host github :repo "emacs-dashboard/emacs-dashboard")
+  :custom
+  (dashboard-startup-banner 'logo)
+  (dashboard-projects-backend 'project-el)
+  (dashboard-center-content t)
+  (dashboard-display-icons-p t)
+  (dashboard-icon-type 'nerd-icons)
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
+  (dashboard-set-navigator t)
+  (dashboard-agenda-tags-format 'ignore)
+  (dashboard-agenda-prefix-format "%i %-34:c %-12s") ;; TODO: Look into customizing this
+  (dashboard-item-names '(("Projects:" . " Projects:")
+                          ("Agenda for today:" . " Agenda:")))
+  (dashboard-week-agenda nil)
+  (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
+  (dashboard-match-agenda-entry "-someday/!+TODO|+NEXT|+WIPS|+DEPENDSON|+DELEGATED|+FOLLOWUPS")
+  (dashboard-agenda-release-buffers nil) ;; this will release org agenda files, dash refresh will be slower
+  ;; Override init info, this is not used atm. Using advice in order to customize faces, see stormacs-dashboard-insert-init-info.
+  (dashboard-init-info (lambda ()
+                         (concat "inbox: " (number-to-string (length (org-map-entries t "inbox" 'agenda))) " • "
+                                 "todo: " (number-to-string (length (org-map-entries t "-someday/+TODO" 'agenda))) " • "
+                                 (propertize "terstt" 'face (car org-todo-keyword-faces))
+                                 "next: " (number-to-string (length (org-map-entries t "-someday/+NEXT" 'agenda))) " • "
+                                 "wips: " (number-to-string (length (org-map-entries t "-someday/+WIPS" 'agenda))) " • "
+                                 "dependson: " (number-to-string (length (org-map-entries t "-someday/+DEPENDSON" 'agenda))) " • "
+                                 "delegated: " (number-to-string (length (org-map-entries t "-someday/+DELEGATED" 'agenda))) " • "
+                                 "followups: " (number-to-string (length (org-map-entries t "-someday/+FOLLOWUPS" 'agenda))))))
+  (dashboard-items '((projects . 8)
+                     (agenda . 36)))
+  :config
+  (defun stormacs-dashboard-insert-init-info ()
+    "Custom version of `dashboard-insert-init-info' which displays org agenda stats."
+    ;; For org-map-entries matching, see https://orgmode.org/manual/Matching-tags-and-properties.html
+    (dashboard-insert-center (propertize (concat "inbox: " (number-to-string (length (org-map-entries t "inbox" 'agenda)))) 'face 'font-lock-comment-face)
+                             (propertize " • " 'face 'font-lock-comment-face)
+                             (propertize (concat "todo: " (number-to-string (length (org-map-entries t "-someday/+TODO" 'agenda)))) 'face (nth 0 org-todo-keyword-faces))
+                             (propertize " • " 'face 'font-lock-comment-face)
+                             (propertize (concat "next: " (number-to-string (length (org-map-entries t "-someday/+NEXT" 'agenda)))) 'face (nth 1 org-todo-keyword-faces))
+                             (propertize " • " 'face 'font-lock-comment-face)
+                             (propertize (concat "wips: " (number-to-string (length (org-map-entries t "-someday/+WIPS" 'agenda)))) 'face (nth 2 org-todo-keyword-faces))
+                             (propertize " • " 'face 'font-lock-comment-face)
+                             (propertize (concat "dependson: " (number-to-string (length (org-map-entries t "-someday/+DEPENDSON" 'agenda)))) 'face (nth 3 org-todo-keyword-faces))
+                             (propertize " • " 'face 'font-lock-comment-face)
+                             (propertize (concat "delegated: " (number-to-string (length (org-map-entries t "-someday/+DELEGATED" 'agenda)))) 'face (nth 4 org-todo-keyword-faces))
+                             (propertize " • " 'face 'font-lock-comment-face)
+                             (propertize (concat "followups: " (number-to-string (length (org-map-entries t "-someday/+FOLLOWUPS" 'agenda)))) 'face (nth 5 org-todo-keyword-faces))))
+  (advice-add #'dashboard-insert-init-info :override #'stormacs-dashboard-insert-init-info)
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
+  (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+  (dashboard-setup-startup-hook))
+
 (provide 'init-appearance)
