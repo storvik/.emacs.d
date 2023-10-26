@@ -61,7 +61,7 @@
 
   (setq org-todo-keyword-faces
         '(("TODO" :foreground "orange red" :weight bold)
-          ("NEXT" :foreground "dark orange" :wight bold)
+          ("NEXT" :foreground "dark orange" :weight bold)
           ("WIPS" :foreground "deep sky blue" :weight bold)
           ("DONE" :foreground "forest green" :weight bold)
           ("DEPENDSON" :foreground "orange" :weight bold)
