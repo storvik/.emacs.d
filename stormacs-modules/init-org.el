@@ -165,7 +165,6 @@
 (eval-after-load 'ox-latex
   '(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t) t))
 
-
 (use-package org-cliplink
   :elpaca (org-cliplink :host github :repo "rexim/org-cliplink"))
 
