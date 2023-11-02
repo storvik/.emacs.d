@@ -46,6 +46,13 @@
   :after consult
   :commands consult-eglot-symbols)
 
+(use-package eldoc-box
+  :elpaca (eldoc-box :host github :repo "casouri/eldoc-box")
+  :hook
+  (eglot-managed-mode . eldoc-box-hover-mode)
+  :custom
+  (eldoc-box-clear-with-C-g t))
+
 (use-package apheleia
   :elpaca (apheleia :host github :repo "raxod502/apheleia")
   :config
