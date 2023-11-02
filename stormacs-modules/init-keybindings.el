@@ -59,7 +59,8 @@
    deadgrep-mode-hook
    help-mode-hook
    cider-repl-mode-hook
-   calendar-mode-hook))
+   calendar-mode-hook
+   dashboard-mode-hook))
 
 ;; Prefix map
 ;; TODO: Maybe this should be configurable?
