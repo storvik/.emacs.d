@@ -10,7 +10,7 @@
          ([remap compile] . detached-compile)
          ([remap recompile] . detached-compile-recompile)
          :map stormacs-prefix-map
-         ("d" . stormacs-detached-hydra/body))
+         ("D" . stormacs-detached-hydra/body))
   :custom ((detached-show-output-on-attach t))
   :config
   (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))

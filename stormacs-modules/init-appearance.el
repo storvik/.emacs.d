@@ -138,6 +138,9 @@
 
 (use-package dashboard
   :elpaca (dashboard :host github :repo "emacs-dashboard/emacs-dashboard")
+  :demand t
+  :bind (:map stormacs-prefix-map
+         ("d" . dashboard-open))
   :custom
   (dashboard-startup-banner 'logo)
   (dashboard-projects-backend 'project-el)
@@ -148,7 +151,7 @@
   (dashboard-set-file-icons t)
   (dashboard-set-navigator t)
   (dashboard-agenda-tags-format 'ignore)
-  (dashboard-agenda-prefix-format "%i %-34:c %-12s") ;; TODO: Look into customizing this
+  (dashboard-agenda-prefix-format "%i %-26(stormacs-agenda-title) %-12s")
   (dashboard-item-names '(("Projects:" . " Projects:")
                           ("Agenda for today:" . " Agenda:")))
   (dashboard-week-agenda nil)

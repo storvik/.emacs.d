@@ -5,7 +5,7 @@
   :init
   (setq org-archive-location "archive/%s_archive::")
   (setq org-directory "~/developer/org/org")
-  (setq org-default-notes-file "~/developer/org/org/inbox-computer.org")
+  (setq org-default-notes-file "~/developer/org/org/inbox--computer.org")
   (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
   :config
   ;; Refile
@@ -37,19 +37,19 @@
   (add-hook 'org-agenda-finalize-hook #'hl-line-mode)
 
   (setq org-capture-templates
-        (quote (("t" "Todo" entry (file "~/developer/org/org/inbox-computer.org")
+        (quote (("t" "Todo" entry (file "~/developer/org/org/inbox--computer.org")
                  "* TODO %?\n")
-                ("c" "Todo code" entry (file "~/developer/org/org/inbox-computer.org")
+                ("c" "Todo code" entry (file "~/developer/org/org/inbox--computer.org")
                  "* TODO %?\n%l\n")
-                ("n" "Note" entry (file "~/developer/org/org/inbox-computer.org")
+                ("n" "Note" entry (file "~/developer/org/org/inbox--computer.org")
                  "* %? :NOTE:\n")
-                ("m" "Meeting" entry (file "~/developer/org/org/inbox-computer.org")
+                ("m" "Meeting" entry (file "~/developer/org/org/inbox--computer.org")
                  "* MEETING %t %? :meeting:\n" :clock-in t :clock-resume t)
-                ("p" "Phone Call" entry (file "~/developer/org/org/inbox-computer.org")
+                ("p" "Phone Call" entry (file "~/developer/org/org/inbox--computer.org")
                  "* PHONE %T %? :phone:\n" :clock-in t :clock-resume t)
-                ("r" "Respond to email, must be run from mu4e" entry (file "~/developer/org/org/inbox-computer.org")
+                ("r" "Respond to email, must be run from mu4e" entry (file "~/developer/org/org/inbox--computer.org")
                  "* TODO Respond to %:from on %:subject\n\t%a\n" :immediate-finish t)
-                ("e" "E-mail todo, must be run from mu4e" entry (file "~/developer/org/org/inbox-computer.org")
+                ("e" "E-mail todo, must be run from mu4e" entry (file "~/developer/org/org/inbox--computer.org")
                  "* TODO %?\n%a\n")
                 ("k" "Cliplink bookmark" entry (file "~/developer/org/org/bookmarks.org")
                  "* %(org-cliplink-capture)%?\n" :empty-lines-before 0))))
@@ -80,9 +80,9 @@
     "Pretty title in agenda, need filename similar to denote."
     (interactive)
     (let ((category (org-entry-get (point) "CATEGORY")))
-      (if (string-match "\\([0-9]\\{7\\}\\)--\\([a-z-0-9]*\\)__\\([a-z]*\\)" category)
+      (if (string-match "\\([a-z]*\\)--\\([a-z-0-9]*\\)" category)
           (concat (match-string 1 category)
-                  " - "
+                  " 󰨕 "
                   (replace-regexp-in-string "-" " " (match-string 2 category)))
         category)))
   (defun stormacs-agenda-context-emoji ()
