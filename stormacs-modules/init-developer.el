@@ -11,15 +11,16 @@
   (use-package emacs
     :elpaca nil
     :bind (:map stormacs-prefix-map ("l" . stormacs-hydra-eglot/body))
+    :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1)))
     :config
     (defhydra stormacs-hydra-eglot (:exit t :hint nil)
     "
   ^^^^^^^^^^                                                                                                                 ╭──────────┐
   Symbol^^            ^ ^                      Consult^^                 Buffer^^                  Server^^                  │ eglot    │
  ╭^^^^^^^^^^─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
-  [_d_] Declaration  [_i_] Implementation      [_s_] Symbol              [_f_] Format              [_M-r_] Restart
-  [_D_] Definition   [_t_] Type                [_F_] Flymake             [_x_] Execute action      [_M-S_] Shutdown
-  [_R_] References   [_r_] Rename               ^ ^                      [_e_] Eldoc
+  [_d_] Declaration  [_i_] Implementation      [_s_] Symbol              [_f_] Format              [_M-h_] Inlay hints mode
+  [_D_] Definition   [_t_] Type                [_F_] Flymake             [_x_] Execute action      [_M-r_] Restart
+  [_R_] References   [_r_] Rename               ^ ^                      [_e_] Eldoc               [_M-S_] Shutdown
   "
     ("d" eglot-find-declaration)
     ("D" xref-find-definitions)
@@ -35,6 +36,7 @@
     ("x" lsp-execute-code-action)
     ("e" eldoc)
 
+    ("M-h" eglot-inlay-hints-mode)
     ("M-r" eglot-reconnect)
     ("M-S" eglot-shutdown)
 
