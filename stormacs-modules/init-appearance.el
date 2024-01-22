@@ -50,10 +50,10 @@
   :bind ("<f5>" . modus-themes-toggle))
 
 (use-package nerd-icons
- :elpaca (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el")
- :custom
- ;; Had to set custom font as Symbols Nerd Font Mono made Emacs crash
- (nerd-icons-font-family "Iosevka Nerd Font"))
+  :elpaca (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el")
+  :custom
+  ;; Had to set custom font as Symbols Nerd Font Mono made Emacs crash
+  (nerd-icons-font-family "Iosevka Nerd Font"))
 
 (use-package doom-modeline
   :elpaca (doom-modeline :host github :repo "seagle0128/doom-modeline")
@@ -68,7 +68,7 @@
   :hook (elpaca-after-init . global-emojify-mode))
 
 (use-package hl-todo
-  :elpaca (hl-todo :github :repo "tarsius/hl-todo")
+  :elpaca (hl-todo :host github :repo "tarsius/hl-todo")
   :hook (elpaca-after-init . global-hl-todo-mode)
   :config
   (setq hl-todo-highlight-punctuation ":"))
@@ -95,6 +95,12 @@
   (setq pulsar-delay 0.06)
   (pulsar-global-mode 1))
 
+(use-package topsy
+  :elpaca (topsy :host github :repo "alphapapa/topsy.el")
+  :hook
+  (prog-mode . topsy-mode)
+  (magit-section-mode . topsy-mode))
+
 (use-package ansi-color
   :elpaca nil
   :hook (compilation-filter . ansi-color-compilation-filter))
@@ -104,7 +110,7 @@
   (use-package emacs
     :elpaca nil
     :bind (:map stormacs-prefix-map
-           ("w" . stormacs-hydra-window/body))
+                ("w" . stormacs-hydra-window/body))
     :config
     (defhydra stormacs-hydra-window (:color blue :hint nil)
       "
@@ -140,7 +146,7 @@
   :elpaca (dashboard :host github :repo "emacs-dashboard/emacs-dashboard")
   :demand t
   :bind (:map stormacs-prefix-map
-         ("d" . dashboard-open))
+              ("d" . dashboard-open))
   :custom
   (dashboard-startup-banner 'logo)
   (dashboard-projects-backend 'project-el)
