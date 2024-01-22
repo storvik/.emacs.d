@@ -1,7 +1,7 @@
 ;; init-developer-lisp.el --- Developer lisp settings -*- lexical-binding: t; -*-
 
 (use-package sly
-  :elpaca (sly "joaotavora/sly")
+  :elpaca (sly :host github :repo "joaotavora/sly")
   :init
   (cond ((and (executable-find "sbcl")
               (executable-find "ecl"))
