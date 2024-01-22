@@ -1,7 +1,7 @@
 ;; init-dired.el --- Dired settings -*- lexical-binding: t; -*-
 
 (use-package dired+
-  :elpaca (dired+ :host github :repo "emacsmirror/dired-plus")
+  :elpaca (dired+ :host github :repo "emacsmirror/dired-plus" :main "dired+.el")
   :init
   (setq diredp-hide-details-initially-flag nil)
   :config
