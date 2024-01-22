@@ -1,21 +1,17 @@
 ;; init-git.el --- Git and verion control -*- lexical-binding: t; -*-
 
 (use-package magit
-    :elpaca (magit :host github :repo "magit/magit")
+  :elpaca (magit :host github :repo "magit/magit")
   :bind (:map stormacs-prefix-map
-         ("g" . magit-status)
-         :map magit-status-mode-map
-         ("TAB" . magit-section-toggle)
-         ("<C-tab>" . magit-section-cycle))
+              ("g" . magit-status)
+              :map magit-status-mode-map
+              ("TAB" . magit-section-toggle)
+              ("<C-tab>" . magit-section-cycle))
   :config
   (setq magit-git-executable "git"))
 
-(use-package magit-todos
-    :elpaca (magit-todos :host github :repo "alphapapa/magit-todos")
-  :hook (elpaca-after-init . magit-todos-mode))
-
 (use-package diff-hl
-    :elpaca (diff-hl :host github :repo "dgutov/diff-hl")
+  :elpaca (diff-hl :host github :repo "dgutov/diff-hl")
   :hook ((dired-mode . diff-hl-dired-mode)
          (magit-pre-refresh . diff-hl-magit-pre-refresh)
          (magit-post-refresh . diff-hl-magit-post-refresh))
@@ -25,30 +21,37 @@
   (with-eval-after-load 'stormacs-gui
     (global-diff-hl-mode)))
 
+(use-package magit-todos
+  :elpaca (magit-todos :host github
+                       :repo "alphapapa/magit-todos"
+                       ;; since hl-todo does not specify package version, skip check
+                       :build (:not elpaca--check-version))
+  :hook (elpaca-after-init . magit-todos-mode))
+
 (use-package git-timemachine
-    :elpaca (git-timemachine :host codeberg :repo "pidu/git-timemachine")
+  :elpaca (git-timemachine :host codeberg :repo "pidu/git-timemachine")
   :commands (git-timemachine))
 
 (elpaca nil
-    (use-package emacs
-      :elpaca nil
-      :bind (:map stormacs-prefix-map
-             ("v" . stormacs-hydra-git/body))
-      :config
-      (defhydra stormacs-hydra-git (:color pink :exit t :hint nil)
-        "
+  (use-package emacs
+    :elpaca nil
+    :bind (:map stormacs-prefix-map
+                ("v" . stormacs-hydra-git/body))
+    :config
+    (defhydra stormacs-hydra-git (:color pink :exit t :hint nil)
+      "
  ^^^^^^                                                                                           ╭────────┐
  ^^^^^^                                                                                           │  git   │
 ╭^^^^^^───────────────────────────────────────────────────────────────────────────────────────────┴────────╯
  [_g_] magit               [_n_] next hunk               [_t_] git timemachine
  [_b_] blame               [_p_] previous hunk           [_q_] cancel
 "
-        ("t" git-timemachine)
-        ("g" magit)
-        ("b" magit-blame)
-        ("n" diff-hl-next-hunk)
-        ("p" diff-hl-previous-hunk)
-        ("q" nil))))
+      ("t" git-timemachine)
+      ("g" magit)
+      ("b" magit-blame)
+      ("n" diff-hl-next-hunk)
+      ("p" diff-hl-previous-hunk)
+      ("q" nil))))
 
 (elpaca nil
   (use-package emacs
