@@ -33,21 +33,34 @@
 (when (fboundp 'pixel-scroll-precision-mode)
   (pixel-scroll-precision-mode 1))
 
-(use-package modus-themes
-  :elpaca (modus-themes :host sourcehut :repo "protesilaos/modus-themes")
+(use-package ef-themes
+  :elpaca (ef-themes :host sourcehut :repo "protesilaos/ef-themes")
   :demand t
+  :custom
+  (ef-themes-to-toggle '(ef-elea-dark ef-light))
   :config
-  ;; Add all your customizations prior to loading the themes
-  ;; (setq modus-themes-italic-constructs t
-  ;;       modus-themes-bold-constructs nil)
-
-  ;; Maybe define some palette overrides, such as by using our presets
-  (setq modus-themes-common-palette-overrides
-        modus-themes-preset-overrides-faint)
+  ;; Disable all other themes to avoid awkward blending:
+  (mapc #'disable-theme custom-enabled-themes)
 
   ;; Load the theme of your choice.
-  (load-theme 'modus-vivendi-tinted :no-confirm)
-  :bind ("<f5>" . modus-themes-toggle))
+  ;; (load-theme 'ef-elea-dark :no-confirm)
+  (ef-themes-select 'ef-elea-dark))
+
+;; (use-package modus-themes
+;;   :elpaca (modus-themes :host sourcehut :repo "protesilaos/modus-themes")
+;;   :demand t
+;;   :config
+;;   ;; Add all your customizations prior to loading the themes
+;;   ;; (setq modus-themes-italic-constructs t
+;;   ;;       modus-themes-bold-constructs nil)
+
+;;   ;; Maybe define some palette overrides, such as by using our presets
+;;   (setq modus-themes-common-palette-overrides
+;;         modus-themes-preset-overrides-faint)
+
+;;   ;; Load the theme of your choice.
+;;   (load-theme 'modus-vivendi-tinted :no-confirm)
+;;   :bind ("<f5>" . modus-themes-toggle))
 
 (use-package nerd-icons
   :elpaca (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el")
