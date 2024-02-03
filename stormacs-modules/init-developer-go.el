@@ -23,4 +23,10 @@
   :elpaca (gotest :host github :repo "nlamirault/gotest.el")
   :requires go-mode)
 
+(use-package flymake-golangci
+  :elpaca (flymake-golangci :host github :repo "storvik/flymake-golangci")
+  :hook (eglot-managed-mode . (lambda ()
+                                (when (derived-mode-p 'go-mode)
+                                  (flymake-golangci-load-backend)))))
+
 (provide 'init-developer-go)
