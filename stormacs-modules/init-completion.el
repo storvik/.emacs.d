@@ -10,8 +10,8 @@
   (vertico-group-title ((t (:slant normal)))) ;; Fix unreadable vertico group titles, Iosevka Nerd Font doesn't like italic
   :bind
   (:map vertico-map
-   ("C-M-n" . vertico-next-group)
-   ("C-M-p" . vertico-previous-group))
+        ("C-M-n" . vertico-next-group)
+        ("C-M-p" . vertico-previous-group))
   :init
   (vertico-mode))
 
@@ -39,9 +39,9 @@
   :after vertico
   ;; More convenient directory navigation commands
   :bind (:map vertico-map
-         ("C-M-m" . vertico-directory-enter)
-         ("DEL" . vertico-directory-delete-char)
-         ("C-M-i" . vertico-directory-delete-word))
+              ("C-M-m" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("C-M-i" . vertico-directory-delete-word))
   ;; Tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
@@ -49,56 +49,56 @@
   :elpaca (vertico-quick :host github :repo "minad/vertico" :files (:defaults "extensions/vertico-quick.el"))
   :after vertico
   :bind (:map vertico-map
-         ("C-q" . vertico-quick-insert)
-         ("M-q" . vertico-quick-exit)))
+              ("C-q" . vertico-quick-insert)
+              ("M-q" . vertico-quick-exit)))
 
 (use-package consult
   :elpaca (consult :host github :repo "minad/consult")
   :bind (:map stormacs-overrides-minor-mode-map
-         ;; C-c bindings (mode-specific-map)
-         ("C-c h" . consult-history)
-         ("C-c b" . consult-bookmark)
-         ("C-c k" . consult-kmacro)
-         ;; C-x bindings (ctl-x-map)
-         ("C-x M-:" . consult-complex-command) ;; orig. repeat-complet-command
-         ("C-x b" . consult-buffer) ;; orig. switch-to-buffer
-         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-         ("C-x 5 b" . consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
-         ;; Custom M-# bindings for fast register access
-         ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
-         ("C-M-#" . consult-register)
-         ;; Other custom bindings
-         ("M-y" . consult-yank-pop)     ;; orig. yank-pop
-         ("<help> a" . consult-apropos) ;; orig. apropos-command
-         ;; M-g bindings (goto-map)
-         ("M-g e" . consult-compile-error)
-         ("M-g M-g" . consult-goto-line) ;; orig. goto-line
-         ("M-g o" . consult-outline)
-         ("M-g m" . consult-mark)
-         ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)
-         ("M-g I" . consult-project-imenu)
-         ;; M-s bindings (search-map)
-         ("M-s f" . consult-find)
-         ("M-s L" . consult-locate)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s R" . consult-ripgrep)
-         ("M-s l" . consult-line)
-         ("M-s m" . consult-multi-occur)
-         ("M-s k" . consult-keep-lines)
-         ("M-s u" . consult-focus-lines)
-         ;; Customizations that map to ivy
-         ("C-x C-r" . consult-recent-file)
-         ("C-c o" . consult-file-externally)
-         ;; Isearch integration
-         ("M-s e" . consult-isearch)
-         ;; ("s-t" . jnf/consult-find-using-fd)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch)   ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch) ;; orig. isearch-edit-string
-         ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
+              ;; C-c bindings (mode-specific-map)
+              ("C-c h" . consult-history)
+              ("C-c b" . consult-bookmark)
+              ("C-c k" . consult-kmacro)
+              ;; C-x bindings (ctl-x-map)
+              ("C-x M-:" . consult-complex-command) ;; orig. repeat-complet-command
+              ("C-x b" . consult-buffer) ;; orig. switch-to-buffer
+              ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+              ("C-x 5 b" . consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
+              ;; Custom M-# bindings for fast register access
+              ("M-#" . consult-register-load)
+              ("M-'" . consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
+              ("C-M-#" . consult-register)
+              ;; Other custom bindings
+              ("M-y" . consult-yank-pop)     ;; orig. yank-pop
+              ("<help> a" . consult-apropos) ;; orig. apropos-command
+              ;; M-g bindings (goto-map)
+              ("M-g e" . consult-compile-error)
+              ("M-g M-g" . consult-goto-line) ;; orig. goto-line
+              ("M-g o" . consult-outline)
+              ("M-g m" . consult-mark)
+              ("M-g k" . consult-global-mark)
+              ("M-g i" . consult-imenu)
+              ("M-g I" . consult-project-imenu)
+              ;; M-s bindings (search-map)
+              ("M-s f" . consult-find)
+              ("M-s L" . consult-locate)
+              ("M-s g" . consult-grep)
+              ("M-s G" . consult-git-grep)
+              ("M-s R" . consult-ripgrep)
+              ("M-s l" . consult-line)
+              ("M-s m" . consult-multi-occur)
+              ("M-s k" . consult-keep-lines)
+              ("M-s u" . consult-focus-lines)
+              ;; Customizations that map to ivy
+              ("C-x C-r" . consult-recent-file)
+              ("C-c o" . consult-file-externally)
+              ;; Isearch integration
+              ("M-s e" . consult-isearch)
+              ;; ("s-t" . jnf/consult-find-using-fd)
+              :map isearch-mode-map
+              ("M-e" . consult-isearch)   ;; orig. isearch-edit-string
+              ("M-s e" . consult-isearch) ;; orig. isearch-edit-string
+              ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
   :init
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
@@ -162,11 +162,11 @@
   (corfu-quit-no-match 'separator)    ;; Quit if no match, unless `corfu-insert-separator' has been used
   (tab-always-indent 'complete)       ;; Use tab to complete
   :bind (:map corfu-map
-         ("C-SPC" . corfu-insert-separator)
-         ("C-n" . corfu-next)
-         ("C-p" . corfu-previous)
-         ("M-l" . corfu-show-location)
-         ("M-d" . corfu-show-documentation))
+              ("C-SPC" . corfu-insert-separator)
+              ("C-n" . corfu-next)
+              ("C-p" . corfu-previous)
+              ("M-l" . corfu-show-location)
+              ("M-d" . corfu-show-documentation))
   :init
   (defun corfu-enable-always-in-minibuffer ()
     "Enable Corfu in the minibuffer if Vertico/Mct are not active."
@@ -238,9 +238,9 @@
   :after corfu
   ;; :hook (corfu-mode . corfu-doc-mode)
   :bind (:map corfu-map
-         ([remap corfu-show-documentation] . corfu-doc-toggle)
-         ("M-n" . corfu-doc-scroll-up)
-         ("M-p" . corfu-doc-scroll-down))
+              ([remap corfu-show-documentation] . corfu-doc-toggle)
+              ("M-n" . corfu-doc-scroll-up)
+              ("M-p" . corfu-doc-scroll-down))
   :custom
   (corfu-doc-delay 0.5))
 
@@ -282,7 +282,7 @@ _k_: keyword              _w_: dict
 (use-package affe
   :elpaca (affe :host github :repo "minad/affe")
   :bind (:map stormacs-overrides-minor-mode-map
-         ("M-s r" . affe-grep))
+              ("M-s r" . affe-grep))
   :preface
   (defun affe-orderless-regexp-compiler (input _type)
     (setq input (orderless-pattern-compiler input))
@@ -302,7 +302,7 @@ _k_: keyword              _w_: dict
 (use-package consult-project-extra
   :elpaca (consult-project-extra :host github :repo "Qkessler/consult-project-extra")
   :bind (:map stormacs-overrides-minor-mode-map
-         ("C-x p f" . consult-project-extra-find)
-         ("C-x p o" . consult-project-extra-find-other-window)))
+              ("C-x p f" . consult-project-extra-find)
+              ("C-x p o" . consult-project-extra-find-other-window)))
 
 (provide 'init-completion)
