@@ -14,7 +14,7 @@
     :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1)))
     :config
     (defhydra stormacs-hydra-eglot (:exit t :hint nil)
-    "
+      "
   ^^^^^^^^^^                                                                                                                 ╭──────────┐
   Symbol^^            ^ ^                      Consult^^                 Buffer^^                  Server^^                  │ eglot    │
  ╭^^^^^^^^^^─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
@@ -22,26 +22,26 @@
   [_D_] Definition   [_t_] Type                [_F_] Flymake             [_x_] Execute action      [_M-r_] Restart
   [_R_] References   [_r_] Rename               ^ ^                      [_e_] Eldoc               [_M-S_] Shutdown
   "
-    ("d" eglot-find-declaration)
-    ("D" xref-find-definitions)
-    ("R" xref-find-references)
-    ("i" eglot-find-implementation)
-    ("t" eglot-fint-typeDefinition)
-    ("r" eglot-rename)
+      ("d" eglot-find-declaration)
+      ("D" xref-find-definitions)
+      ("R" xref-find-references)
+      ("i" eglot-find-implementation)
+      ("t" eglot-fint-typeDefinition)
+      ("r" eglot-rename)
 
-    ("s" consult-eglot-symbols)
-    ("F" consult-flymake)
+      ("s" consult-eglot-symbols)
+      ("F" consult-flymake)
 
-    ("f" eglot-format-buffer)
-    ("x" lsp-execute-code-action)
-    ("e" eldoc)
+      ("f" eglot-format-buffer)
+      ("x" eglot-code-actions)
+      ("e" eldoc)
 
-    ("M-h" eglot-inlay-hints-mode)
-    ("M-r" eglot-reconnect)
-    ("M-S" eglot-shutdown)
+      ("M-h" eglot-inlay-hints-mode)
+      ("M-r" eglot-reconnect)
+      ("M-S" eglot-shutdown)
 
-    ("g" nil)
-    ("q" nil))))
+      ("g" nil)
+      ("q" nil))))
 
 (use-package consult-eglot
   :elpaca (consult-eglot :host github :repo "mohkale/consult-eglot")
