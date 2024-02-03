@@ -94,6 +94,67 @@
 (show-paren-mode 1)
 (electric-pair-mode 1)
 
+(use-package svg-tag-mode
+  :hook ((prog-mode . stormacs-svg-tag-mode)
+         (org-mode . stormacs-org-svg-tag-mode))
+  :config
+  (setq stormacs-svg-tag-tags
+        '(("[/|#|;]* FIXME:" . ((lambda (tag) (svg-lib-tag "FIXME" nil
+                                                           :background "#d08770"
+                                                           :foreground "white"))))
+          ("[/|#|;]* TODO:" . ((lambda (tag) (svg-lib-tag "TODO" nil
+                                                          :background "#d08770"
+                                                          :foreground "white"))))))
+  (setq stormacs-org-svg-tag-tags
+        '(("TODO" . ((lambda (tag) (svg-lib-tag tag nil
+                                                :background "orange red"
+                                                :foreground "white"))))
+          ("NEXT" . ((lambda (tag) (svg-lib-tag tag nil
+                                                :background "dark orange"
+                                                :foreground "white"))))
+          ("DEPENDSON" . ((lambda (tag) (svg-lib-tag tag nil
+                                                     :background "orange"
+                                                     :foreground "white"))))
+          ("DELEGATED" . ((lambda (tag) (svg-lib-tag tag nil
+                                                     :background "light green"
+                                                     :foreground "white"))))
+          ("\\(WIPS\\)\\|\\(FOLLOWUPS\\)" . ((lambda (tag) (svg-lib-tag tag nil
+                                                                        :background "deep sky blue"
+                                                                        :foreground "white"))))
+          ("\\(DONE\\)\\|\\(CANCELLED\\)" . ((lambda (tag) (svg-lib-tag tag nil
+                                                                        :background "forest green"
+                                                                        :foreground "white"))))))
+  (defun stormacs-org-svg-tag-mode ()
+    (interactive)
+    (setq-local svg-tag-tags stormacs-org-svg-tag-tags)
+    (svg-tag-mode))
+  (defun stormacs-svg-tag-mode ()
+    (interactive)
+    (setq-local svg-tag-tags stormacs-svg-tag-tags)
+    (svg-tag-mode))
+  ;; Fix org agenda and dashboard
+  ;; See: https://github.com/rougier/svg-tag-mode/issues/27#issuecomment-1246703561
+  (defun stormacs-svg-tag-agenda-fix ()
+    (interactive)
+    (setq-local svg-tag-tags stormacs-org-svg-tag-tags)
+    (let* ((case-fold-search nil)
+           (keywords (mapcar #'svg-tag--build-keywords stormacs-org-svg-tag-tags))
+           (keyword (car keywords)))
+      (while keyword
+        (save-excursion
+          (while (re-search-forward (nth 0 keyword) nil t)
+            (overlay-put (make-overlay
+                          (match-beginning 0) (match-end 0))
+                         'display  (nth 3 (eval (nth 2 keyword)))) ))
+        (pop keywords)
+        (setq keyword (car keywords)))))
+
+  (add-hook 'dashboard-mode-hook #'stormacs-svg-tag-agenda-fix)
+  (add-hook 'org-agenda-finalize-hook #'stormacs-svg-tag-agenda-fix)
+  ;; Load style after gui init, needed when running in daemon
+  (with-eval-after-load 'storvik/gui
+    (setq svg-lib-style-default (svg-lib-style-compute-default))))
+
 (use-package goggles
   :elpaca (goggles :host github :repo "minad/goggles")
   :hook ((prog-mode text-mode) . goggles-mode)
