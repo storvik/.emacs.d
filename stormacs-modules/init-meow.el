@@ -58,6 +58,7 @@
    '("i" . meow-right)
    '("I" . meow-right-expand)
    '("j" . meow-join)
+   '("J" . avy-goto-char-timer)
    '("k" . meow-kill)
    '("l" . meow-line)
    '("L" . meow-goto-line)
@@ -82,11 +83,14 @@
    '("X" . meow-backward-delete)
    '("y" . meow-save)
    '("z" . meow-pop-selection)
+   '("Z" . pop-global-mark)
    '("'" . repeat)
-   '("<escape>" . ignore)))
+   '("<escape>" . ignore))
+  (meow-thing-register 'arrow '(pair ("<") (">")) '(pair ("<") (">")))
+  (add-to-list 'meow-char-thing-table '(?a . arrow)))
 
 (use-package meow
-    :elpaca (meow :host github :repo "meow-edit/meow")
+  :elpaca (meow :host github :repo "meow-edit/meow")
   :demand t
   :hook ((git-commit-setup . meow-insert)
          (org-capture-mode . meow-insert)
