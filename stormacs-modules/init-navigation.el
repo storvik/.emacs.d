@@ -51,7 +51,7 @@
      (cdr
       (ring-ref avy-ring 0)))
     t)
-  (defun avy-action-yank-whole-line (pt)
+  (defun avy-action-yank-whole-line (hello pt)
     (avy-action-copy-whole-line pt)
     (save-excursion (yank))
     t)
@@ -119,7 +119,7 @@
 (use-package deadgrep
   :elpaca (deadgrep :host github :repo "Wilfred/deadgrep")
   :bind (:map stormacs-overrides-minor-mode-map
-         ("M-s s" . deadgrep)))
+              ("M-s s" . deadgrep)))
 
 ;; TODO: Do I need this?
 ;; (elpaca-use-package
@@ -139,7 +139,7 @@
 (use-package move-text
   :elpaca (move-text :host github :repo "emacsfodder/move-text")
   :bind (:map stormacs-prefix-map
-         ("m" . stormacs-move-text-hydra/body))
+              ("m" . stormacs-move-text-hydra/body))
   :config
   (defhydra stoamacs-move-text-hydra (:hint nil)
     "Move line or region"
@@ -149,10 +149,10 @@
 (use-package puni
   :elpaca (puni :host github :repo "AmaiKinono/puni")
   :bind (:map puni-mode-map
-         ("C-<right>" . puni-slurp-forward)
-         ("C-<left>" . puni-slurp-backward)
-         ("M-r" . puni-raise)
-         ("M-?" . puni-convolute))
+              ("C-<right>" . puni-slurp-forward)
+              ("C-<left>" . puni-slurp-backward)
+              ("M-r" . puni-raise)
+              ("M-?" . puni-convolute))
   :init
   (puni-global-mode)
   (add-hook 'term-mode-hook #'puni-disable-puni-mode))
