@@ -7,6 +7,31 @@
   :init
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
+(use-package dogears
+  :elpaca (dogears :host github :repo "alphapapa/dogears.el")
+  :commands (dogears-list dogears-mode)
+  :hook (elpaca-after-init . dogears-mode)
+  :bind (:map stormacs-prefix-map
+              ("z" . stormacs-hydra-dogears/body))
+  :custom
+  (dogears-idle-timer 2)
+  (dogears-functions '(avy-goto-char-timer))
+  :config
+  (defhydra stormacs-hydra-dogears (:color pink :exit nil :hint nil)
+    "
+ ^^^^^^                                                                                           ╭───────────┐
+ ^^^^^^                                                                                           │  dogears  │
+╭^^^^^^───────────────────────────────────────────────────────────────────────────────────────────┴───────────╯
+ [_p_] back                [_l_] list                    [_g_] go
+ [_n_] forward             [_s_] sidebar                 [_q_] cancel
+"
+    ("p" dogears-back)
+    ("n" dogears-forward)
+    ("l" dogears-list)
+    ("s" dogears-sidebar)
+    ("g" dogears-go)
+    ("q" nil)))
+
 (use-package avy
   :elpaca (avy :host github :repo "abo-abo/avy")
   :bind (:map stormacs-overrides-minor-mode-map
