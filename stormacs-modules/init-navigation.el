@@ -3,9 +3,9 @@
 (use-package ace-window
   :elpaca (ace-window :host github :repo "abo-abo/ace-window")
   :bind (:map stormacs-overrides-minor-mode-map
-         ("M-o" . ace-window))
-  :init
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+              ("M-o" . ace-window))
+  :custom
+  (aw-keys '(?a ?r ?s ?t ?g ?m ?n ?e ?i))) ; aw-keys colemakified
 
 (use-package dogears
   :elpaca (dogears :host github :repo "alphapapa/dogears.el")
@@ -35,8 +35,10 @@
 (use-package avy
   :elpaca (avy :host github :repo "abo-abo/avy")
   :bind (:map stormacs-overrides-minor-mode-map
-         ("M-g g" . avy-goto-line)
-         ("M-j" . avy-goto-char-timer))
+              ("M-g g" . avy-goto-line)
+              ("M-j" . avy-goto-char-timer))
+  :custom
+  (avy-keys '(?a ?r ?s ?t ?g ?m ?n ?e ?i)) ; avy-keys colemakified
   :config
   (defun avy-action-mark-to-char (pt)
     (activate-mark)
