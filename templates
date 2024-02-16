@@ -20,6 +20,15 @@ org-mode
        :post (progn (tempel-done) (org-edit-src-code)))
 (meeting "Til stede: " p n n "** Aksjoner" n n "** Hva har skjedd" n n "** Hva skal skje" n n "** Diverse" n)
 
+lisp-data-mode
+
+(dirlocal-dart "((dart-mode . ((eval . (eglot-ensure))
+               (flutter-run-args . \"" (p (completing-read "Default arguments: "
+                                                           '("-d web-server --web-port 8080"
+                                                             "-d linux"))) "\")
+               (eval . (add-hook 'after-save-hook 'flutter-run-or-hot-reload nil t)))))")
+(dirlocal-go "((go-mode . ((eval . (eglot-ensure)))))")
+
 emacs-lisp-mode
 
 (autoload ";;;###autoload")
