@@ -185,6 +185,8 @@
   :elpaca (org-modern :host github :repo "minad/org-modern")
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
+  :custom
+  (org-modern-todo nil)
   :config
   (setq org-modern-todo-faces
         '(("TODO" :foreground "gray10" :background "orange red")
@@ -205,6 +207,9 @@
 
 (use-package org-download
   :elpaca (org-download :host github :repo "abo-abo/org-download")
+  :custom
+  (org-download-image-dir "./graphics/")
+  (org-download-heading-lvl nil)
   :config
   (when (wsl-p)
     (setq org-download-screenshot-method "powershell.exe -Command \"(Get-Clipboard -Format image).Save('$(wslpath -w %s)')\"")))
