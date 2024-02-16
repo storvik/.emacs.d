@@ -18,17 +18,28 @@
   ;; clock
   (setq org-clock-persist 'history)
   (setq org-clock-out-remove-zero-time-clocks t)
-  (setq org-log-into-drawer "logbook")
+  (setq org-log-into-drawer t)
   (setq org-clock-into-drawer 1)
   (setq org-log-done 'time)
 
   ;; tags / context
-  (setq org-tag-persistent-alist
-        '(("@work" . ?w)
-          ("@home" . ?h)
-          ("@computer" . ?c)
-          ("@phone" . ?p)
-          ("billable" .?b)))
+  (setq org-tag-persistent-alist '((:startgroup . nil)
+                                   ("@work" . ?w)
+                                   ("@home" . ?h)
+                                   ("@computer" . ?c)
+                                   ("@phone" . ?p)
+                                   (:endgroup . nil)
+                                   (:startgroup . nil)
+                                   ("billable" .?b)
+                                   (:endgroup . nil)
+                                   (:startgroup . nil)
+                                   ("emacs" .?e)
+                                   (:endgroup . nil)
+                                   (:startgroup . nil)
+                                   ("nodash" .?e)
+                                   (:endgroup . nil)))
+
+  ;; TODO: Check if org-tag-faces can be used for something useful
 
   ;; Misc
   (setq org-export-allow-bind-keywords t)
@@ -60,16 +71,16 @@
           (sequence "PHONE" "MEETING" "|")))
 
   (setq org-todo-keyword-faces
-        '(("TODO" :foreground "orange red" :weight bold)
-          ("NEXT" :foreground "dark orange" :weight bold)
-          ("WIPS" :foreground "deep sky blue" :weight bold)
-          ("DONE" :foreground "forest green" :weight bold)
-          ("DEPENDSON" :foreground "orange" :weight bold)
-          ("DELEGATED" :foreground "light green" :weight bold)
-          ("FOLLOWUPS" :foreground "deep sky blue" :weight bold)
-          ("CANCELLED" :foreground "forest green" :weight bold)
-          ("MEETING" :foreground "hot pink" :weight bold)
-          ("PHONE" :foreground "violet red" :weight bold))))
+        '(("TODO" . (:foreground "orange red" :weight bold))
+          ("NEXT" . (:foreground "dark orange" :weight bold))
+          ("WIPS" . (:foreground "deep sky blue" :weight bold))
+          ("DONE" . (:foreground "forest green" :weight bold))
+          ("DEPENDSON" . (:foreground "orange" :weight bold))
+          ("DELEGATED" . (:foreground "sea green" :weight bold))
+          ("FOLLOWUPS" . (:foreground "deep sky blue" :weight bold))
+          ("CANCELLED" . (:foreground "forest green" :weight bold))
+          ("MEETING" . (:foreground "hot pink" :weight bold))
+          ("PHONE" . (:foreground "violet red" :weight bold)))))
 
 (use-package org-super-agenda
   :elpaca (org-super-agenda :host github :repo "alphapapa/org-super-agenda")
