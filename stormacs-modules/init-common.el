@@ -37,51 +37,16 @@
   (exec-path-from-shell-initialize))
 
 (use-package hydra
-    :elpaca (hydra :host github :repo "abo-abo/hydra"))
+  :elpaca (hydra :host github :repo "abo-abo/hydra"))
 
 (use-package sudo-edit
-    :elpaca (sudo-edit :host github :repo "nflath/sudo-edit"))
+  :elpaca (sudo-edit :host github :repo "nflath/sudo-edit"))
 
-(use-package spell-fu
-    :elpaca (spell-fu :host codeberg :repo "ideasman42/emacs-spell-fu")
-  :bind (:map stormacs-prefix-map
-         ("s" . stormacs-hydra-spell/body))
-  :config
-  (defun stormacs-spell-remove-all ()
-    (interactive)
-    (mapc (lambda (dict) (spell-fu-dictionary-remove dict)) spell-fu-dictionaries))
-  (defun stormacs-spell-add-en ()
-    (interactive)
-    (spell-fu-dictionary-add (spell-fu-get-ispell-dictionary "en"))
-    (spell-fu-dictionary-add (spell-fu-get-ispell-dictionary "en-computers"))
-    (spell-fu-dictionary-add (spell-fu-get-ispell-dictionary "en-science"))
-    (spell-fu-dictionary-add
-     (spell-fu-get-personal-dictionary "en-personal" (expand-file-name "aspell.en.pws" spell-fu-directory))))
-  (defun stormacs-spell-add-nb ()
-    (interactive)
-    (spell-fu-dictionary-add (spell-fu-get-ispell-dictionary "nb"))
-    (spell-fu-dictionary-add
-     (spell-fu-get-personal-dictionary "nb-personal" (expand-file-name "aspell.nb.pws" spell-fu-directory))))
-  (defhydra stormacs-hydra-spell (:color pink :exit nil :hint nil)
-    "
- ^^^^^^^^                                                                                         ╭──────────┐
- navigation^^              personal^^               language^^                spell-fu^^          │ spelling │
-╭^^^^^^^^─────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
- [_c_] check buffer        [_w_] word add           [_E_] english             [_e_] enable / disable
- [_n_] next error          [_W_] word remove        [_N_] norwegian           [_r_] reset
- [_p_] previous error       ^ ^                     [_R_] remove all          [_q_] quit
-"
-    ("c" spell-fu-buffer)
-    ("n" spell-fu-goto-next-error)
-    ("p" spell-fu-goto-previous-error)
-    ("w" spell-fu-word-add)
-    ("W" spell-fu-word-remove)
-    ("E" stormacs-spell-add-en)
-    ("N" stormacs-spell-add-nb)
-    ("R" stormacs-spell-remove-all)
-    ("e" spell-fu-mode)
-    ("r" spell-fu-reset)
-    ("q" nil)))
+(use-package jinx
+  :elpaca (jinx :host github :repo "minad/jinx")
+  :hook (elpaca-after-init . global-jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)))
 
 (when (wsl-p)
   (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
