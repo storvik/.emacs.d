@@ -64,12 +64,6 @@
   (setf (alist-get 'go-mode apheleia-mode-alist) 'goimports)
   (add-to-list 'apheleia-formatters '(nixpkgs-fmt "nixpkgs-fmt"))
   (setf (alist-get 'nix-mode apheleia-mode-alist) 'nixpkgs-fmt)
-  (setf (alist-get 'clj-zprint apheleia-formatters)
-        '("zprint" "{:style [:community :justified] :map {:comma? false}}"))
-  (add-to-list 'apheleia-mode-alist '(clojure-mode . clj-zprint))
-  (setf (alist-get 'cljs-zprint apheleia-formatters)
-        '("zprint" "{:style [:hiccup] :map {:comma? false}}"))
-  (add-to-list 'apheleia-mode-alist '(clojurescript-mode . cljs-zprint))
   (apheleia-global-mode +1))
 
 (require 'init-developer-c)
