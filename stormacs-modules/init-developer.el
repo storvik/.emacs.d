@@ -80,7 +80,8 @@
 
 (use-package envrc
   :elpaca (envrc :host github :repo "purcell/envrc")
-  :when (executable-find "direnv")
+  :when (and sys-unix-p
+             (executable-find "direnv"))
   :config
   (envrc-global-mode))
 

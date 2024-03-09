@@ -46,6 +46,14 @@
                               (time-subtract (current-time) before-init-time)))
                      gcs-done)))
 
+(setq sys-unix-p (or (eq system-type 'gnu/linux)
+                     (eq system-type 'darwin)))
+
+;; Make elpaca work on windows
+(when (not sys-unix-p)
+  (setq elpaca-queue-limit 25)
+  (elpaca-no-symlink-mode))
+
 ;; Install use-package
 (elpaca elpaca-use-package
   ;; Enable :elpaca keyword support
@@ -77,9 +85,6 @@
       (setq stormacs-host-config host-cfg)
     (setq stormacs-host-config (file-name-concat (file-name-directory host-cfg) "default.el"))))
 (load-file stormacs-host-config)
-
-(setq sys-unix-p (or (eq system-type 'gnu/linux)
-                     (eq system-type 'darwin)))
 
 (defun sys-type-p (name)
   (eq system-type name))

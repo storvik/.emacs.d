@@ -5,6 +5,7 @@
   :mode "\\.nix\\'")
 
 (use-package nix-update
-  :elpaca (nix-update :host github :repo "jwiegley/nix-update-el"))
+  :elpaca (nix-update :host github :repo "jwiegley/nix-update-el")
+  :when sys-unix-p)
 
 (provide 'init-developer-nix)

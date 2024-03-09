@@ -44,6 +44,7 @@
 
 (use-package jinx
   :elpaca (jinx :host github :repo "minad/jinx")
+  :when sys-unix-p
   :hook (elpaca-after-init . global-jinx-mode)
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
