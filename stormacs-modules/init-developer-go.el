@@ -26,7 +26,7 @@
 (use-package flymake-golangci
   :elpaca (flymake-golangci :host github :repo "storvik/flymake-golangci")
   :hook (eglot-managed-mode . (lambda ()
-                                (when (derived-mode-p 'go-mode)
+                                (when (derived-mode-p '(go-mode go-ts-mode))
                                   (flymake-golangci-load-backend)))))
 
 (provide 'init-developer-go)

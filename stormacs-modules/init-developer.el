@@ -43,6 +43,14 @@
       ("g" nil)
       ("q" nil))))
 
+(use-package treesit-auto
+  :elpaca (treesit-auto :host github :repo "renzmann/treesit-auto")
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
 (use-package consult-eglot
   :elpaca (consult-eglot :host github :repo "mohkale/consult-eglot")
   :after consult
