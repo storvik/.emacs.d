@@ -189,24 +189,24 @@
     :config
     (defhydra stormacs-hydra-window (:color blue :hint nil)
       "
-                                                                                                  ╭─────────┐
-    Move to              Size            Scroll                Split                        Do    │ Windows │
- ╭────────────────────────────────────────────────────────────────────────────────────────────────┴─────────╯
-        ^_k_^                   ^_K_^                ^_p_^             ╭─┬─┐^ ^        ╭─┬─┐^ ^             ✗ [_d_] close window
-       ^^↑^^                   ^^↑^^               ^^↑^^            │ │ │_v_ertical ├─┼─┤_b_alance       ⇋ [_w_] cycle window
-   _h_ ←   → _l_         _H_ ←   → _L_           ^^ ^^             ╰─┴─╯^ ^        ╰─┴─╯^ ^
-       ^^↓^^                   ^^↓^^               ^^↓^^            ╭───┐^ ^        ╭───┐^ ^
-       ^_j_^                    ^_J_^                ^_n_^             ├───┤_s_tack    │   │_z_oom
-        ^^ ^^                   ^^ ^^                ^^ ^^             ╰───╯^ ^        ╰───╯^ ^               [_q_] quit
+                                                                                 ╭─────────┐
+    Move to              Size                 Split                        Do    │ Windows │
+ ╭───────────────────────────────────────────────────────────────────────────────┴─────────╯
+        ^_e_^                   ^_E_^                 ╭─┬─┐^ ^        ╭─┬─┐^ ^             ✗ [_d_] close window
+       ^^↑^^                   ^^↑^^                │ │ │_v_ertical ├─┼─┤_b_alance       ⇋ [_w_] cycle window
+   _m_ ←   → _i_         _M_ ←   → _I_            ╰─┴─╯^ ^        ╰─┴─╯^ ^
+       ^^↓^^                   ^^↓^^               ╭───┐^ ^        ╭───┐^ ^
+       ^_n_^                    ^_N_^                 ├───┤_s_tack    │   │_z_oom
+        ^^ ^^                   ^^ ^^                 ╰───╯^ ^        ╰───╯^ ^               [_q_] quit
     "
-      ("h" windmove-left :color red)
-      ("j" windmove-down :color red)
-      ("k" windmove-up :color red)
-      ("l" windmove-right :color red)
-      ("H" shrink-window-horizontally :color red)
-      ("J" shrink-window :color red)
-      ("K" enlarge-window :color red)
-      ("L" enlarge-window-horizontally :color red)
+      ("m" windmove-left :color red)
+      ("n" windmove-down :color red)
+      ("e" windmove-up :color red)
+      ("i" windmove-right :color red)
+      ("M" shrink-window-horizontally :color red)
+      ("N" shrink-window :color red)
+      ("E" enlarge-window :color red)
+      ("I" enlarge-window-horizontally :color red)
       ("s" split-window-vertically :color red)
       ("v" split-window-horizontally :color red)
       ("b" balance-windows)
