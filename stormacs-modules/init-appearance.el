@@ -165,7 +165,8 @@
   :elpaca (pulsar :host sourcehut :repo "protesilaos/pulsar")
   :config
   (setq pulsar-pulse-functions (append pulsar-pulse-functions
-                                       '(ace-window)))
+                                       '(ace-window
+                                         avy-goto-char-timer)))
   (setq pulsar-delay 0.06)
   (pulsar-global-mode 1))
 
