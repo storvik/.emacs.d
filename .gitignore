@@ -40,3 +40,4 @@ var/*
 history
 detached-*
 *.elc
+ielm-history.eld
