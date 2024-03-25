@@ -1,11 +1,5 @@
 ;; init-developer.el --- Developer -*- lexical-binding: t; -*-
 
-(use-package flycheck
-  :elpaca (flycheck :host github :repo "flycheck/flycheck")
-  :defer t
-  :init
-  ;;(add-hook 'prog-mode-hook #'flycheck-mode)
-  :commands flycheck-mode)
 (elpaca nil
   (use-package emacs
     :ensure nil
