@@ -1,7 +1,7 @@
 ;; init-org.el --- org mode  settings -*- lexical-binding: t; -*-
 ;; TODO: Should make some of these options configurable
 (use-package org
-  :elpaca t
+  :ensure t
   :init
   (setq org-archive-location "archive/%s_archive::")
   (setq org-directory "~/developer/org/org")
@@ -83,7 +83,7 @@
           ("PHONE" . (:foreground "violet red" :weight bold)))))
 
 (use-package org-super-agenda
-  :elpaca (org-super-agenda :host github :repo "alphapapa/org-super-agenda")
+  :ensure (org-super-agenda :host github :repo "alphapapa/org-super-agenda")
   :after org
   :config
   (define-key org-super-agenda-header-map "e" nil)
@@ -177,12 +177,12 @@
   '(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t) t))
 
 (use-package org-cliplink
-  :elpaca (org-cliplink :host github :repo "rexim/org-cliplink"))
+  :ensure (org-cliplink :host github :repo "rexim/org-cliplink"))
 
 (setq org-plantuml-exec-mode 'plantuml)
 
 (use-package org-modern
-  :elpaca (org-modern :host github :repo "minad/org-modern")
+  :ensure (org-modern :host github :repo "minad/org-modern")
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
   :custom
@@ -201,12 +201,12 @@
           ("PHONE" :foreground "gray10" :background "violet red"))))
 
 (use-package org-modern-indent
-  :elpaca (org-modern-indent :host github :repo "jdtsmith/org-modern-indent")
+  :ensure (org-modern-indent :host github :repo "jdtsmith/org-modern-indent")
   :config
   (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 
 (use-package org-download
-  :elpaca (org-download :host github :repo "abo-abo/org-download")
+  :ensure (org-download :host github :repo "abo-abo/org-download")
   :custom
   (org-download-image-dir "./graphics/")
   (org-download-heading-lvl nil)
@@ -216,7 +216,7 @@
 
 ;; TODO: denote dir must be configurable
 (use-package denote
-  :elpaca (denote :host sourcehut :repo "protesilaos/denote")
+  :ensure (denote :host sourcehut :repo "protesilaos/denote")
   :demand t
   :custom
   (denote-directory (expand-file-name "~/developer/org/denote"))
@@ -286,7 +286,7 @@
 
 ;; TODO: Should be able to search my org notes too, not denote only
 (use-package consult-notes
-  :elpaca (consult-notes :host github :repo "mclear-tools/consult-notes")
+  :ensure (consult-notes :host github :repo "mclear-tools/consult-notes")
   :commands (consult-notes
              consult-notes-search-in-all-notes)
   :custom
@@ -300,7 +300,7 @@
 
 (elpaca nil
   (use-package emacs
-    :elpaca nil
+    :ensure nil
     :bind (:map stormacs-prefix-map ("o" . stormacs-org-hydra/body))
     :config
     (defhydra stormacs-org-hydra (:color pink :exit t :hint nil)

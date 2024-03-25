@@ -1,7 +1,7 @@
 ;; init-git.el --- Git and verion control -*- lexical-binding: t; -*-
 
 (use-package magit
-  :elpaca (magit :host github :repo "magit/magit")
+  :ensure (magit :host github :repo "magit/magit")
   :bind (:map stormacs-prefix-map
               ("g" . magit-status)
               :map magit-status-mode-map
@@ -11,7 +11,7 @@
   (setq magit-git-executable "git"))
 
 (use-package diff-hl
-  :elpaca (diff-hl :host github :repo "dgutov/diff-hl")
+  :ensure (diff-hl :host github :repo "dgutov/diff-hl")
   :hook ((dired-mode . diff-hl-dired-mode)
          (magit-pre-refresh . diff-hl-magit-pre-refresh)
          (magit-post-refresh . diff-hl-magit-post-refresh))
@@ -22,19 +22,19 @@
     (global-diff-hl-mode)))
 
 (use-package magit-todos
-  :elpaca (magit-todos :host github
+  :ensure (magit-todos :host github
                        :repo "alphapapa/magit-todos"
                        ;; since hl-todo does not specify package version, skip check
                        :build (:not elpaca--check-version))
   :hook (elpaca-after-init . magit-todos-mode))
 
 (use-package git-timemachine
-  :elpaca (git-timemachine :host codeberg :repo "pidu/git-timemachine")
+  :ensure (git-timemachine :host codeberg :repo "pidu/git-timemachine")
   :commands (git-timemachine))
 
 (elpaca nil
   (use-package emacs
-    :elpaca nil
+    :ensure nil
     :bind (:map stormacs-prefix-map
                 ("v" . stormacs-hydra-git/body))
     :config
@@ -55,7 +55,7 @@
 
 (elpaca nil
   (use-package emacs
-    :elpaca nil
+    :ensure nil
     :hook (magit-diff-visit-file . (lambda ()
                                      (when smerge-mode
                                        (stormacs-smerge-hydra/body))))

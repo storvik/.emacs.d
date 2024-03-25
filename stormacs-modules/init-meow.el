@@ -90,7 +90,7 @@
   (add-to-list 'meow-char-thing-table '(?a . arrow)))
 
 (use-package meow
-  :elpaca (meow :host github :repo "meow-edit/meow")
+  :ensure (meow :host github :repo "meow-edit/meow")
   :demand t
   :hook ((git-commit-setup . meow-insert)
          (org-capture-mode . meow-insert)

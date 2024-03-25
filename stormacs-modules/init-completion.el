@@ -1,7 +1,7 @@
 ;; init-completion.el --- Completion framework and friends -*- lexical-binding: t; -*-
 
 (use-package vertico
-  :elpaca (vertico :host github :repo "minad/vertico")
+  :ensure (vertico :host github :repo "minad/vertico")
   :custom
   (vertico-count 20)
   (vertico-resize t)
@@ -17,7 +17,7 @@
 
 ;; Preserve history avvross restarts
 (use-package savehist
-  :elpaca nil
+  :ensure nil
   :init
   (savehist-mode))
 
@@ -35,7 +35,7 @@
 (setq enable-recursive-minibuffers t)
 
 (use-package vertico-directory
-  :elpaca (vertico-directory :host github :repo "minad/vertico" :files (:defaults "extensions/vertico-directory.el"))
+  :ensure (vertico-directory :host github :repo "minad/vertico" :files (:defaults "extensions/vertico-directory.el"))
   :after vertico
   ;; More convenient directory navigation commands
   :bind (:map vertico-map
@@ -46,14 +46,14 @@
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package vertico-quick
-  :elpaca (vertico-quick :host github :repo "minad/vertico" :files (:defaults "extensions/vertico-quick.el"))
+  :ensure (vertico-quick :host github :repo "minad/vertico" :files (:defaults "extensions/vertico-quick.el"))
   :after vertico
   :bind (:map vertico-map
               ("C-q" . vertico-quick-insert)
               ("M-q" . vertico-quick-exit)))
 
 (use-package consult
-  :elpaca (consult :host github :repo "minad/consult")
+  :ensure (consult :host github :repo "minad/consult")
   :bind (:map stormacs-overrides-minor-mode-map
               ;; C-c bindings (mode-specific-map)
               ("C-c h" . consult-history)
@@ -112,18 +112,18 @@
   (setq consult-narrow-key "<"))
 
 (use-package consult-info
-  :elpaca (consult-info :host github :repo "minad/consult")
+  :ensure (consult-info :host github :repo "minad/consult")
   :after consult)
 
 (use-package orderless
-  :elpaca (orderless :host github :repo "oantolin/orderless")
+  :ensure (orderless :host github :repo "oantolin/orderless")
   :init
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package embark
-  :elpaca (embark :host github :repo "oantolin/embark")
+  :ensure (embark :host github :repo "oantolin/embark")
   :after sudo-edit
   :demand t
   :bind (("C-." . embark-act)
@@ -135,12 +135,12 @@
   (setq prefix-help-command #'embark-prefix-help-command))
 
 (use-package embark-consult
-  :elpaca (embark-consult :host github :repo "oantolin/embark")
+  :ensure (embark-consult :host github :repo "oantolin/embark")
   :after (embark consult)
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package marginalia
-  :elpaca (marginalia :host github :repo "minad/marginalia")
+  :ensure (marginalia :host github :repo "minad/marginalia")
   :after vertico
   :bind (("M-A" . marginalia-cycle)
          :map minibuffer-local-map
@@ -152,7 +152,7 @@
   (marginalia-mode))
 
 (use-package corfu
-  :elpaca (corfu :host github :repo "minad/corfu")
+  :ensure (corfu :host github :repo "minad/corfu")
   :after orderless
   :custom
   (corfu-cycle t)                     ;; Enable cycling for `corfu-next/previous'
@@ -179,13 +179,13 @@
   (global-corfu-mode))
 
 (use-package nerd-icons-corfu
-  :elpaca (nerd-icons-corfu :host github :repo "LuigiPiucco/nerd-icons-corfu")
+  :ensure (nerd-icons-corfu :host github :repo "LuigiPiucco/nerd-icons-corfu")
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 ;; (use-package kind-icon
-;;   :elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
+;;   :ensure (kind-icon :host github :repo "jdtsmith/kind-icon")
 ;;   :after corfu
 ;;   :custom
 ;;   (kind-icon-default-face 'corfu-default)
@@ -234,7 +234,7 @@
 ;;           (t ,(nerd-icons-codicon "nf-cod-code") :face font-lock-warning-face))))
 
 (use-package corfu-doc
-  :elpaca (corfu-doc :host github :repo "galeo/corfu-doc")
+  :ensure (corfu-doc :host github :repo "galeo/corfu-doc")
   :after corfu
   ;; :hook (corfu-mode . corfu-doc-mode)
   :bind (:map corfu-map
@@ -245,7 +245,7 @@
   (corfu-doc-delay 0.5))
 
 (use-package cape
-  :elpaca (cape :host github :repo "minad/cape")
+  :ensure (cape :host github :repo "minad/cape")
   :bind (:map stormacs-prefix-map ("p" . stormacs-cape-hydra/body))
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
@@ -280,7 +280,7 @@ _k_: keyword              _w_: dict
     ("q" nil "cancel")))
 
 (use-package affe
-  :elpaca (affe :host github :repo "minad/affe")
+  :ensure (affe :host github :repo "minad/affe")
   :bind (:map stormacs-overrides-minor-mode-map
               ("M-s r" . affe-grep))
   :preface
@@ -292,7 +292,7 @@ _k_: keyword              _w_: dict
         affe-highlight-function #'orderless-highlight-matches))
 
 (use-package nerd-icons-completion
-  :elpaca (nerd-icons-completion :host github :repo "rainstormstudio/nerd-icons-completion")
+  :ensure (nerd-icons-completion :host github :repo "rainstormstudio/nerd-icons-completion")
   :after marginalia
   :hook (marginalia-mode . nerd-icons-completion-marginalia-setup)
   :init
@@ -300,7 +300,7 @@ _k_: keyword              _w_: dict
     (nerd-icons-completion-mode)))
 
 (use-package consult-project-extra
-  :elpaca (consult-project-extra :host github :repo "Qkessler/consult-project-extra")
+  :ensure (consult-project-extra :host github :repo "Qkessler/consult-project-extra")
   :bind (:map stormacs-overrides-minor-mode-map
               ("C-x p f" . consult-project-extra-find)
               ("C-x p o" . consult-project-extra-find-other-window)))

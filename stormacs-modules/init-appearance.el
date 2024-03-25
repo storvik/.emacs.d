@@ -34,7 +34,7 @@
   (pixel-scroll-precision-mode 1))
 
 (use-package ef-themes
-  :elpaca (ef-themes :host sourcehut :repo "protesilaos/ef-themes")
+  :ensure (ef-themes :host sourcehut :repo "protesilaos/ef-themes")
   :demand t
   :custom
   (ef-themes-to-toggle '(ef-elea-dark ef-light))
@@ -47,7 +47,7 @@
   (ef-themes-select 'ef-elea-dark))
 
 ;; (use-package modus-themes
-;;   :elpaca (modus-themes :host sourcehut :repo "protesilaos/modus-themes")
+;;   :ensure (modus-themes :host sourcehut :repo "protesilaos/modus-themes")
 ;;   :demand t
 ;;   :config
 ;;   ;; Add all your customizations prior to loading the themes
@@ -63,31 +63,31 @@
 ;;   :bind ("<f5>" . modus-themes-toggle))
 
 (use-package nerd-icons
-  :elpaca (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el")
+  :ensure (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el")
   :custom
   ;; Had to set custom font as Symbols Nerd Font Mono made Emacs crash
   (nerd-icons-font-family "Iosevka Nerd Font"))
 
 (use-package doom-modeline
-  :elpaca (doom-modeline :host github :repo "seagle0128/doom-modeline")
+  :ensure (doom-modeline :host github :repo "seagle0128/doom-modeline")
   :hook (elpaca-after-init . doom-modeline-mode)
   :config
   (setq find-file-visit-truename t)
   (setq doom-modeline-icon t))
 
 (use-package emojify
-  :elpaca (emojify :host github :repo "iqbalansari/emacs-emojify")
+  :ensure (emojify :host github :repo "iqbalansari/emacs-emojify")
   :when (wsl-p)
   :hook (elpaca-after-init . global-emojify-mode))
 
 (use-package hl-todo
-  :elpaca (hl-todo :host github :repo "tarsius/hl-todo")
+  :ensure (hl-todo :host github :repo "tarsius/hl-todo")
   :hook (elpaca-after-init . global-hl-todo-mode)
   :config
   (setq hl-todo-highlight-punctuation ":"))
 
 (use-package rainbow-delimiters
-  :elpaca (rainbow-delimiters :host github :repo "Fanael/rainbow-delimiters")
+  :ensure (rainbow-delimiters :host github :repo "Fanael/rainbow-delimiters")
   :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
@@ -156,13 +156,13 @@
     (setq svg-lib-style-default (svg-lib-style-compute-default))))
 
 (use-package goggles
-  :elpaca (goggles :host github :repo "minad/goggles")
+  :ensure (goggles :host github :repo "minad/goggles")
   :hook ((prog-mode text-mode) . goggles-mode)
   :config
   (setq-default goggles-pulse t))
 
 (use-package pulsar
-  :elpaca (pulsar :host sourcehut :repo "protesilaos/pulsar")
+  :ensure (pulsar :host sourcehut :repo "protesilaos/pulsar")
   :config
   (setq pulsar-pulse-functions (append pulsar-pulse-functions
                                        '(ace-window
@@ -171,19 +171,19 @@
   (pulsar-global-mode 1))
 
 (use-package topsy
-  :elpaca (topsy :host github :repo "alphapapa/topsy.el")
+  :ensure (topsy :host github :repo "alphapapa/topsy.el")
   :hook
   (prog-mode . topsy-mode)
   (magit-section-mode . topsy-mode))
 
 (use-package ansi-color
-  :elpaca nil
+  :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
 
 (elpaca
     nil
   (use-package emacs
-    :elpaca nil
+    :ensure nil
     :bind (:map stormacs-prefix-map
                 ("w" . stormacs-hydra-window/body))
     :config
@@ -218,7 +218,7 @@
       ("q" nil))))
 
 (use-package dashboard
-  :elpaca (dashboard :host github :repo "emacs-dashboard/emacs-dashboard")
+  :ensure (dashboard :host github :repo "emacs-dashboard/emacs-dashboard")
   :demand t
   :after svg-tag-mode
   :bind (:map stormacs-prefix-map

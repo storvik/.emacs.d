@@ -31,19 +31,22 @@
 (setq epg-pinentry-mode 'loopback)
 
 (use-package exec-path-from-shell
-  :elpaca (exec-path-from-shell :host github :repo "purcell/exec-path-from-shell")
+  :ensure (exec-path-from-shell :host github :repo "purcell/exec-path-from-shell")
   :when sys-unix-p
   :init
   (exec-path-from-shell-initialize))
 
 (use-package hydra
-  :elpaca (hydra :host github :repo "abo-abo/hydra"))
+  :ensure (hydra :host github :repo "abo-abo/hydra"))
 
 (use-package sudo-edit
-  :elpaca (sudo-edit :host github :repo "nflath/sudo-edit"))
+  :ensure (sudo-edit :host github :repo "nflath/sudo-edit"))
+
+(use-package transient
+  :ensure (transient :host github :repo "magit/transient"))
 
 (use-package jinx
-  :elpaca (jinx :host github :repo "minad/jinx")
+  :ensure (jinx :host github :repo "minad/jinx")
   :when sys-unix-p
   :hook (elpaca-after-init . global-jinx-mode)
   :bind (("M-$" . jinx-correct)

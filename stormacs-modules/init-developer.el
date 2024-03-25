@@ -6,10 +6,9 @@
   :init
   ;;(add-hook 'prog-mode-hook #'flycheck-mode)
   :commands flycheck-mode)
-
 (elpaca nil
   (use-package emacs
-    :elpaca nil
+    :ensure nil
     :bind (:map stormacs-prefix-map ("l" . stormacs-hydra-eglot/body))
     :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1)))
     :config
@@ -44,7 +43,7 @@
       ("q" nil))))
 
 (use-package treesit-auto
-  :elpaca (treesit-auto :host github :repo "renzmann/treesit-auto")
+  :ensure (treesit-auto :host github :repo "renzmann/treesit-auto")
   :custom
   (treesit-auto-install 'prompt)
   :config
@@ -52,19 +51,19 @@
   (global-treesit-auto-mode))
 
 (use-package consult-eglot
-  :elpaca (consult-eglot :host github :repo "mohkale/consult-eglot")
+  :ensure (consult-eglot :host github :repo "mohkale/consult-eglot")
   :after consult
   :commands consult-eglot-symbols)
 
 (use-package eldoc-box
-  :elpaca (eldoc-box :host github :repo "casouri/eldoc-box")
+  :ensure (eldoc-box :host github :repo "casouri/eldoc-box")
   :hook
   (eglot-managed-mode . eldoc-box-hover-mode)
   :custom
   (eldoc-box-clear-with-C-g t))
 
 (use-package apheleia
-  :elpaca (apheleia :host github :repo "raxod502/apheleia")
+  :ensure (apheleia :host github :repo "raxod502/apheleia")
   :config
   (setf (alist-get 'clang-format apheleia-formatters)
         '("clang-format" "-style={BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 120, SortIncludes: false}"))
@@ -87,7 +86,7 @@
 (require 'init-developer-web)
 
 (use-package envrc
-  :elpaca (envrc :host github :repo "purcell/envrc")
+  :ensure (envrc :host github :repo "purcell/envrc")
   :when (and sys-unix-p
              (executable-find "direnv"))
   :config
