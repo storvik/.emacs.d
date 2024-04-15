@@ -73,6 +73,7 @@
 (require 'init-developer-kotlin)
 (require 'init-developer-lisp)
 (require 'init-developer-go)
+(require 'init-developer-rust)
 (require 'init-developer-nix)
 (require 'init-developer-python)
 (require 'init-developer-script)
