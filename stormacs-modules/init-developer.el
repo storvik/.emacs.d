@@ -1,5 +1,8 @@
 ;; init-developer.el --- Developer -*- lexical-binding: t; -*-
 
+(use-package eglot
+  :ensure (:inherit elpaca-menu-gnu-devel-elpa))
+
 (elpaca nil
   (use-package emacs
     :ensure nil
