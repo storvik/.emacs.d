@@ -45,6 +45,69 @@
 (use-package transient
   :ensure (transient :host github :repo "magit/transient"))
 
+(use-package repeat
+  :ensure nil
+  :custom
+  (setq repeat-on-final-keystroke t)
+  (setq set-mark-command-repeat-pop t)
+  :config
+  ;; https://www.reddit.com/r/emacs/comments/1adwnse/repeatmode_is_awesome_share_you_useful_configs/
+  (defun repeatify (repeat-map)
+    "Set the `repeat-map' property on all commands bound in REPEAT-MAP."
+    (named-let process ((keymap (symbol-value repeat-map)))
+      (map-keymap
+       (lambda (_key cmd)
+         (cond
+          ((symbolp cmd) (put cmd 'repeat-map repeat-map))
+          ((keymapp cmd) (process cmd))))
+       keymap)))
+
+  (repeat-mode 1)
+
+  ;; navigation repeat map
+  ;; (defvar buffer-navigation-map
+  ;;   (let ((map (make-sparse-keymap)))
+  ;;     (define-key map (kbd "n") #'next-line)
+  ;;     (define-key map (kbd "p") #'previous-line)
+  ;;     (define-key map (kbd "f") #'forward-word)
+  ;;     (define-key map (kbd "b") #'backward-word)
+  ;;     (define-key map (kbd "u") #'scroll-up-command)
+  ;;     (define-key map (kbd "d") #'scroll-down-command)
+  ;;     (define-key map (kbd "e") #'move-end-of-line)
+  ;;     (define-key map (kbd "a") #'move-beginning-of-line)
+  ;;     (define-key map (kbd "SPC") #'set-mark-command)
+  ;;     map))
+  ;; (repeatify 'buffer-navigation-map)
+
+  ;; change cursor when repeat mode is active
+  ;; https://gist.github.com/jdtsmith/a169362879388bc1bdf2bbb977782d4f
+  (let ((orig (default-value 'repeat-echo-function))
+	    rcol ccol in-repeat)
+    (setq
+     repeat-echo-function
+     (lambda (map)
+       (if orig (funcall orig map))
+       (unless rcol (setq rcol (face-foreground 'error)))
+       (if map
+	       (unless in-repeat		; new repeat sequence
+	         (setq in-repeat t
+		           ccol (face-background 'cursor))
+	         (set-frame-parameter nil 'my/repeat-cursor ccol))
+	     (setq in-repeat nil)
+	     (set-frame-parameter nil 'my/repeat-cursor nil))
+       (set-cursor-color (if map rcol ccol))))
+    (add-function
+     :after after-focus-change-function
+     (let ((sym 'my/remove-repeat-cursor-color-on-focus-change))
+       (defalias sym
+	     (lambda ()
+	       (when in-repeat
+	         (dolist (frame (frame-list))
+	           (when-let ((col (frame-parameter frame 'my/repeat-cursor)))
+		         (with-selected-frame frame
+		           (set-cursor-color col)))))))
+       sym))))
+
 (use-package jinx
   :ensure (jinx :host github :repo "minad/jinx")
   :when sys-unix-p
