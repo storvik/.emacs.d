@@ -12,6 +12,9 @@
 (use-package protobuf-mode
   :ensure (protobuf-mode :host github :repo "protocolbuffers/protobuf"))
 
-(use-package scad-mode)
+(use-package scad-mode
+  :ensure (scad-mode :host github :repo "openscad/emacs-scad-mode")
+  :config (add-to-list 'eglot-server-programs
+		               '(scad-mode . ("openscad-lsp" "--stdio"))))
 
 (provide 'init-developer-script)
