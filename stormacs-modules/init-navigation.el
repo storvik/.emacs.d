@@ -123,6 +123,19 @@
     ("p" move-text-up "Up")
     ("n" move-text-down "Down")))
 
+(use-package dumb-jump
+  :ensure (dumb-jump :host github :repo "jacktasia/dumb-jump")
+  :config
+  (defhydra dumb-jump-hydra (:color blue :columns 3)
+    "Dumb Jump"
+    ("j" dumb-jump-go "Go")
+    ("o" dumb-jump-go-other-window "Other window")
+    ("e" dumb-jump-go-prefer-external "Go external")
+    ("x" dumb-jump-go-prefer-external-other-window "Go external other window")
+    ("i" dumb-jump-go-prompt "Prompt")
+    ("l" dumb-jump-quick-look "Quick look")
+    ("b" dumb-jump-back "Back")))
+
 (use-package puni
   :ensure (puni :host github :repo "AmaiKinono/puni")
   :bind (:map puni-mode-map
