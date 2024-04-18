@@ -1,5 +1,7 @@
 ;; init-dired.el --- Dired settings -*- lexical-binding: t; -*-
 
+(put 'dired-find-alternate-file 'disabled nil)
+
 (use-package dired+
   :ensure (dired+ :host github :repo "emacsmirror/dired-plus" :main "dired+.el")
   :init
