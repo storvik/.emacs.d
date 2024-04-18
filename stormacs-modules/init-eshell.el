@@ -35,14 +35,14 @@
                        (stormacs-eshell-fishy-path (eshell/pwd)))
                'face font-lock-string-face)
    (when (magit-get-current-branch)
-     (propertize (concat " ( "
+     (propertize (concat " ( "
                          (magit-get-current-branch)
                          ")")
                  'face font-lock-comment-face))
    "> "))
 
 (setq eshell-prompt-function 'stormacs-eshell-prompt-function)
-(setq eshell-prompt-regexp "[a-zA-Z0-9-_@:/]+\\ \\ [a-zA-Z0-9-_/~]+\\( \( [a-zA-Z0-9-_@/.]+\)\\)*>\\ ")
+(setq eshell-prompt-regexp "[a-zA-Z0-9-_@:/]+\\ \\ [a-zA-Z0-9-_/~]+\\( \( [a-zA-Z0-9-_@/.]+\)\\)*>\\ ")
 
 (defun stormacs-eshell-rename-buffer ()
   "Rename buffer based on path."
@@ -54,5 +54,14 @@
 
 (add-hook 'eshell-mode-hook 'stormacs-eshell-rename-buffer)
 (add-hook 'eshell-directory-change-hook 'stormacs-eshell-rename-buffer)
+
+(use-package eshell-atuin
+  :ensure (eshell-atuin :host github :repo "SqrtMinusOne/eshell-atuin")
+  :after eshell
+  :custom
+  (eshell-atuin-search-fields '(time directory duration command))
+  (eshell-atuin-history-format "%-100c %-100i %t + %d")
+  :config
+  (eshell-atuin-mode))
 
 (provide 'init-eshell)
