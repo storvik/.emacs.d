@@ -97,6 +97,7 @@
          (meow-insert-exit . meow--corfu-quit))
   :custom
   (meow-use-clipboard t)
+  (meow-expand-hint-remove-delay 0)
   :config
   (defun meow--corfu-quit ()
     "Quit corfu if candidates."
