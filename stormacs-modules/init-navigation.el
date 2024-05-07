@@ -98,43 +98,8 @@
   :bind (:map stormacs-overrides-minor-mode-map
               ("M-s s" . deadgrep)))
 
-;; TODO: Do I need this?
-;; (elpaca-use-package
-;;  (fancy-dabbrev :host github :repo "jrosdahl/fancy-dabbrev")
-;;  :commands (fancy-dabbrev-mode)
-;;  :bind (:map stormacs-overrides-minor-mode-map
-;;         ("C-<tab>" . fancy-dabbrev-expand))
-;;  :custom
-;;  (fancy-dabbrev-preview-delay 0.0)
-;;  (fancy-dabbrev-preview-context 'before-non-word)
-;;  (fancy-dabbrev-expansion-on-preview-only t)
-;;  (fancy-dabbrev-indent-command 'indent-for-tab-command)
-;;  :init
-;;  (with-eval-after-load 'stormacs-gui
-;;    (global-fancy-dabbrev-mode)))
-
-(use-package move-text
-  :ensure (move-text :host github :repo "emacsfodder/move-text")
-  :bind (:map stormacs-prefix-map
-              ("m" . stormacs-move-text-hydra/body))
   :config
-  (defhydra stoamacs-move-text-hydra (:hint nil)
-    "Move line or region"
-    ("p" move-text-up "Up")
-    ("n" move-text-down "Down")))
 
-(use-package dumb-jump
-  :ensure (dumb-jump :host github :repo "jacktasia/dumb-jump")
-  :config
-  (defhydra dumb-jump-hydra (:color blue :columns 3)
-    "Dumb Jump"
-    ("j" dumb-jump-go "Go")
-    ("o" dumb-jump-go-other-window "Other window")
-    ("e" dumb-jump-go-prefer-external "Go external")
-    ("x" dumb-jump-go-prefer-external-other-window "Go external other window")
-    ("i" dumb-jump-go-prompt "Prompt")
-    ("l" dumb-jump-quick-look "Quick look")
-    ("b" dumb-jump-back "Back")))
 
 (use-package puni
   :ensure (puni :host github :repo "AmaiKinono/puni")

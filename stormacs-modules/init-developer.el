@@ -59,6 +59,10 @@
   :custom
   (eldoc-box-clear-with-C-g t))
 
+(use-package dumb-jump
+  :ensure (dumb-jump :host github :repo "jacktasia/dumb-jump")
+  :hook (xref-backend-functions . dumb-jump-xref-activate))
+
 (use-package apheleia
   :ensure (apheleia :host github :repo "raxod502/apheleia")
   :config
