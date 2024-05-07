@@ -36,63 +36,49 @@
   (use-package emacs
     :ensure nil
     :bind (:map stormacs-prefix-map
-                ("v" . stormacs-hydra-git/body))
+                ("v" . stormacs-tsc-git))
     :config
-    (defhydra stormacs-hydra-git (:color pink :exit t :hint nil)
-      "
- ^^^^^^                                                                                           ╭────────┐
- ^^^^^^                                                                                           │  git   │
-╭^^^^^^───────────────────────────────────────────────────────────────────────────────────────────┴────────╯
- [_g_] magit               [_n_] next hunk               [_t_] git timemachine
- [_b_] blame               [_p_] previous hunk           [_q_] cancel
-"
-      ("t" git-timemachine)
-      ("g" magit)
-      ("b" magit-blame)
-      ("n" diff-hl-next-hunk)
-      ("p" diff-hl-previous-hunk)
-      ("q" nil))))
+    (transient-define-prefix stormacs-tsc-git ()
+      "Prefix with descriptions specified with slots."
+      ["Stormacs git transient\n"
+       [("g" "magit" magit)
+        ("b" "blame" magit-blame)]
+
+       [("n" "next hunk" diff-hunk-next :transient t)
+        ("p" "prev hunk" diff-hunk-prev :transient t)]
+
+       [("t" "timemachine" git-timemachine)]])))
 
 (elpaca nil
   (use-package emacs
     :ensure nil
     :hook (magit-diff-visit-file . (lambda ()
                                      (when smerge-mode
-                                       (stormacs-smerge-hydra/body))))
+                                       (stormacs-tsc-smerge))))
     :config
-    (defhydra stormacs-smerge-hydra
-      (:color pink :hint nil :post (smerge-auto-leave))
-      "
-^^^^^^^^                                                                                            ╭────────┐
- move^^                keep^^                diff^^                other^^                          │ smerge │
-╭^^^^^^^^───────────────────────────────────────────────────────────────────────────────────────────┴────────╯
- [_n_] next            [_b_] base            [_<_] upper/base      [_C_] combine
- [_p_] prev            [_u_] lpper           [_=_] upper/lowe      [_r_] resolve
-  ^ ^                  [_l_] lower           [_>_] base/lower      [_k_] kill current
-  ^ ^                  [_a_] all             [_R_] efine
-  ^ ^                  _RET_ current         [_E_] diff
-"
-      ("n" smerge-next)
-      ("p" smerge-prev)
-      ("b" smerge-keep-base)
-      ("u" smerge-keep-upper)
-      ("l" smerge-keep-lower)
-      ("a" smerge-keep-all)
-      ("RET" smerge-keep-current)
-      ("\C-m" smerge-keep-current)
-      ("<" smerge-diff-base-upper)
-      ("=" smerge-diff-upper-lower)
-      (">" smerge-diff-base-lower)
-      ("R" smerge-refine)
-      ("E" smerge-ediff)
-      ("C" smerge-combine-with-next)
-      ("r" smerge-resolve)
-      ("k" smerge-kill-current)
-      ("ZZ" (lambda ()
-              (interactive)
-              (save-buffer)
-              (bury-buffer))
-       "Save and bury buffer" :color blue)
-      ("q" nil "cancel" :color blue))))
+    (transient-define-prefix stormacs-tsc-smerge ()
+      "Prefix with descriptions specified with slots."
+      ["Stormacs smerge transient\n"
+       ["Move"
+        ("n" "next" smerge-next :transient t)
+        ("p" "prev" smerge-prev :transient t)]
+
+       ["Keep"
+        ("b" "base" smerge-keep-base :transient t)
+        ("u" "upper" smerge-keep-upper :transient t)
+        ("l" "lower" smerge-keep-lower :transient t)
+        ("a" "all" smerge-keep-all :transient t)
+        ("RET" "current" smerge-keep-current :transient t)]
+
+       ["Diff"
+        ("<" "upper/base" smerge-diff-base-upper :transient t)
+        ("=" "upper/lower" smerge-diff-upper-lower :transient t)
+        (">" "base/lower" smerge-diff-base-lower :transient t)
+        ("R" "refine" smerge-refine :transient t)
+        ("E" "ediff" smerge-ediff :transient t)]
+
+       [("C" "combine" smerge-combine-with-next :transient t)
+        ("r" "resolve" smerge-resolve :transient t)
+        ("k" "kill current" smerge-kill-current :transient t)]])))
 
 (provide 'init-git)

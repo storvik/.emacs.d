@@ -2,8 +2,8 @@
 
 (use-package ace-window
   :ensure (ace-window :host github :repo "abo-abo/ace-window")
-  :bind (:map stormacs-overrides-minor-mode-map
-              ("M-o" . ace-window))
+  :bind (("M-o" . ace-window)
+         ("M-O" . other-frame))
   :custom
   (aw-keys '(?a ?r ?s ?t ?g ?m ?n ?e ?i))) ; aw-keys colemakified
 

@@ -246,38 +246,12 @@
 
 (use-package cape
   :ensure (cape :host github :repo "minad/cape")
-  :bind (:map stormacs-prefix-map ("p" . stormacs-cape-hydra/body))
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-tex)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  :config
-  (defhydra stormacs-cape-hydra (:color pink :exit t :hint nil)
-    "
-^cape completion
-^^^^^^^^-------------------------------------------------------------------
-_p_: completion           _s_: symbol               _-_: tex
-_t_: tag                  _a_: abbrev               _&_: sgml
-_d_: dabbrev              _i_: ispell               _r_: rfc1345
-_f_: file                 _l_: line
-_k_: keyword              _w_: dict
-"
-    ("p" completion-at-point)
-    ("t" complete-tag)
-    ("d" cape-dabbrev)
-    ("f" cape-file)
-    ("k" cape-keyword)
-    ("s" cape-symbol)
-    ("a" cape-abbrev)
-    ("i" cape-ispell)
-    ("l" cape-line)
-    ("w" cape-dict)
-    ("-" cape-tex)
-    ("&" cape-sgml)
-    ("r" cape-rfc1345)
-    ("q" nil "cancel")))
+  (add-to-list 'completion-at-point-functions #'cape-keyword))
 
 (use-package affe
   :ensure (affe :host github :repo "minad/affe")

@@ -36,9 +36,6 @@
   :init
   (exec-path-from-shell-initialize))
 
-(use-package hydra
-  :ensure (hydra :host github :repo "abo-abo/hydra"))
-
 (use-package sudo-edit
   :ensure (sudo-edit :host github :repo "nflath/sudo-edit"))
 

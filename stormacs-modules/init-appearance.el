@@ -95,6 +95,7 @@
 (electric-pair-mode 1)
 
 (use-package svg-tag-mode
+  :demand t
   :hook ((prog-mode . stormacs-svg-tag-mode)
          (org-mode . stormacs-org-svg-tag-mode))
   :config
@@ -184,38 +185,32 @@
     nil
   (use-package emacs
     :ensure nil
-    :bind (:map stormacs-prefix-map
-                ("w" . stormacs-hydra-window/body))
+    :bind ("C-M-o" . stormacs-tsc-window)
     :config
-    (defhydra stormacs-hydra-window (:color blue :hint nil)
-      "
-                                                                                 ╭─────────┐
-    Move to              Size                 Split                        Do    │ Windows │
- ╭───────────────────────────────────────────────────────────────────────────────┴─────────╯
-        ^_e_^                   ^_E_^                 ╭─┬─┐^ ^        ╭─┬─┐^ ^             ✗ [_d_] close window
-       ^^↑^^                   ^^↑^^                │ │ │_v_ertical ├─┼─┤_b_alance       ⇋ [_w_] cycle window
-   _m_ ←   → _i_         _M_ ←   → _I_            ╰─┴─╯^ ^        ╰─┴─╯^ ^
-       ^^↓^^                   ^^↓^^               ╭───┐^ ^        ╭───┐^ ^
-       ^_n_^                    ^_N_^                 ├───┤_s_tack    │   │_z_oom
-        ^^ ^^                   ^^ ^^                 ╰───╯^ ^        ╰───╯^ ^               [_q_] quit
-    "
-      ("m" windmove-left :color red)
-      ("n" windmove-down :color red)
-      ("e" windmove-up :color red)
-      ("i" windmove-right :color red)
-      ("M" shrink-window-horizontally :color red)
-      ("N" shrink-window :color red)
-      ("E" enlarge-window :color red)
-      ("I" enlarge-window-horizontally :color red)
-      ("s" split-window-vertically :color red)
-      ("v" split-window-horizontally :color red)
-      ("b" balance-windows)
-      ("z" delete-other-windows)
-      ("n" scroll-up :color red)
-      ("p" scroll-down :color red)
-      ("d" delete-window)
-      ("w" other-window)
-      ("q" nil))))
+    (transient-define-prefix stormacs-tsc-window ()
+      "Prefix with descriptions specified with slots."
+      ["Stormacs window\n" ; yes the newline works
+       ["Move"
+        ("m" "left" windmove-left :transient t)
+        ("n" "down" windmove-down :transient t)
+        ("e" "up" windmove-up :transient t)
+        ("i" "right" windmove-right :transient t)]
+
+       ["Size"
+        ("M" "left" shrink-window-horizontally :transient t)
+        ("N" "down" shrink-window :transient t)
+        ("E" "up" enlarge-window :transient t)
+        ("I" "right" enlarge-window-horizontally :transient t)]
+
+       ["Layout"
+        ("v" "vertical" split-window-vertically :transient t)
+        ("h" "horizontal" split-window-horizontally :transient t)
+        ("b" "balance" balance-windows :transient t)
+        ("z" "zoom" delete-other-windows :transient t)
+        ("d" "delete" delete-window :transient t)]
+
+       [("a" "ace windows" ace-window :transient t)
+        ("o" "cycle windows" other-window :transient t)]])))
 
 (use-package dashboard
   :ensure (dashboard :host github :repo "emacs-dashboard/emacs-dashboard")

@@ -8,9 +8,7 @@
   :bind (([remap detached-open-session] . detached-consult-session)
          ([remap async-shell-command] . detached-shell-command)
          ([remap compile] . detached-compile)
-         ([remap recompile] . detached-compile-recompile)
-         :map stormacs-prefix-map
-         ("D" . stormacs-detached-hydra/body))
+         ([remap recompile] . detached-compile-recompile))
   :custom ((detached-show-output-on-attach t))
   :config
   (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))
@@ -20,28 +18,6 @@
     (let ((detached-local-session t)
           (detached-session-origin 'rsync))
       (detached-start-session command t)))
-  (advice-add #'dired-rsync--do-run :override #'stormacs-detached-dired-rsync)
-  (defhydra stormacs-detached-hydra (:color pink :exit t :hint nil)
-    "
-                                                                                                    ╭──────────┐
-                                                                                                    │ detached │
- ╭───────────────────────────────────────────────────────----------------------------───────────────┴──────────╯
-  [_o_] open                [_k_] kill                 [_t_] tail                  [_c_] compile
-  [_a_] attach              [_d_] delete               [_=_] diff                  [_w_] copy command
-  [_v_] view                [_r_] rerun                [_i_] insert command        [_W_] copy
-"
-    ("o" detached-open-session)
-    ("a" detached-attach-session)
-    ("c" detached-compile-session)
-    ("k" detached-kill-session)
-    ("v" detached-view-session)
-    ("d" detached-delete-session)
-    ("W" detached-copy-session)
-    ("r" detached-rerun-session)
-    ("t" detached-tail-session)
-    ("=" detached-diff-session)
-    ("i" detached-insert-session-command)
-    ("w" detached-copy-session-command)
-    ("q" nil "cancel")))
+  (advice-add #'dired-rsync--do-run :override #'stormacs-detached-dired-rsync))
 
 (provide 'init-detached)

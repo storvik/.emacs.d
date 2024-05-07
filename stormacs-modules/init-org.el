@@ -301,26 +301,23 @@
 (elpaca nil
   (use-package emacs
     :ensure nil
-    :bind (:map stormacs-prefix-map ("o" . stormacs-org-hydra/body))
+    :bind
+    (:map stormacs-prefix-map ("o" . stormacs-tsc-org))
     :config
-    (defhydra stormacs-org-hydra (:color pink :exit t :hint nil)
-      "
-  ^^^^^^                                                                                              ╭──────────┐
-  org^^                      roam^^^^                                                                 │ org mode │
- ╭^^^^^^──────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
-  [_a_] agenda               [_d_] denote                [_n_] consult notes
-  [_c_] capture              [_t_] denote template       [_r_] consult notes ripgrep
-  ^ ^                        [_s_] denote subdirectory   [_b_] browse with dired
-  [_q_] cancel
-"
-      ("a" org-agenda)
-      ("c" org-capture)
-      ("d" denote)
-      ("t" denote-template)
-      ("s" denote-subdirectory)
-      ("n" consult-notes)
-      ("r" consult-notes-search-in-all-notes)
-      ("b" (lambda () (interactive) (dired org-directory)))
-      ("q" nil))))
+    (transient-define-prefix stormacs-tsc-org ()
+      "Prefix with descriptions specified with slots."
+      ["Stormacs org mode transient\n"
+       ["Org"
+        ("a" "agenda" org-agenda)
+        ("c" "capture" org-capture)]
+
+       ["Denote"
+        ("d" "denote" denote)
+        ("t" "denote template" denote-template)
+        ("s" "denote subdir" denote-subdirectory)]
+
+       [("n" "consult notes" consult-notes)
+        ("r" "consult notes ripgrep" consult-notes-search-in-all-notes)
+        ("b" "browse with dired" (lambda () (interactive) (dired org-directory)))]])))
 
 (provide 'init-org)

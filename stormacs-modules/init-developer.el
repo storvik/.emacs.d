@@ -1,43 +1,43 @@
 ;; init-developer.el --- Developer -*- lexical-binding: t; -*-
 
+;; Use completing read functions instead of xref popup
+(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+
 (use-package eglot
   :ensure (:inherit elpaca-menu-gnu-devel-elpa))
 
 (elpaca nil
   (use-package emacs
     :ensure nil
-    :bind (:map stormacs-prefix-map ("l" . stormacs-hydra-eglot/body))
+    :bind (:map stormacs-prefix-map ("l" . stormacs-tsc-developer))
     :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1)))
     :config
-    (defhydra stormacs-hydra-eglot (:exit t :hint nil)
-      "
-  ^^^^^^^^^^                                                                                                                 ╭──────────┐
-  Symbol^^            ^ ^                      Consult^^                 Buffer^^                  Server^^                  │ eglot    │
- ╭^^^^^^^^^^─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
-  [_d_] Declaration  [_i_] Implementation      [_s_] Symbol              [_f_] Format              [_M-h_] Inlay hints mode
-  [_D_] Definition   [_t_] Type                [_F_] Flymake             [_x_] Execute action      [_M-r_] Restart
-  [_R_] References   [_r_] Rename               ^ ^                      [_e_] Eldoc               [_M-S_] Shutdown
-  "
-      ("d" eglot-find-declaration)
-      ("D" xref-find-definitions)
-      ("R" xref-find-references)
-      ("i" eglot-find-implementation)
-      ("t" eglot-fint-typeDefinition)
-      ("r" eglot-rename)
+    (transient-define-prefix stormacs-tsc-developer ()
+      "Prefix with descriptions specified with slots."
+      ["Stormacs awesome dynamic developer transient\n"
+       ["Symbol"
+        ("d" "definitions" xref-find-definitions :transient t)
+        ("r" "references" xref-find-references :transient t)
+        ("D" "declaration" eglot-find-declaration :transient t)
+        ("t" "type" eglot-find-typeDefinition :transient t)]
 
-      ("s" consult-eglot-symbols)
-      ("F" consult-flymake)
+       [("R" "rename" eglot-rename :transient t)
+        ("D" "declaration" eglot-find-declaration :transient t)]
 
-      ("f" eglot-format-buffer)
-      ("x" eglot-code-actions)
-      ("e" eldoc)
+       ["Consult"
+        ("s" "symbol" consult-eglot-symbols :transient t)
+        ("f" "flymake" consult-flymake :transient t)
+        ("i" "imenu" consult-imenu :transient t)]
 
-      ("M-h" eglot-inlay-hints-mode)
-      ("M-r" eglot-reconnect)
-      ("M-S" eglot-shutdown)
+       ["Buffer"
+        ("F" "format" eglot-format :transient t)
+        ("x" "exec action" eglot-code-actions :transient t)
+        ("E" "eldoc" eldoc :transient t)]
 
-      ("g" nil)
-      ("q" nil))))
+       ["Eglot"
+        ("eh" "inlay hints" eglot-inlay-hints-mode)
+        ("er" "restart" eglot-reconnect)
+        ("es" "shutdown" eglot-shutdown)]])))
 
 (use-package treesit-auto
   :ensure (treesit-auto :host github :repo "renzmann/treesit-auto")
