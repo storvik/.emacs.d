@@ -54,51 +54,49 @@
 
 (use-package consult
   :ensure (consult :host github :repo "minad/consult")
-  :bind (:map stormacs-overrides-minor-mode-map
-              ;; C-c bindings (mode-specific-map)
-              ("C-c h" . consult-history)
-              ("C-c b" . consult-bookmark)
-              ("C-c k" . consult-kmacro)
-              ;; C-x bindings (ctl-x-map)
-              ("C-x M-:" . consult-complex-command) ;; orig. repeat-complet-command
-              ("C-x b" . consult-buffer) ;; orig. switch-to-buffer
-              ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-              ("C-x 5 b" . consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
-              ;; Custom M-# bindings for fast register access
-              ("M-#" . consult-register-load)
-              ("M-'" . consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
-              ("C-M-#" . consult-register)
-              ;; Other custom bindings
-              ("M-y" . consult-yank-pop)     ;; orig. yank-pop
-              ("<help> a" . consult-apropos) ;; orig. apropos-command
-              ;; M-g bindings (goto-map)
-              ("M-g e" . consult-compile-error)
-              ("M-g M-g" . consult-goto-line) ;; orig. goto-line
-              ("M-g o" . consult-outline)
-              ("M-g m" . consult-mark)
-              ("M-g k" . consult-global-mark)
-              ("M-g i" . consult-imenu)
-              ("M-g I" . consult-project-imenu)
-              ;; M-s bindings (search-map)
-              ("M-s f" . consult-find)
-              ("M-s L" . consult-locate)
-              ("M-s g" . consult-grep)
-              ("M-s G" . consult-git-grep)
-              ("M-s R" . consult-ripgrep)
-              ("M-s l" . consult-line)
-              ("M-s m" . consult-multi-occur)
-              ("M-s k" . consult-keep-lines)
-              ("M-s u" . consult-focus-lines)
-              ;; Customizations that map to ivy
-              ("C-x C-r" . consult-recent-file)
-              ("C-c o" . consult-file-externally)
-              ;; Isearch integration
-              ("M-s e" . consult-isearch)
-              ;; ("s-t" . jnf/consult-find-using-fd)
-              :map isearch-mode-map
-              ("M-e" . consult-isearch)   ;; orig. isearch-edit-string
-              ("M-s e" . consult-isearch) ;; orig. isearch-edit-string
-              ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
+  :bind (("C-x C-r" . consult-recent-file)
+         :map stormacs-overrides-minor-mode-map
+         ;; C-c bindings (mode-specific-map)
+         ("C-c h" . consult-history)
+         ("C-c b" . consult-bookmark)
+         ("C-c k" . consult-kmacro)
+         ;; C-x bindings (ctl-x-map)
+         ("C-x M-:" . consult-complex-command) ;; orig. repeat-complet-command
+         ("C-x b" . consult-buffer) ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)     ;; orig. yank-pop
+         ("<help> a" . consult-apropos) ;; orig. apropos-command
+         ;; M-g bindings (goto-map)
+         ("M-g e" . consult-compile-error)
+         ("M-g M-g" . consult-goto-line) ;; orig. goto-line
+         ("M-g o" . consult-outline)
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-project-imenu)
+         ;; M-s bindings (search-map)
+         ("M-s f" . consult-find)
+         ("M-s L" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s R" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s m" . consult-multi-occur)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Customizations that map to ivy
+         ("C-c o" . consult-file-externally)
+         ("M-s e" . consult-isearch)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch)   ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch) ;; orig. isearch-edit-string
+         ("M-s l" . consult-line))   ;; required by consult-line to detect isearch
   :init
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
