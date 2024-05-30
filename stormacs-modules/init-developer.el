@@ -16,23 +16,23 @@
       "Prefix with descriptions specified with slots."
       ["Stormacs awesome dynamic developer transient\n"
        ["Symbol"
-        ("d" "definitions" xref-find-definitions :transient t)
-        ("r" "references" xref-find-references :transient t)
-        ("D" "declaration" eglot-find-declaration :transient t)
-        ("t" "type" eglot-find-typeDefinition :transient t)]
+        ("d" "definitions" xref-find-definitions)
+        ("r" "references" xref-find-references)
+        ("D" "declaration" eglot-find-declaration)
+        ("t" "type" eglot-find-typeDefinition)]
 
-       [("R" "rename" eglot-rename :transient t)
-        ("D" "declaration" eglot-find-declaration :transient t)]
+       [("R" "rename" eglot-rename)
+        ("D" "declaration" eglot-find-declaration)]
 
        ["Consult"
-        ("s" "symbol" consult-eglot-symbols :transient t)
-        ("f" "flymake" consult-flymake :transient t)
-        ("i" "imenu" consult-imenu :transient t)]
+        ("s" "symbol" consult-eglot-symbols)
+        ("f" "flymake" consult-flymake)
+        ("i" "imenu" consult-imenu)]
 
        ["Buffer"
-        ("F" "format" eglot-format :transient t)
-        ("x" "exec action" eglot-code-actions :transient t)
-        ("E" "eldoc" eldoc :transient t)]
+        ("F" "format" eglot-format)
+        ("x" "exec action" eglot-code-actions)
+        ("E" "eldoc" eldoc)]
 
        ["Eglot"
         ("eh" "inlay hints" eglot-inlay-hints-mode)
