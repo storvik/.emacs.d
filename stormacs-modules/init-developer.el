@@ -73,6 +73,8 @@
   (setf (alist-get 'go-ts-mode apheleia-mode-alist) 'goimports)
   (add-to-list 'apheleia-formatters '(nixpkgs-fmt "nixpkgs-fmt"))
   (setf (alist-get 'nix-mode apheleia-mode-alist) 'nixpkgs-fmt)
+  (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
+  (setf (alist-get 'python-mode apheleia-mode-alist) 'ruff)
   (apheleia-global-mode +1))
 
 (require 'init-developer-c)
