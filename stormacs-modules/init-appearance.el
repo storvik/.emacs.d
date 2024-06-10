@@ -177,6 +177,10 @@
   (prog-mode . topsy-mode)
   (magit-section-mode . topsy-mode))
 
+(use-package colorful-mode
+  :ensure (colorful-mode :host github :repo "DevelopmentCool2449/colorful-mode")
+  :hook (prog-mode text-mode))
+
 (use-package ansi-color
   :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
