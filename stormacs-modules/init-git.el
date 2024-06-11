@@ -32,8 +32,7 @@
   :ensure (git-timemachine :host codeberg :repo "pidu/git-timemachine")
   :commands (git-timemachine))
 
-(elpaca nil
-  (use-package emacs
+(use-package emacs
     :ensure nil
     :bind (:map stormacs-prefix-map
                 ("v" . stormacs-tsc-git))
@@ -47,10 +46,9 @@
        [("n" "next hunk" diff-hunk-next :transient t)
         ("p" "prev hunk" diff-hunk-prev :transient t)]
 
-       [("t" "timemachine" git-timemachine)]])))
+       [("t" "timemachine" git-timemachine)]]))
 
-(elpaca nil
-  (use-package emacs
+(use-package emacs
     :ensure nil
     :hook (magit-diff-visit-file . (lambda ()
                                      (when smerge-mode
@@ -79,6 +77,6 @@
 
        [("C" "combine" smerge-combine-with-next :transient t)
         ("r" "resolve" smerge-resolve :transient t)
-        ("k" "kill current" smerge-kill-current :transient t)]])))
+        ("k" "kill current" smerge-kill-current :transient t)]]))
 
 (provide 'init-git)

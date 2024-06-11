@@ -6,38 +6,37 @@
 (use-package eglot
   :ensure (:inherit elpaca-menu-gnu-devel-elpa))
 
-(elpaca nil
-  (use-package emacs
-    :ensure nil
-    :bind (:map stormacs-prefix-map ("l" . stormacs-tsc-developer))
-    :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1)))
-    :config
-    (transient-define-prefix stormacs-tsc-developer ()
-      "Prefix with descriptions specified with slots."
-      ["Stormacs awesome dynamic developer transient\n"
-       ["Symbol"
-        ("d" "definitions" xref-find-definitions)
-        ("r" "references" xref-find-references)
-        ("D" "declaration" eglot-find-declaration)
-        ("t" "type" eglot-find-typeDefinition)]
+(use-package emacs
+  :ensure nil
+  :bind (:map stormacs-prefix-map ("l" . stormacs-tsc-developer))
+  :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1)))
+  :config
+  (transient-define-prefix stormacs-tsc-developer ()
+    "Prefix with descriptions specified with slots."
+    ["Stormacs awesome dynamic developer transient\n"
+     ["Symbol"
+      ("d" "definitions" xref-find-definitions)
+      ("r" "references" xref-find-references)
+      ("D" "declaration" eglot-find-declaration)
+      ("t" "type" eglot-find-typeDefinition)]
 
-       [("R" "rename" eglot-rename)
-        ("D" "declaration" eglot-find-declaration)]
+     [("R" "rename" eglot-rename)
+      ("D" "declaration" eglot-find-declaration)]
 
-       ["Consult"
-        ("s" "symbol" consult-eglot-symbols)
-        ("f" "flymake" consult-flymake)
-        ("i" "imenu" consult-imenu)]
+     ["Consult"
+      ("s" "symbol" consult-eglot-symbols)
+      ("f" "flymake" consult-flymake)
+      ("i" "imenu" consult-imenu)]
 
-       ["Buffer"
-        ("F" "format" eglot-format)
-        ("x" "exec action" eglot-code-actions)
-        ("E" "eldoc" eldoc)]
+     ["Buffer"
+      ("F" "format" eglot-format)
+      ("x" "exec action" eglot-code-actions)
+      ("E" "eldoc" eldoc)]
 
-       ["Eglot"
-        ("eh" "inlay hints" eglot-inlay-hints-mode)
-        ("er" "restart" eglot-reconnect)
-        ("es" "shutdown" eglot-shutdown)]])))
+     ["Eglot"
+      ("eh" "inlay hints" eglot-inlay-hints-mode)
+      ("er" "restart" eglot-reconnect)
+      ("es" "shutdown" eglot-shutdown)]]))
 
 (use-package treesit-auto
   :ensure (treesit-auto :host github :repo "renzmann/treesit-auto")

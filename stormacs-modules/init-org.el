@@ -298,8 +298,7 @@
   (when (locate-library "denote")
     (consult-notes-denote-mode)))
 
-(elpaca nil
-  (use-package emacs
+(use-package emacs
     :ensure nil
     :bind
     (:map stormacs-prefix-map ("o" . stormacs-tsc-org))
@@ -318,6 +317,6 @@
 
        [("n" "consult notes" consult-notes)
         ("r" "consult notes ripgrep" consult-notes-search-in-all-notes)
-        ("b" "browse with dired" (lambda () (interactive) (dired org-directory)))]])))
+        ("b" "browse with dired" (lambda () (interactive) (dired org-directory)))]]))
 
 (provide 'init-org)

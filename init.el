@@ -128,7 +128,7 @@
 (require 'init-org)
 (require 'init-developer)
 (when stormacs-email
-  (elpaca nil (require 'init-email)))
+  (require 'init-email))
 
 (defun stormacs-load-all-in-directory (dir)
   "`load' all elisp libraries in directory DIR which are not already loaded."

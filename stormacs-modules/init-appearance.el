@@ -70,7 +70,9 @@
 
 (use-package doom-modeline
   :ensure (doom-modeline :host github :repo "seagle0128/doom-modeline")
-  :hook (elpaca-after-init . doom-modeline-mode)
+  :init
+  (with-eval-after-load 'stormacs-gui
+    (doom-modeline-mode))
   :config
   (setq find-file-visit-truename t)
   (setq doom-modeline-icon t))
@@ -159,7 +161,7 @@
   (add-hook 'dashboard-mode-hook #'stormacs-svg-tag-agenda-fix)
   (add-hook 'org-agenda-finalize-hook #'stormacs-svg-tag-agenda-fix)
   ;; Load style after gui init, needed when running in daemon
-  (with-eval-after-load 'storvik/gui
+  (with-eval-after-load 'stormacs-gui
     (setq svg-lib-style-default (svg-lib-style-compute-default))))
 
 (use-package goggles
@@ -191,36 +193,34 @@
   :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
 
-(elpaca
-    nil
-  (use-package emacs
-    :ensure nil
-    :bind ("C-M-o" . stormacs-tsc-window)
-    :config
-    (transient-define-prefix stormacs-tsc-window ()
-      "Prefix with descriptions specified with slots."
-      ["Stormacs window\n" ; yes the newline works
-       ["Move"
-        ("m" "left" windmove-left :transient t)
-        ("n" "down" windmove-down :transient t)
-        ("e" "up" windmove-up :transient t)
-        ("i" "right" windmove-right :transient t)]
+(use-package emacs
+  :ensure nil
+  :bind ("C-M-o" . stormacs-tsc-window)
+  :config
+  (transient-define-prefix stormacs-tsc-window ()
+    "Prefix with descriptions specified with slots."
+    ["Stormacs window\n" ; yes the newline works
+     ["Move"
+      ("m" "left" windmove-left :transient t)
+      ("n" "down" windmove-down :transient t)
+      ("e" "up" windmove-up :transient t)
+      ("i" "right" windmove-right :transient t)]
 
-       ["Size"
-        ("M" "left" shrink-window-horizontally :transient t)
-        ("N" "down" shrink-window :transient t)
-        ("E" "up" enlarge-window :transient t)
-        ("I" "right" enlarge-window-horizontally :transient t)]
+     ["Size"
+      ("M" "left" shrink-window-horizontally :transient t)
+      ("N" "down" shrink-window :transient t)
+      ("E" "up" enlarge-window :transient t)
+      ("I" "right" enlarge-window-horizontally :transient t)]
 
-       ["Layout"
-        ("v" "vertical" split-window-vertically :transient t)
-        ("h" "horizontal" split-window-horizontally :transient t)
-        ("b" "balance" balance-windows :transient t)
-        ("z" "zoom" delete-other-windows :transient t)
-        ("d" "delete" delete-window :transient t)]
+     ["Layout"
+      ("v" "vertical" split-window-vertically :transient t)
+      ("h" "horizontal" split-window-horizontally :transient t)
+      ("b" "balance" balance-windows :transient t)
+      ("z" "zoom" delete-other-windows :transient t)
+      ("d" "delete" delete-window :transient t)]
 
-       [("a" "ace windows" ace-window :transient t)
-        ("o" "cycle windows" other-window :transient t)]])))
+     [("a" "ace windows" ace-window :transient t)
+      ("o" "cycle windows" other-window :transient t)]]))
 
 (use-package dashboard
   :ensure (dashboard :host github :repo "emacs-dashboard/emacs-dashboard")
