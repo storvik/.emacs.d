@@ -119,12 +119,18 @@
           ("DELEGATED" . ((lambda (tag) (svg-lib-tag tag nil
                                                      :background "light green"
                                                      :foreground "white"))))
-          ("\\(WIPS\\)\\|\\(FOLLOWUPS\\)" . ((lambda (tag) (svg-lib-tag tag nil
-                                                                        :background "deep sky blue"
-                                                                        :foreground "white"))))
-          ("\\(DONE\\)\\|\\(CANCELLED\\)" . ((lambda (tag) (svg-lib-tag tag nil
-                                                                        :background "forest green"
-                                                                        :foreground "white"))))))
+          ("WIPS" . ((lambda (tag) (svg-lib-tag tag nil
+                                                :background "deep sky blue"
+                                                :foreground "white"))))
+          ("FOLLOWUPS" . ((lambda (tag) (svg-lib-tag tag nil
+                                                     :background "deep sky blue"
+                                                     :foreground "white"))))
+          ("DONE" . ((lambda (tag) (svg-lib-tag tag nil
+                                                :background "forest green"
+                                                :foreground "white"))))
+          ("CANCELLED" . ((lambda (tag) (svg-lib-tag tag nil
+                                                     :background "forest green"
+                                                     :foreground "white"))))))
   (defun stormacs-org-svg-tag-mode ()
     (interactive)
     (setq-local svg-tag-tags stormacs-org-svg-tag-tags)
