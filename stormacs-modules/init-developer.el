@@ -8,6 +8,7 @@
 
 (use-package emacs
   :ensure nil
+  :after (transient)
   :bind (:map stormacs-prefix-map ("l" . stormacs-tsc-developer))
   :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1)))
   :config

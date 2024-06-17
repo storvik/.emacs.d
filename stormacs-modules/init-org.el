@@ -299,24 +299,25 @@
     (consult-notes-denote-mode)))
 
 (use-package emacs
-    :ensure nil
-    :bind
-    (:map stormacs-prefix-map ("o" . stormacs-tsc-org))
-    :config
-    (transient-define-prefix stormacs-tsc-org ()
-      "Prefix with descriptions specified with slots."
-      ["Stormacs org mode transient\n"
-       ["Org"
-        ("a" "agenda" org-agenda)
-        ("c" "capture" org-capture)]
+  :ensure nil
+  :after (transient)
+  :bind
+  (:map stormacs-prefix-map ("o" . stormacs-tsc-org))
+  :config
+  (transient-define-prefix stormacs-tsc-org ()
+    "Prefix with descriptions specified with slots."
+    ["Stormacs org mode transient\n"
+     ["Org"
+      ("a" "agenda" org-agenda)
+      ("c" "capture" org-capture)]
 
-       ["Denote"
-        ("d" "denote" denote)
-        ("t" "denote template" denote-template)
-        ("s" "denote subdir" denote-subdirectory)]
+     ["Denote"
+      ("d" "denote" denote)
+      ("t" "denote template" denote-template)
+      ("s" "denote subdir" denote-subdirectory)]
 
-       [("n" "consult notes" consult-notes)
-        ("r" "consult notes ripgrep" consult-notes-search-in-all-notes)
-        ("b" "browse with dired" (lambda () (interactive) (dired org-directory)))]]))
+     [("n" "consult notes" consult-notes)
+      ("r" "consult notes ripgrep" consult-notes-search-in-all-notes)
+      ("b" "browse with dired" (lambda () (interactive) (dired org-directory)))]]))
 
 (provide 'init-org)

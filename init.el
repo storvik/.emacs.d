@@ -127,6 +127,9 @@
 (require 'init-dired)
 (require 'init-org)
 (require 'init-developer)
+
+;; process elpaca queue before loading conditional stuff
+(elpaca-process-queues)
 (when stormacs-email
   (require 'init-email))
 

@@ -33,50 +33,52 @@
   :commands (git-timemachine))
 
 (use-package emacs
-    :ensure nil
-    :bind (:map stormacs-prefix-map
-                ("v" . stormacs-tsc-git))
-    :config
-    (transient-define-prefix stormacs-tsc-git ()
-      "Prefix with descriptions specified with slots."
-      ["Stormacs git transient\n"
-       [("g" "magit" magit)
-        ("b" "blame" magit-blame)]
+  :ensure nil
+  :after (transient)
+  :bind (:map stormacs-prefix-map
+              ("v" . stormacs-tsc-git))
+  :config
+  (transient-define-prefix stormacs-tsc-git ()
+    "Prefix with descriptions specified with slots."
+    ["Stormacs git transient\n"
+     [("g" "magit" magit)
+      ("b" "blame" magit-blame)]
 
-       [("n" "next hunk" diff-hunk-next :transient t)
-        ("p" "prev hunk" diff-hunk-prev :transient t)]
+     [("n" "next hunk" diff-hunk-next :transient t)
+      ("p" "prev hunk" diff-hunk-prev :transient t)]
 
-       [("t" "timemachine" git-timemachine)]]))
+     [("t" "timemachine" git-timemachine)]]))
 
 (use-package emacs
-    :ensure nil
-    :hook (magit-diff-visit-file . (lambda ()
-                                     (when smerge-mode
-                                       (stormacs-tsc-smerge))))
-    :config
-    (transient-define-prefix stormacs-tsc-smerge ()
-      "Prefix with descriptions specified with slots."
-      ["Stormacs smerge transient\n"
-       ["Move"
-        ("n" "next" smerge-next :transient t)
-        ("p" "prev" smerge-prev :transient t)]
+  :ensure nil
+  :after (transient)
+  :hook (magit-diff-visit-file . (lambda ()
+                                   (when smerge-mode
+                                     (stormacs-tsc-smerge))))
+  :config
+  (transient-define-prefix stormacs-tsc-smerge ()
+    "Prefix with descriptions specified with slots."
+    ["Stormacs smerge transient\n"
+     ["Move"
+      ("n" "next" smerge-next :transient t)
+      ("p" "prev" smerge-prev :transient t)]
 
-       ["Keep"
-        ("b" "base" smerge-keep-base :transient t)
-        ("u" "upper" smerge-keep-upper :transient t)
-        ("l" "lower" smerge-keep-lower :transient t)
-        ("a" "all" smerge-keep-all :transient t)
-        ("RET" "current" smerge-keep-current :transient t)]
+     ["Keep"
+      ("b" "base" smerge-keep-base :transient t)
+      ("u" "upper" smerge-keep-upper :transient t)
+      ("l" "lower" smerge-keep-lower :transient t)
+      ("a" "all" smerge-keep-all :transient t)
+      ("RET" "current" smerge-keep-current :transient t)]
 
-       ["Diff"
-        ("<" "upper/base" smerge-diff-base-upper :transient t)
-        ("=" "upper/lower" smerge-diff-upper-lower :transient t)
-        (">" "base/lower" smerge-diff-base-lower :transient t)
-        ("R" "refine" smerge-refine :transient t)
-        ("E" "ediff" smerge-ediff :transient t)]
+     ["Diff"
+      ("<" "upper/base" smerge-diff-base-upper :transient t)
+      ("=" "upper/lower" smerge-diff-upper-lower :transient t)
+      (">" "base/lower" smerge-diff-base-lower :transient t)
+      ("R" "refine" smerge-refine :transient t)
+      ("E" "ediff" smerge-ediff :transient t)]
 
-       [("C" "combine" smerge-combine-with-next :transient t)
-        ("r" "resolve" smerge-resolve :transient t)
-        ("k" "kill current" smerge-kill-current :transient t)]]))
+     [("C" "combine" smerge-combine-with-next :transient t)
+      ("r" "resolve" smerge-resolve :transient t)
+      ("k" "kill current" smerge-kill-current :transient t)]]))
 
 (provide 'init-git)
