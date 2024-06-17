@@ -13,17 +13,19 @@
 (defun stormacs-wsl-hidpi ()
   ;; Adjust font to fit hidpi
   (interactive)
-  (set-face-attribute 'default nil :font stormacs-font-hidpi))
+  (set-face-attribute 'default nil :font stormacs-font-hidpi)
+  (setq svg-lib-style-default (svg-lib-style-compute-default)))
 
 (defun stormacs-wsl-lodpi ()
   ;; Adjust font to fit lodpi
   (interactive)
-  (set-face-attribute 'default nil :font stormacs-font-lodpi))
+  (set-face-attribute 'default nil :font stormacs-font-lodpi)
+  (setq svg-lib-style-default (svg-lib-style-compute-default)))
 
-(with-eval-after-load 'stormacs-gui
-  (if (wsl-p)
-      (stormacs-wsl-hidpi)
-    (stormacs-wsl-lodpi)))
+;; (with-eval-after-load 'stormacs-gui
+;;   (if (wsl-p)
+;;       (stormacs-wsl-hidpi)
+;;     (stormacs-wsl-lodpi)))
 
 ;; Remove title bar when using pgtk, but not when WSL is set
 (unless (wsl-p)
@@ -195,6 +197,7 @@
 
 (use-package emacs
   :ensure nil
+  :after (transient)
   :bind ("C-M-o" . stormacs-tsc-window)
   :config
   (transient-define-prefix stormacs-tsc-window ()
@@ -225,7 +228,7 @@
 (use-package dashboard
   :ensure (dashboard :host github :repo "emacs-dashboard/emacs-dashboard")
   :demand t
-  :after svg-tag-mode
+  :after (svg-tag-mode)
   :bind (:map stormacs-prefix-map
               ("d" . dashboard-open))
   :custom
