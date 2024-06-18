@@ -112,6 +112,21 @@
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
 
+(use-package gptel
+  :ensure (gptel :host github :repo "karthink/gptel")
+  :config
+  ;; Set default model
+  (setq gptel-model "llama3:latest"
+        gptel-backend (gptel-make-ollama "Ollama:llama3"
+                        :host "localhost:11434"
+                        :stream t
+                        :models '("llama3:latest")))
+  ;; Register mistral model, can be selected
+  (gptel-make-ollama "Ollama:mistral"
+    :host "localhost:11434"
+    :stream t
+    :models '("mistral:latest")))
+
 (when (wsl-p)
   (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
         (cmd-args '("/c" "start")))
