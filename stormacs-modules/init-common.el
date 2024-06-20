@@ -19,6 +19,7 @@
 (setq compilation-scroll-output t)                      ;; Make compilation buffer scroll
 (setq require-final-newline t)                          ;; Add newline to the end of files
 (setq recentf-max-saved-items 2048)                     ;; Max recent files
+(setq use-dialog-box nil)                               ;; Do not use popup boxes
 
 (setq backup-directory-alist
       `((".*" . ,(concat user-emacs-directory "emacs.saves/"))))
