@@ -157,7 +157,7 @@
   (corfu-auto t)                      ;; Enable auto completion
   (corfu-quit-at-boundary 'separator) ;; Automatically quit at word boundary unless `corfu-insert-separator' has been used
   (corfu-separator ?\s)               ;; Separator is set to space, in order to use with ordeless
-  (corfu-quit-no-match 'separator)    ;; Quit if no match, unless `corfu-insert-separator' has been used
+  (corfu-quit-no-match t)             ;; Quit if no match
   (tab-always-indent 'complete)       ;; Use tab to complete
   :bind (:map corfu-map
               ("C-SPC" . corfu-insert-separator)
