@@ -5,10 +5,10 @@
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-colemak-dh)
   (meow-motion-overwrite-define-key
-   ;; Use e to move up, n to move down.
-   ;; Since special modes usually use n to move down, we only overwrite e here.
-   '("n" . meow-next)
-   '("e" . meow-prev)
+   ;; had to change meow-next/prev for next/previous-line in order
+   ;; to make dired-preview work
+   '("n" . next-line)
+   '("e" . previous-line)
    '("<escape>" . ignore))
   (meow-leader-define-key
    '("?" . meow-cheatsheet)

@@ -18,4 +18,12 @@
   :config
   (bind-key "C-c C-r" 'dired-rsync dired-mode-map))
 
+(use-package dired-preview
+  :ensure (dired-preview :host github :repo "protesilaos/dired-preview")
+  :config
+  (setq dired-preview-delay 0.01)
+  (add-to-list 'dired-preview-trigger-commands #'diredp-next-line)
+  (add-to-list 'dired-preview-trigger-commands #'diredp-previous-line)
+  (dired-preview-global-mode 1))
+
 (provide 'init-dired)
