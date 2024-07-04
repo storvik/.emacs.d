@@ -320,9 +320,10 @@
                              (propertize " • " 'face 'font-lock-comment-face)
                              (propertize (concat "followups: " (number-to-string (length (org-map-entries t "-someday/+FOLLOWUPS" 'agenda)))) 'face (nth 5 org-todo-keyword-faces))))
   (advice-add #'dashboard-insert-init-info :override #'stormacs-dashboard-insert-init-info-svg)
-  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  (setq initial-buffer-choice (lambda () (get-buffer-create dashboard-buffer-name)))
   (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
   (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
-  (dashboard-setup-startup-hook))
+  (with-eval-after-load 'stormacs-gui
+    (dashboard-setup-startup-hook)))
 
 (provide 'init-appearance)
