@@ -246,7 +246,7 @@
                           ("Agenda for today:" . " Agenda:")))
   (dashboard-week-agenda nil)
   (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
-  (dashboard-match-agenda-entry "-someday/!+TODO|+NEXT|+WIPS|+DEPENDSON|+DELEGATED|+FOLLOWUPS")
+  (dashboard-match-agenda-entry "-nodash-someday/!+TODO|+NEXT|+WIPS|+DEPENDSON|+DELEGATED|+FOLLOWUPS")
   (dashboard-agenda-release-buffers nil) ;; this will release org agenda files, dash refresh will be slower
   ;; Override init info, this is not used atm. Using advice in order to customize faces, see stormacs-dashboard-insert-init-info.
   (dashboard-init-info (lambda ()
