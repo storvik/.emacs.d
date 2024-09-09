@@ -265,7 +265,6 @@
                                          "- tags ::"))))
   :hook
   (dired-mode-hook . #'denote-dired-mode-in-directories)
-  (find-file-hook . #'denote-link-buttonize-buffer)
   :bind ;; TODO: Shold be added to key overrides
   ("C-c n n" . #'denote)
   ("C-c n N" . #'denote-type)
