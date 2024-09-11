@@ -67,7 +67,11 @@
                  "* TODO Respond to %:from on %:subject\n\t%a\n" :immediate-finish t)
                 ("e" "E-mail todo, must be run from mu4e" entry (file "~/developer/org/org/inbox--computer.org")
                  "* TODO %?\n%a\n")
+                ("l" "Read it later" entry (file "~/developer/org/org/readitlater.org")
+                 "* %(org-cliplink-capture)%?\n" :empty-lines-before 0)
                 ("k" "Cliplink bookmark" entry (file "~/developer/org/org/bookmarks.org")
+                 "* %(org-cliplink-capture)%?\n" :empty-lines-before 0)
+                ("f" "Food recipe for later" entry (file "~/developer/org/org/recipes.org")
                  "* %(org-cliplink-capture)%?\n" :empty-lines-before 0))))
 
   (setq org-todo-keywords
