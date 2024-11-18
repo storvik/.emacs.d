@@ -34,7 +34,20 @@
 (use-package exec-path-from-shell
   :ensure (exec-path-from-shell :host github :repo "purcell/exec-path-from-shell")
   :when sys-unix-p
-  :init
+  :config
+  (when (memq window-system '(mac ns x))
+    (dolist (var '("SSH_AUTH_SOCK"
+                   "SSH_AGENT_PID"
+                   "XDG_DATA_DIRS"
+                   "XDG_CONFIG_DIRS"
+                   "__fish_nixos_env_preinit_sourced"
+                   "__NIX_DARWIN_SET_ENVIRONMENT_DONE"
+                   "__HM_SESS_VARS_SOURCED"
+                   "NIX_USER_PROFILE_DIR"
+                   "NIX_SSL_CERT_FILE"
+                   "NIX_PROFILES"
+                   "NIX_PATH"))
+      (add-to-list 'exec-path-from-shell-variables var)))
   (exec-path-from-shell-initialize))
 
 (use-package sudo-edit

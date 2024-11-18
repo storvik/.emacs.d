@@ -57,6 +57,7 @@
 
 (use-package eshell-atuin
   :ensure (eshell-atuin :host github :repo "SqrtMinusOne/eshell-atuin")
+  :when (executable-find "atuin")
   :after eshell
   :custom
   (eshell-atuin-search-fields '(time directory duration command))

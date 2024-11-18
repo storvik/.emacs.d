@@ -22,17 +22,20 @@
   (set-face-attribute 'default nil :font stormacs-font-lodpi)
   (setq svg-lib-style-default (svg-lib-style-compute-default)))
 
-;; (with-eval-after-load 'stormacs-gui
-;;   (if (wsl-p)
-;;       (stormacs-wsl-hidpi)
-;;     (stormacs-wsl-lodpi)))
+(with-eval-after-load 'stormacs-gui
+  (stormacs-wsl-hidpi))
 
 ;; Remove title bar when using pgtk, but not when WSL is set
 (unless (wsl-p)
   (when (boundp 'pgtk-initialized)
     (setq default-frame-alist '((undecorated . t)))))
 
-(when (fboundp 'pixel-scroll-precision-mode)
+;; Uses rounded courners without title bar on darwin
+(when (darwin-p)
+  (add-to-list 'default-frame-alist '(undecorated-round . t)))
+
+(when (and (fboundp 'pixel-scroll-precision-mode)
+           (darwin-p))
   (pixel-scroll-precision-mode 1))
 
 (use-package ef-themes
@@ -247,6 +250,7 @@
   (dashboard-week-agenda nil)
   (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
   (dashboard-match-agenda-entry "-nodash-someday/!+TODO|+NEXT|+WIPS|+DEPENDSON|+DELEGATED|+FOLLOWUPS")
+  (dashboard-match-agenda-entry "-nodash-someday/!+NEXT|+WIPS|+DEPENDSON|+DELEGATED|+FOLLOWUPS")
   (dashboard-agenda-release-buffers nil) ;; this will release org agenda files, dash refresh will be slower
   ;; Override init info, this is not used atm. Using advice in order to customize faces, see stormacs-dashboard-insert-init-info.
   (dashboard-init-info (lambda ()

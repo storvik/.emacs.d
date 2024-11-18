@@ -105,14 +105,19 @@
   (provide 'stormacs-gui))
 (add-hook 'focus-in-hook #'stormacs-first-graphical-frame-hook-function)
 
-(with-eval-after-load 'stormacs-gui
-  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1)))
+(defun darwin-p ()
+  (eq system-type 'darwin))
 
 (defun wsl-p ()
   (when (and (eq system-type 'gnu/linux)
              (getenv "WSL"))))
+
+(with-eval-after-load 'stormacs-gui
+  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (when (and (fboundp 'menu-bar-mode)
+             (not (darwin-p))) ;; menu-bar-mode needed when using macports emacs
+    (menu-bar-mode -1)))
 
 (require 'init-common)
 (require 'init-appearance)

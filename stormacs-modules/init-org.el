@@ -267,8 +267,6 @@
                                          "- birthday ::\n"
                                          "- interests ::\n"
                                          "- tags ::"))))
-  :hook
-  (dired-mode-hook . #'denote-dired-mode-in-directories)
   :bind ;; TODO: Shold be added to key overrides
   ("C-c n n" . #'denote)
   ("C-c n N" . #'denote-type)

@@ -72,4 +72,19 @@
            :prefix-docstring "Stormacs keyboard map"
            :prefix "C-M-s")
 
+(when (darwin-p)
+  ;; This must be set when using emacs on a Mac
+  (setq mac-command-modifier 'control)
+
+  ;; This must only be set when using macport emacs
+  ;; See: https://github.com/railwaycat/homebrew-emacsmacport/issues/191
+  ;; (setq mac-option-modifier 'meta)
+
+  ;; This setup uses the left modifier as meta and disables the right modifier.
+  ;; Must be done when using emacs with emacs-plus patches and be able to use
+  ;; right alt (alt gr) to input special characters.
+  ;; https://stackoverflow.com/questions/45697790/how-to-enter-special-symbols-with-alt-in-emacs-under-mac-os-x
+  ;; (setq ns-alternate-modifier 'meta)  ;; Disabled this, not needed it seems
+  (setq ns-right-alternate-modifier 'none))
+
 (provide 'init-keybindings)
