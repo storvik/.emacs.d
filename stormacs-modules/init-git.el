@@ -49,20 +49,6 @@
 
      [("t" "timemachine" git-timemachine)]]))
 
-(use-package magit-gptcommit
-  ;; :ensure (magit-gptcommit :host github :repo "douo/magit-gptcommit")
-  :ensure (magit-gptcommit :host github :branch "llm" :repo "avishefi/magit-gptcommit")
-  :after magit
-  :demand t
-  :bind (:map git-commit-mode-map
-              ("C-c C-g" . magit-gptcommit-commit-accept))
-  :config
-  (require 'llm-ollama)
-  (setq magit-gptcommit-llm-provider (make-llm-ollama :embedding-model "llama3:latest"
-                                                      :chat-model "llama3:latest"))
-  ;; add magit-gptcommit to magit commit transient
-  (magit-gptcommit-status-buffer-setup))
-
 (use-package emacs
   :ensure nil
   :after (transient)
