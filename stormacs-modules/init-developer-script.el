@@ -9,6 +9,9 @@
 (use-package powershell
   :ensure (powershell :host github :repo "jschaf/powershell.el"))
 
+(use-package flatbuffers-mode
+  :ensure (flatbuffers-mode :host github :repo "Asalle/flatbuffers-mode"))
+
 (use-package protobuf-mode
   :ensure (protobuf-mode :host github :repo "protocolbuffers/protobuf"))
 
