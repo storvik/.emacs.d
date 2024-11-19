@@ -134,7 +134,7 @@
                      (org-agenda-overriding-header "")
                      (org-agenda-remove-tags t) ;; remove tags from agenda view
                      (org-super-agenda-groups
-                      '((:discard (:not (:tag ("goodtech"))))
+                      '((:discard (:not (:tag ("work"))))
                         (:name "This week")))))
             (alltodo ""
                      ((org-agenda-prefix-format "  %i %-22(stormacs-agenda-title) %-12(stormacs-agenda-context-emoji)")
@@ -142,7 +142,7 @@
                       (org-agenda-remove-tags t)
                       (org-agenda-overriding-header "")
                       (org-super-agenda-groups
-                       '((:discard (:not (:tag ("goodtech"))) :file-path "inbox")
+                       '((:discard (:not (:tag ("work"))) :file-path "inbox")
                          (:name "🛠️ Work in progress\n" :todo "WIPS")
                          (:name "⏳ Next\n" :todo "NEXT")
                          (:name "🗒️ Todo\n" :todo "TODO")
@@ -153,14 +153,14 @@
                     ((org-agenda-prefix-format " %i %-22:c%?-12t% s")
                      (org-agenda-overriding-header "")
                      (org-super-agenda-groups
-                      '((:discard (:tag ("goodtech")))
+                      '((:discard (:tag ("work")))
                         (:name "This week")))))
             (alltodo ""
                      ((org-agenda-prefix-format " %i %-32:c")
                       (org-agenda-remove-tags nil)
                       (org-agenda-overriding-header "")
                       (org-super-agenda-groups
-                       '((:discard (:tag ("goodtech") :file-path "inbox"))
+                       '((:discard (:tag ("work") :file-path "inbox"))
                          (:name "🛠️ Work in progress" :and (:todo "WIPS" :not (:scheduled future)))
                          (:name "⏳ Next" :and (:todo "NEXT" :not (:scheduled future)))
                          (:name "🗒️ Todo" :and (:todo "TODO" :not (:scheduled future) :not (:tag "someday")))
