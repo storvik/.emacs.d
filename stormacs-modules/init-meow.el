@@ -106,4 +106,10 @@
   (meow-setup)
   (meow-global-mode 1))
 
+(use-package meow-tree-sitter
+  :ensure (meow-tree-sitter :host github :repo "skissue/meow-tree-sitter")
+  :after meow
+  :config
+  (meow-tree-sitter-register-defaults))
+
 (provide 'init-meow)
