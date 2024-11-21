@@ -2,6 +2,14 @@
 
 (put 'dired-find-alternate-file 'disabled nil)
 
+;; Fix dired on darwin, macos ls not working
+;; gls is a part of coreutils
+(when (eq system-type 'darwin)
+  (setq insert-directory-program "gls"
+        dired-use-ls-dired t))
+
+(setq dired-listing-switches "-al --group-directories-first")
+
 (use-package dired+
   :ensure (dired+ :host github :repo "emacsmirror/dired-plus" :main "dired+.el")
   :init
