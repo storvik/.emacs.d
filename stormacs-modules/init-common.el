@@ -129,13 +129,23 @@
 (use-package gptel
   :ensure (gptel :host github :repo "karthink/gptel")
   :config
-  ;; Set default model
-  (setq gptel-model "llama3:latest"
-        gptel-backend (gptel-make-ollama "Ollama:llama3"
-                        :host "localhost:11434"
-                        :stream t
-                        :models '("llama3:latest")))
-  ;; Register mistral model, can be selected
+  (defun read-file-contents (file-path)
+    "Read the contents of FILE-PATH and return it as a string."
+    (with-temp-buffer
+      (insert-file-contents file-path)
+      (buffer-string)))
+  (defun openai-api-key ()
+    (read-file-contents "/Users/petter.storvik/.config/sops-nix/secrets/openai_key"))
+  (defun anthropic-api-key ()
+    (read-file-contents "/Users/petter.storvik/.config/sops-nix/secrets/anthropic_key"))
+  (setq gptel-api-key #'openai-api-key)
+  (gptel-make-anthropic "Claude"
+    :stream t
+    :key #'anthropic-api-key)
+  (gptel-make-ollama "Ollama:gemma"
+    :host "localhost:11434"
+    :stream t
+    :models '("gemma2:latest"))
   (gptel-make-ollama "Ollama:mistral"
     :host "localhost:11434"
     :stream t
