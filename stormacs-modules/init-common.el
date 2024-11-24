@@ -122,9 +122,11 @@
 (use-package jinx
   :ensure (jinx :host github :repo "minad/jinx")
   :when sys-unix-p
-  :hook (elpaca-after-init . global-jinx-mode)
   :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)))
+         ("C-M-$" . jinx-languages))
+  :config
+  (with-eval-after-load 'stormacs-gui
+    (global-jinx-mode)))
 
 (use-package gptel
   :ensure (gptel :host github :repo "karthink/gptel")
