@@ -2,12 +2,12 @@
 
 (setq stormacs-font-lodpi (sys-diversification
                            "Iosevka Nerd Font-10" ;
-                           "Iosevka Nerd Font-10"
+                           "Iosevka Nerd Font Mono-10"
                            "Courier New-10"))
 
 (setq stormacs-font-hidpi (sys-diversification
                            "Iosevka Nerd Font-14" ;
-                           "Iosevka Nerd Font-14"
+                           "Iosevka Nerd Font Mono-14"
                            "Courier New-14"))
 
 (defun stormacs-wsl-hidpi ()
@@ -71,7 +71,7 @@
   :ensure (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el")
   :custom
   ;; Had to set custom font as Symbols Nerd Font Mono made Emacs crash
-  (nerd-icons-font-family "Iosevka Nerd Font"))
+  (nerd-icons-font-family "Symbols Nerd Font Mono"))
 
 (use-package doom-modeline
   :ensure (doom-modeline :host github :repo "seagle0128/doom-modeline")
