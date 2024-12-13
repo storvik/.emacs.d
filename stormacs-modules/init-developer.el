@@ -63,6 +63,10 @@
   :ensure (dumb-jump :host github :repo "jacktasia/dumb-jump")
   :hook (xref-backend-functions . dumb-jump-xref-activate))
 
+(use-package symbol-overlay
+  :ensure (symbol-overlay :host github :repo "wolray/symbol-overlay")
+  :hook (prog-mode . symbol-overlay-mode))
+
 (use-package apheleia
   :ensure (apheleia :host github :repo "raxod502/apheleia")
   :config
