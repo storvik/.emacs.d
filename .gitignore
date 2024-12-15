@@ -1,4 +1,6 @@
 dtache.db
+.chatgpt-shell.el
+forge-database.sqlite
 multisession/*
 elpaca/*
 auto-save-list/*

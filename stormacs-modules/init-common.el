@@ -59,8 +59,8 @@
 (use-package repeat
   :ensure nil
   :custom
-  (setq repeat-on-final-keystroke t)
-  (setq set-mark-command-repeat-pop t)
+  (repeat-on-final-keystroke t)
+  (set-mark-command-repeat-pop t)
   :config
   ;; https://www.reddit.com/r/emacs/comments/1adwnse/repeatmode_is_awesome_share_you_useful_configs/
   (defun repeatify (repeat-map)
@@ -93,30 +93,30 @@
   ;; change cursor when repeat mode is active
   ;; https://gist.github.com/jdtsmith/a169362879388bc1bdf2bbb977782d4f
   (let ((orig (default-value 'repeat-echo-function))
-	    rcol ccol in-repeat)
+        rcol ccol in-repeat)
     (setq
      repeat-echo-function
      (lambda (map)
        (if orig (funcall orig map))
        (unless rcol (setq rcol (face-foreground 'error)))
        (if map
-	       (unless in-repeat		; new repeat sequence
-	         (setq in-repeat t
-		           ccol (face-background 'cursor))
-	         (set-frame-parameter nil 'my/repeat-cursor ccol))
-	     (setq in-repeat nil)
-	     (set-frame-parameter nil 'my/repeat-cursor nil))
+           (unless in-repeat        ; new repeat sequence
+             (setq in-repeat t
+                   ccol (face-background 'cursor))
+             (set-frame-parameter nil 'my/repeat-cursor ccol))
+         (setq in-repeat nil)
+         (set-frame-parameter nil 'my/repeat-cursor nil))
        (set-cursor-color (if map rcol ccol))))
     (add-function
      :after after-focus-change-function
      (let ((sym 'my/remove-repeat-cursor-color-on-focus-change))
        (defalias sym
-	     (lambda ()
-	       (when in-repeat
-	         (dolist (frame (frame-list))
-	           (when-let ((col (frame-parameter frame 'my/repeat-cursor)))
-		         (with-selected-frame frame
-		           (set-cursor-color col)))))))
+         (lambda ()
+           (when in-repeat
+             (dolist (frame (frame-list))
+               (when-let ((col (frame-parameter frame 'my/repeat-cursor)))
+                 (with-selected-frame frame
+                   (set-cursor-color col)))))))
        sym))))
 
 (use-package jinx
@@ -128,18 +128,19 @@
   (with-eval-after-load 'stormacs-gui
     (global-jinx-mode)))
 
+(defun read-file-contents (file-path)
+  "Read the contents of FILE-PATH and return it as a string."
+  (with-temp-buffer
+    (insert-file-contents file-path)
+    (buffer-string)))
+(defun openai-api-key ()
+  (read-file-contents "/Users/petter.storvik/.config/sops-nix/secrets/openai_key"))
+(defun anthropic-api-key ()
+  (read-file-contents "/Users/petter.storvik/.config/sops-nix/secrets/anthropic_key"))
+
 (use-package gptel
   :ensure (gptel :host github :repo "karthink/gptel")
   :config
-  (defun read-file-contents (file-path)
-    "Read the contents of FILE-PATH and return it as a string."
-    (with-temp-buffer
-      (insert-file-contents file-path)
-      (buffer-string)))
-  (defun openai-api-key ()
-    (read-file-contents "/Users/petter.storvik/.config/sops-nix/secrets/openai_key"))
-  (defun anthropic-api-key ()
-    (read-file-contents "/Users/petter.storvik/.config/sops-nix/secrets/anthropic_key"))
   (setq gptel-api-key #'openai-api-key)
   (gptel-make-anthropic "Claude"
     :stream t
@@ -148,10 +149,23 @@
     :host "localhost:11434"
     :stream t
     :models '("gemma2:latest"))
+  (gptel-make-ollama "Ollama:qwen2.5-coder"
+    :host "localhost:11434"
+    :stream t
+    :models '("qwen2.5-coder:14b"))
   (gptel-make-ollama "Ollama:mistral"
     :host "localhost:11434"
     :stream t
     :models '("mistral:latest")))
+
+(use-package shell-maker
+  :ensure (shell-maker :host github :repo "xenodium/shell-maker"))
+
+(use-package chatgpt-shell
+  :ensure (chatgpt-shell :host github :repo "xenodium/chatgpt-shell")
+  :custom
+  (chatgpt-shell-openai-key (openai-api-key))
+  (chatgpt-shell-anthropic-key (anthropic-api-key)))
 
 (when (wsl-p)
   (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
