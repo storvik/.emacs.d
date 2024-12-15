@@ -106,6 +106,9 @@
   ;; (add-to-list 'treesit-jump-queries-filter-mode-alist (cons 'python-ts-mode '("class")))
   )
 
+(use-package goto-chg
+  :ensure (goto-chg :host github :repo "emacs-evil/goto-chg"))
+
 (use-package puni
   :ensure (puni :host github :repo "AmaiKinono/puni")
   :bind (:map puni-mode-map
