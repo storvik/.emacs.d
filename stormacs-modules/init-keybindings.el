@@ -61,7 +61,9 @@
    cider-repl-mode-hook
    calendar-mode-hook
    dashboard-mode-hook
-   grep-mode-hook))
+   grep-mode-hook
+   comint-mode-hook
+   elpaca-log-mode-hook))
 
 ;; Prefix map
 ;; TODO: Maybe this should be configurable?
