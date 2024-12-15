@@ -185,15 +185,6 @@
   ;;    'append))
   )
 
-(use-package shell-maker
-  :ensure (shell-maker :host github :repo "xenodium/shell-maker"))
-
-(use-package chatgpt-shell
-  :ensure (chatgpt-shell :host github :repo "xenodium/chatgpt-shell")
-  :custom
-  (chatgpt-shell-openai-key (openai-api-key))
-  (chatgpt-shell-anthropic-key (anthropic-api-key)))
-
 (when (wsl-p)
   (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
         (cmd-args '("/c" "start")))
