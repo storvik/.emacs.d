@@ -128,6 +128,10 @@
   (with-eval-after-load 'stormacs-gui
     (global-jinx-mode)))
 
+(use-package inline-diff
+  :ensure (inline-diff :host "code.tecosaur.net/" :repo "tec/inline-diff")
+  :after gptel)
+
 (defun read-file-contents (file-path)
   "Read the contents of FILE-PATH and return it as a string."
   (with-temp-buffer
@@ -140,6 +144,8 @@
 
 (use-package gptel
   :ensure (gptel :host github :repo "karthink/gptel")
+  :bind (:map gptel-rewrite-actions-map
+              ("C-c C-i" . gptel--rewrite-inline-diff))
   :config
   (setq gptel-api-key #'openai-api-key)
   (gptel-make-anthropic "Claude"
@@ -156,7 +162,28 @@
   (gptel-make-ollama "Ollama:mistral"
     :host "localhost:11434"
     :stream t
-    :models '("mistral:latest")))
+    :models '("mistral:latest"))
+  (defun gptel--rewrite-inline-diff (&optional ovs)
+    "Start an inline-diff session on OVS."
+    (interactive (list (gptel--rewrite-overlay-at)))
+    (unless (require 'inline-diff nil t)
+      (user-error "Inline diffs require the inline-diff package."))
+    (when-let* ((ov-buf (overlay-buffer (or (car-safe ovs) ovs)))
+                ((buffer-live-p ov-buf)))
+      (with-current-buffer ov-buf
+        (cl-loop for ov in (ensure-list ovs)
+                 for ov-beg = (overlay-start ov)
+                 for ov-end = (overlay-end ov)
+                 for response = (overlay-get ov 'gptel-rewrite)
+                 do (delete-overlay ov)
+                 (inline-diff-words
+                  ov-beg ov-end response)))))
+  ;; TODO: Figure out if this should work?
+  ;; (when (boundp 'gptel--rewrite-dispatch-actions)
+  ;;   (add-to-list
+  ;;    'gptel--rewrite-dispatch-actions '(?i "inline-diff")
+  ;;    'append))
+  )
 
 (use-package shell-maker
   :ensure (shell-maker :host github :repo "xenodium/shell-maker"))
