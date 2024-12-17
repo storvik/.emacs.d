@@ -93,6 +93,22 @@
                              (109 . avy-action-mark)
                              (87 . avy-action-copy-whole-line))))
 
+(use-package dogears
+  :ensure (dogears :host github :repo "alphapapa/dogears.el")
+  :hook (elpaca-after-init . dogears-mode)
+  :bind ("M-g d" . dogears-go)
+  :custom
+  (dogears-idle-timer 2)
+  (dogears-functions '(avy-goto-char-timer avy-goto-line))
+  (dogears-hooks '(imenu-after-jump-hook xref-after-jump-hook xref-after-return-hook consult-after-jump-hook rtags-jump-hook))
+  :config
+  (transient-define-prefix stormacs-tsc-dogears ()
+    "Prefix with descriptions specified with slots."
+    [[("p" "previous" dogears-back :transient t)]
+     [("n" "next" dogears-forward :transient t)]
+     [("d" "go" dogears-go)]
+     [("l" "list" dogears-list)]]))
+
 (use-package deadgrep
   :ensure (deadgrep :host github :repo "Wilfred/deadgrep")
   :bind (:map stormacs-overrides-minor-mode-map

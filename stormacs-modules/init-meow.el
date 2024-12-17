@@ -49,7 +49,7 @@
    '("B" . meow-back-symbol)
    '("c" . meow-change)
    '("C" . goto-last-change)
-   '("d" . meow-delete)
+   '("d" . stormacs-tsc-dogears)
    '("e" . meow-prev)
    '("E" . meow-prev-expand)
    '("f" . meow-find)
