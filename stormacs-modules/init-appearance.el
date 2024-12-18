@@ -203,11 +203,6 @@
   :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
 
-(use-package golden-ratio
-  :ensure (golden-ratio :host github :repo "roman/golden-ratio.el")
-  :init
-  (golden-ratio-mode 1))
-
 (use-package emacs
   :ensure nil
   :after (transient)
