@@ -114,14 +114,6 @@
   :bind (:map stormacs-overrides-minor-mode-map
               ("M-s s" . deadgrep)))
 
-(use-package treesit-jump
-  :ensure (treesit-jump :host github :repo "dmille56/treesit-jump" :files ("*.el" "treesit-queries"))
-  ;; :config
-  ;; Optional: add some queries to filter out of results (since they can be too cluttered sometimes)
-  ;; (setq treesit-jump-queries-filter-list '("inner" "test" "param"))
-  ;; (add-to-list 'treesit-jump-queries-filter-mode-alist (cons 'python-ts-mode '("class")))
-  )
-
 (use-package goto-chg
   :ensure (goto-chg :host github :repo "emacs-evil/goto-chg"))
 
