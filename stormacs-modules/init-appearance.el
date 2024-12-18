@@ -73,14 +73,19 @@
   ;; Had to set custom font as Symbols Nerd Font Mono made Emacs crash
   (nerd-icons-font-family "Symbols Nerd Font Mono"))
 
-(use-package doom-modeline
-  :ensure (doom-modeline :host github :repo "seagle0128/doom-modeline")
-  :init
-  (with-eval-after-load 'stormacs-gui
-    (doom-modeline-mode))
+(use-package moody
+  :ensure (moody :host github :repo "tarsius/moody")
+  :custom
+  (x-underline-at-descent-line t)
   :config
-  (setq find-file-visit-truename t)
-  (setq doom-modeline-icon t))
+  (moody-replace-mode-line-front-space)
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode)
+  (moody-replace-eldoc-minibuffer-message-function))
+
+(use-package minions
+  :ensure (minions :host github :repo "tarsius/minions")
+  :config (minions-mode 1))
 
 (use-package emojify
   :ensure (emojify :host github :repo "iqbalansari/emacs-emojify")
