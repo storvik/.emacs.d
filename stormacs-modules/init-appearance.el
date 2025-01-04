@@ -39,33 +39,16 @@
   (pixel-scroll-precision-mode 1))
 
 (use-package ef-themes
-  :ensure (ef-themes :host sourcehut :repo "protesilaos/ef-themes")
+  :ensure (ef-themes :host github :repo "protesilaos/ef-themes")
   :demand t
   :custom
-  (ef-themes-to-toggle '(ef-elea-dark ef-light))
+  (ef-themes-to-toggle '(ef-dream ef-reverie))
   :config
   ;; Disable all other themes to avoid awkward blending:
   (mapc #'disable-theme custom-enabled-themes)
 
   ;; Load the theme of your choice.
-  ;; (load-theme 'ef-elea-dark :no-confirm)
-  (ef-themes-select 'ef-elea-dark))
-
-;; (use-package modus-themes
-;;   :ensure (modus-themes :host sourcehut :repo "protesilaos/modus-themes")
-;;   :demand t
-;;   :config
-;;   ;; Add all your customizations prior to loading the themes
-;;   ;; (setq modus-themes-italic-constructs t
-;;   ;;       modus-themes-bold-constructs nil)
-
-;;   ;; Maybe define some palette overrides, such as by using our presets
-;;   (setq modus-themes-common-palette-overrides
-;;         modus-themes-preset-overrides-faint)
-
-;;   ;; Load the theme of your choice.
-;;   (load-theme 'modus-vivendi-tinted :no-confirm)
-;;   :bind ("<f5>" . modus-themes-toggle))
+  (ef-themes-select 'ef-dream))
 
 (use-package nerd-icons
   :ensure (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el")
