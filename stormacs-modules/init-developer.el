@@ -116,6 +116,15 @@
   (setf (alist-get 'python-mode apheleia-mode-alist) 'ruff)
   (apheleia-global-mode +1))
 
+(use-package aider
+  :ensure (:host github :repo "tninja/aider.el")
+  :bind ("C-c a" . aider-transient-menu)
+  :config
+  ;; Use claude-3-5-sonnet cause it is best in aider benchmark
+  (setq aider-args `("--model" "anthropic/claude-3-5-sonnet-20241022"
+                     "--anthropic-api-key" ,(anthropic-api-key)
+                     "--no-auto-commits")))
+
 (require 'init-developer-c)
 (require 'init-developer-config)
 (require 'init-developer-dart)
