@@ -1,13 +1,13 @@
 ;; init-appearance.el --- Appearance settings -*- lexical-binding: t; -*-
 
 (setq stormacs-font-lodpi (sys-diversification
-                           "Iosevka Nerd Font-10" ;
-                           "Iosevka Nerd Font Mono-10"
+                           "FiraCode Nerd Font-10" ;
+                           "FiraCode Nerd Font Mono-10"
                            "Courier New-10"))
 
 (setq stormacs-font-hidpi (sys-diversification
-                           "Iosevka Nerd Font-14" ;
-                           "Iosevka Nerd Font Mono-14"
+                           "FiraCode Nerd Font-14" ;
+                           "FiraCode Nerd Font Mono-13"
                            "Courier New-14"))
 
 (defun stormacs-wsl-hidpi ()
@@ -212,6 +212,9 @@
       ("b" "balance" balance-windows :transient t)
       ("z" "zoom" delete-other-windows :transient t)
       ("d" "delete" delete-window :transient t)]
+
+     ["Transpose frame"
+      ("t" "transpose" transpose-frame :transient t)]
 
      [("a" "ace windows" ace-window :transient t)
       ("o" "cycle windows" other-window :transient t)]]))

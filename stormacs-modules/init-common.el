@@ -119,6 +119,10 @@
                    (set-cursor-color col)))))))
        sym))))
 
+(use-package transpose-frame
+  :ensure (transpose-frame :host github :repo "emacsorphanage/transpose-frame")
+  :commands (transpose-frame flip-frame flop-frame rotate-frame))
+
 (use-package jinx
   :ensure (jinx :host github :repo "minad/jinx")
   :when sys-unix-p
