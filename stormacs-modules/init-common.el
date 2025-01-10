@@ -203,4 +203,36 @@
     (let ((text (substring-no-properties (car kill-ring))))
       (shell-command (concat "echo '" text "' | clip.exe")))))
 
+;; TODO: Use this somehow?
+;; More info, https://arialdomartini.github.io/emacs-surround-2
+(defun surround-region--surround (delimiters)
+  "Surround the active region with hard-coded strings"
+  (when (region-active-p)
+    (save-excursion
+      (let ((beginning (region-beginning))
+            (end (region-end))
+            (opening-delimiter (car delimiters))
+            (closing-delimiter (cdr delimiters)))
+
+        (goto-char beginning)
+        (insert opening-delimiter)
+
+        (goto-char (+ end (length closing-delimiter)))
+	    (insert closing-delimiter)))))
+
+
+(defun surround-region--ask-delimiter ()
+  (let ((choices '(("<<< and >>>" . ("<<<" . ">>>"))
+                   ("double quotes: \"\"" . ("\"" . "\""))
+                   ("markdown source block: ```emacs-lisp" . ("```emacs-lisp" . "```"))
+                   ("comment: *\ /*" . ("/*" . "*/")))))
+    (alist-get
+     (completing-read "Your generation: " choices )
+     choices nil nil 'equal)))
+
+(defun surround-region-with-hard-coded-strings (delimiters)
+  "Surround the active region with hard-coded strings"
+  (interactive (list (surround-region--ask-delimiter)))
+  (surround-region--surround delimiters))
+
 (provide 'init-common)
