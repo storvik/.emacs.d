@@ -148,8 +148,6 @@
 
 (use-package gptel
   :ensure (gptel :host github :repo "karthink/gptel")
-  :bind (:map gptel-rewrite-actions-map
-              ("C-c C-i" . gptel--rewrite-inline-diff))
   :config
   (setq gptel-api-key #'openai-api-key)
   (gptel-make-anthropic "Claude"
@@ -166,7 +164,13 @@
   (gptel-make-ollama "Ollama:mistral"
     :host "localhost:11434"
     :stream t
-    :models '("mistral:latest"))
+    :models '("mistral:latest")))
+
+(use-package gptel-rewrite
+  :ensure (gptel-rewrite :host github :repo "karthink/gptel" :files (:defaults "extensions/vertico-directory.el"))
+  :bind (:map gptel-rewrite-actions-map
+              ("C-c C-i" . gptel--rewrite-inline-diff))
+  :config
   (defun gptel--rewrite-inline-diff (&optional ovs)
     "Start an inline-diff session on OVS."
     (interactive (list (gptel--rewrite-overlay-at)))
