@@ -32,6 +32,11 @@
   :ensure (git-timemachine :host codeberg :repo "pidu/git-timemachine")
   :commands (git-timemachine))
 
+(use-package forge
+  :ensure (forge :host github :repo "magit/forge")
+  :after magit
+  :commands (forge-pull))
+
 (use-package emacs
   :ensure nil
   :after (transient)
