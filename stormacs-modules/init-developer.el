@@ -3,6 +3,35 @@
 ;; Use completing read functions instead of xref popup
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 
+;; Make compilation buffer scroll
+(setq compilation-scroll-output t)
+
+;; https://stackoverflow.com/questions/17659212/dont-display-compilation-buffer-in-emacs-until-the-process-exits-with-error-o/17788551#17788551
+;; Change compilation start so that compilation buffer is not opened when it's open in another
+;; window accross all frames. This is useful when working on multiple monitors.
+(defadvice compilation-start
+    (around inhibit-display
+            (command &optional mode name-function highlight-regexp))
+  (if (get-buffer-window "*compilation*" t)
+      (flet ((display-buffer)
+             (set-window-point)
+             (goto-char))
+        (fset 'display-buffer 'ignore)
+        (fset 'goto-char 'ignore)
+        (fset 'set-window-point 'ignore)
+        (save-window-excursion
+          ad-do-it))
+    ad-do-it))
+(ad-activate 'compilation-start)
+
+;; TODO: Add notify function for this??
+;; (defun stormacs-compile-finish (buffer outstr)
+;;   (unless (string-match "finished" outstr)
+;;     (switch-to-buffer-other-window buffer))
+;;   t)
+;; (setq compilation-finish-functions 'stormacs-compile-finish)
+
+
 (use-package eglot
   :ensure (:inherit elpaca-menu-gnu-devel-elpa))
 
