@@ -6,9 +6,7 @@
   :init
   (detached-init)
   :bind (([remap detached-open-session] . detached-consult-session)
-         ([remap async-shell-command] . detached-shell-command)
-         ([remap compile] . detached-compile)
-         ([remap recompile] . detached-compile-recompile))
+         ([remap async-shell-command] . detached-shell-command))
   :custom ((detached-show-output-on-attach t))
   :config
   (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))
