@@ -2,7 +2,7 @@
 
 (setq stormacs-font-lodpi (sys-diversification
                            "FiraCode Nerd Font-10" ;
-                           "FiraCode Nerd Font Mono-10"
+                           "FiraCode Nerd Font Mono-12"
                            "Courier New-10"))
 
 (setq stormacs-font-hidpi (sys-diversification
@@ -214,7 +214,9 @@
       ("d" "delete" delete-window :transient t)]
 
      ["Transpose frame"
-      ("t" "transpose" transpose-frame :transient t)]
+      ("t" "transpose" transpose-frame)
+      ("r" "rotate" rotate-frame-clockwise)
+      ("R" "rotate counterclock" rotate-frame-anticlockwise)]
 
      [("a" "ace windows" ace-window :transient t)
       ("o" "cycle windows" other-window :transient t)]]))

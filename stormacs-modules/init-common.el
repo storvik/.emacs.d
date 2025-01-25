@@ -16,7 +16,6 @@
 (setq initial-scratch-message "")                       ;; Set default startup message in scratch buffer
 (setq inhibit-startup-echo-area-message t)              ;; Turn off echo message
 (setq ring-bell-function 'ignore)                       ;; Turn off audible bell
-(setq compilation-scroll-output t)                      ;; Make compilation buffer scroll
 (setq require-final-newline t)                          ;; Add newline to the end of files
 (setq recentf-max-saved-items 2048)                     ;; Max recent files
 (setq use-dialog-box nil)                               ;; Do not use popup boxes
