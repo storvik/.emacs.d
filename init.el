@@ -150,3 +150,8 @@
           (push library libraries-loaded))))))
 
 (stormacs-load-all-in-directory (locate-user-emacs-file "stormacs-lisp"))
+
+;; Start emacs server if it's not running
+(require 'server)
+(unless (server-running-p)
+  (server-start))
