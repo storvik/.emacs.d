@@ -15,8 +15,8 @@
   :init
   (vertico-mode))
 
-;; Preserve history avvross restarts
-(use-package savehist
+;; Preserve history across restarts
+(use-package emacs
   :ensure nil
   :init
   (savehist-mode))
