@@ -122,6 +122,9 @@
   :ensure (transpose-frame :host github :repo "emacsorphanage/transpose-frame")
   :commands (transpose-frame flip-frame flop-frame rotate-frame))
 
+(use-package alert
+  :ensure (alert :host github :repo "jwiegley/alert"))
+
 (use-package jinx
   :ensure (jinx :host github :repo "minad/jinx")
   :when sys-unix-p
