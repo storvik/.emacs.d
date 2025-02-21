@@ -157,6 +157,35 @@
   (setq aider-args `("--model" "anthropic/claude-3-5-sonnet-20241022"
                      "--anthropic-api-key" ,(anthropic-api-key)
                      "--no-auto-commits")))
+(use-package compile-multi
+  :ensure (compile-multi :host github :repo "mohkale/compile-multi")
+  :bind
+  (:map stormacs-overrides-minor-mode-map
+        ("M-c" . compile-multi))
+  :config
+  (defun current-project-root ()
+    (project-root (project-current)))
+  (setq compile-multi-default-directory #'current-project-root)
+  (setq compile-multi-config
+        '(((file-exists-p "Makefile")
+           ("make:build" . "make build")
+           ("make:test" . "make test")
+           ("make:all" . "make all"))))
+  (push `((file-exists-p "pubspec.yaml")
+          ("flutter:run" . ,#'flutter-run)
+          ("flutter:hot-reload" . ,#'flutter-run-or-hotreload)
+          ("flutter:restart" . ,#'flutter-hot-restart)
+          ("flutter:quit" . ,#'flutter-quit))
+        compile-multi-config))
+
+(use-package consult-compile-multi
+  :ensure (consult-compile-multi
+           :host github :repo "mohkale/compile-multi"
+           :files (:defaults "extensions/consult-compile-multi/consult-compile-multi.el"))
+  :after compile-multi
+  :config
+  (consult-compile-multi-mode))
+
 
 (require 'init-developer-c)
 (require 'init-developer-config)
