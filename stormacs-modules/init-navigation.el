@@ -128,16 +128,4 @@
   (puni-global-mode)
   (add-hook 'term-mode-hook #'puni-disable-puni-mode))
 
-(use-package tempel
-  :ensure (tempel :host github :repo "minad/tempel")
-  :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
-         ("M-*" . tempel-insert))
-  :init
-  (defun tempel-setup-capf ()
-    (setq-local completion-at-point-functions
-                (cons #'tempel-expand
-                      completion-at-point-functions)))
-  :hook ((prog-mode . tempel-setup-capf)
-         (text-mode . tempel-setup-capf)))
-
 (provide 'init-navigation)

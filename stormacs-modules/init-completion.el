@@ -230,4 +230,18 @@
               ("C-x p f" . consult-project-extra-find)
               ("C-x p o" . consult-project-extra-find-other-window)))
 
+(use-package tempel
+  :ensure (tempel :host github :repo "minad/tempel")
+  :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
+         ("M-*" . tempel-insert))
+  :init
+  (defun tempel-setup-capf ()
+    (setq-local completion-at-point-functions
+                (cons #'tempel-expand
+                      completion-at-point-functions)))
+  :hook ((prog-mode . tempel-setup-capf)
+         (conf-mode . tempel-setup-capf)
+         (text-mode . tempel-setup-capf)
+         (eglot-managed-mode . tempel-setup-capf)))
+
 (provide 'init-completion)

@@ -76,6 +76,12 @@ eshell-mode
 (unl "unless { " p " } { " q " }")
 (unle "unless { " p " } { " p " } { " q " }")
 
+c-mode c-ts-mode c++-mode c++-ts-mode
+
+(incguards "#ifndef " (concat (upcase (file-name-base (or (buffer-file-name) (buffer-name)))) "_H") n
+           "#define " (concat (upcase (file-name-base (or (buffer-file-name) (buffer-name)))) "_H") n n r n n
+           "#endif  // " (concat (upcase (file-name-base (or (buffer-file-name) (buffer-name)))) "_H"))
+
 ;; Local Variables:
 ;; mode: lisp-data
 ;; outline-regexp: "[a-z]"
