@@ -149,12 +149,33 @@
   :init
   (marginalia-mode))
 
+(use-package completion-preview
+  :hook
+  ((comint-mode-hook
+    eshell-mode-hook
+    prog-mode-hook
+    text-mode-hook) . completion-preview-mode)
+  (minibuffer-setup-hook . completion-preview-enable-in-minibuffer)
+  :bind
+  (:map completion-preview-active-mode-map
+        ("C-i" . completion-preview-complete)
+        ("C-e" . completion-preview-insert))
+  :init
+  (setq completion-preview-adapt-background-color nil)
+  (setq completion-preview-minimum-symbol-length 2)
+  :config
+  (push 'puni-backward-delete-char completion-preview-commands)
+  (defun completion-preview-enable-in-minibuffer ()
+    "Enable Corfu completion in the minibuffer, e.g., `eval-expression'."
+    (when (where-is-internal #'completion-at-point (list (current-local-map)))
+      (completion-preview-mode 1))))
+
 (use-package corfu
   :ensure (corfu :host github :repo "minad/corfu")
   :after orderless
   :custom
   (corfu-cycle t)                     ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)                      ;; Enable auto completion
+  ;; (corfu-auto t)                      ;; Enable auto completion
   (corfu-quit-at-boundary 'separator) ;; Automatically quit at word boundary unless `corfu-insert-separator' has been used
   (corfu-separator ?\s)               ;; Separator is set to space, in order to use with ordeless
   (corfu-quit-no-match t)             ;; Quit if no match
