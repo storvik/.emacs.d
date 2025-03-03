@@ -7,8 +7,9 @@
               :map magit-status-mode-map
               ("TAB" . magit-section-toggle)
               ("<C-tab>" . magit-section-cycle))
-  :config
-  (setq magit-git-executable "git"))
+  :custom
+  (auto-revert-check-vc-info t)
+  (magit-git-executable "git"))
 
 (use-package diff-hl
   :ensure (diff-hl :host github :repo "dgutov/diff-hl")
@@ -30,7 +31,37 @@
 
 (use-package git-timemachine
   :ensure (git-timemachine :host codeberg :repo "pidu/git-timemachine")
-  :commands (git-timemachine))
+  :commands (git-timemachine)
+  :hook (git-timemachine-mode . (lambda ()
+                                  (when git-timemachine-mode
+                                    (stormacs-tsc-timemachine))))
+  :config
+  (transient-define-prefix stormacs-tsc-timemachine ()
+    "Git timemachine transient ."
+    [[:description
+      (lambda ()
+        ;; silence echo area and log
+        (let ((inhibit-message t)
+              (message-log-max nil))
+          (concat "Git timemachine: "
+                  (when git-timemachine-revision
+                    (git-timemachine--show-minibuffer-details git-timemachine-revision))
+                  "\n")))
+      :pad-keys t
+      ("q" "quit" git-timemachine-quit)]]
+    [[""
+      ("n" "Show next revision" (lambda () (interactive) (with-silent-execution (git-timemachine-show-next-revision))) :transient t)
+      ("p" "Show prev revision" (lambda () (interactive) (with-silent-execution (git-timemachine-show-previous-revision))) :transient t)
+      ("g" "Show nth revision" (lambda () (interactive) (with-silent-execution (git-timemachine-show-nth-revision))) :transient t)
+      ("h" "Show nearest revision" (lambda () (interactive) (with-silent-execution (git-timemachine-show-nearest-revision))) :transient t)
+      ("t" "Show fuzzy revision" (lambda () (interactive) (with-silent-execution (git-timemachine-show-revision-fuzzy))) :transient t)
+      ("i" "Show revision introducing" (lambda () (interactive) (with-silent-execution (git-timemachine-show-revision-introducing))) :transient t)]
+     [""
+      ("w" "kill abbreviated revision" git-timemachine-kill-abbreviated-revision :transient t)
+      ("W" "kill revision" git-timemachine-kill-revision :transient t)]
+     [""
+      ("b" "blame current revision" git-timemachine-blame :transient t)
+      ("c" "show commit" git-timemachine-show-commit :transient t)]]))
 
 (use-package forge
   :ensure (forge :host github :repo "magit/forge")

@@ -119,6 +119,12 @@
              (not (darwin-p))) ;; menu-bar-mode needed when using macports emacs
     (menu-bar-mode -1)))
 
+(defmacro with-silent-execution (&rest form)
+  "Execute FORM with messages temporarily disabled."
+  `(let ((inhibit-message t)
+         (message-log-max nil))
+     ,@form))
+
 (require 'init-common)
 (require 'init-appearance)
 (require 'init-keybindings)
