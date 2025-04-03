@@ -11,12 +11,13 @@
   (setq tab-width 4))
 (add-hook 'c-mode-common-hook 'stormacs-c-mode-common-hook)
 
+(setq c-ts-mode-indent-offset 4)
+
 (use-package meson-mode
   :ensure (meson-mode :host github :repo "wentasah/meson-mode"))
 
-;; TODO: How to do this?
-;; https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el
-;; (elpaca-use-package
-;;     (cmake-mode :host gitlab :repo ""))
+(use-package emacs
+  :ensure nil
+  :mode ("CMakeLists.txt\\'" . cmake-ts-mode))
 
 (provide 'init-developer-c)
