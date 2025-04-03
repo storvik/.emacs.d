@@ -70,6 +70,12 @@
   :ensure (minions :host github :repo "tarsius/minions")
   :config (minions-mode 1))
 
+(use-package mlscroll
+  :ensure (mlscroll :host github :repo "jdtsmith/mlscroll")
+  :config
+  ;; (setq mlscroll-shortfun-min-width 11) ; truncate which-func
+  (mlscroll-mode 1))
+
 (use-package emojify
   :ensure (emojify :host github :repo "iqbalansari/emacs-emojify")
   :when (wsl-p)
