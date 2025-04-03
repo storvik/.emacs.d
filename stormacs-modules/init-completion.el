@@ -150,11 +150,11 @@
   (marginalia-mode))
 
 (use-package completion-preview
+  :ensure nil
   :hook
   ((comint-mode-hook
     eshell-mode-hook
-    prog-mode-hook
-    text-mode-hook) . completion-preview-mode)
+    prog-mode-hook) . completion-preview-mode)
   (minibuffer-setup-hook . completion-preview-enable-in-minibuffer)
   :bind
   (:map completion-preview-active-mode-map
