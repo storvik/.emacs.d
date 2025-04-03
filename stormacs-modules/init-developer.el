@@ -135,7 +135,28 @@
 
 (use-package symbol-overlay
   :ensure (symbol-overlay :host github :repo "wolray/symbol-overlay")
-  :hook (prog-mode . symbol-overlay-mode))
+  :hook (prog-mode . symbol-overlay-mode)
+  :custom
+  (symbol-overlay-inhibit-map t)
+  :config
+  (transient-define-prefix stormacs-tsc-symbol-overlay ()
+    "Prefix with descriptions specified with slots."
+    ["Symbol overlay\n"
+     [("p" "previous" symbol-overlay-jump-prev :transient t)
+      ("n" "next" symbol-overlay-jump-next :transient t)
+      ("<" "first" symbol-overlay-jump-first :transient t)
+      (">" "last" symbol-overlay-jump-last :transient t)]
+     [("i" "put" symbol-overlay-put :transient t)
+      ("y" "copy" symbol-overlay-save-symbol)
+      ("r" "rename" symbol-overlay-rename)]
+     [("q" "query replace" symbol-overlay-query-replace)
+      ("t" "toggle scope" symbol-overlay-toggle-in-scope :transient t)
+      ("d" "definition" symbol-overlay-jump-to-definition)
+      ("m" "mark" symbol-overlay-echo-mark)]
+     [("P" "prev symbol" symbol-overlay-switch-backward :transient t)
+      ("N" "next symbol" symbol-overlay-switch-forward :transient t)
+      ""
+      ("d" "remove all" symbol-overlay-remove-all)]]))
 
 (use-package apheleia
   :ensure (apheleia :host github :repo "raxod502/apheleia")
