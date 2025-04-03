@@ -158,6 +158,14 @@
       ""
       ("d" "remove all" symbol-overlay-remove-all)]]))
 
+(use-package visual-replace
+  :ensure (visual-replace :host github :repo "szermatt/visual-replace")
+  :bind (:map stormacs-overrides-minor-mode-map
+              ("M-s v" . (lambda () (interactive) (call-interactively 'visual-replace))))
+  :config
+  (define-key visual-replace-mode-map (kbd "M-s")
+              visual-replace-secondary-mode-map))
+
 (use-package apheleia
   :ensure (apheleia :host github :repo "raxod502/apheleia")
   :config
