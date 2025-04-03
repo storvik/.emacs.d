@@ -130,9 +130,7 @@
   :when sys-unix-p
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages))
-  :config
-  (with-eval-after-load 'stormacs-gui
-    (global-jinx-mode)))
+  :hook (elpaca-after-init . global-jinx-mode))
 
 (use-package inline-diff
   :ensure (inline-diff :host "code.tecosaur.net/" :repo "tec/inline-diff")
@@ -167,33 +165,6 @@
     :host "localhost:11434"
     :stream t
     :models '("mistral:latest")))
-
-(use-package gptel-rewrite
-  :ensure (gptel-rewrite :host github :repo "karthink/gptel" :files (:defaults "extensions/vertico-directory.el"))
-  :bind (:map gptel-rewrite-actions-map
-              ("C-c C-i" . gptel--rewrite-inline-diff))
-  :config
-  (defun gptel--rewrite-inline-diff (&optional ovs)
-    "Start an inline-diff session on OVS."
-    (interactive (list (gptel--rewrite-overlay-at)))
-    (unless (require 'inline-diff nil t)
-      (user-error "Inline diffs require the inline-diff package."))
-    (when-let* ((ov-buf (overlay-buffer (or (car-safe ovs) ovs)))
-                ((buffer-live-p ov-buf)))
-      (with-current-buffer ov-buf
-        (cl-loop for ov in (ensure-list ovs)
-                 for ov-beg = (overlay-start ov)
-                 for ov-end = (overlay-end ov)
-                 for response = (overlay-get ov 'gptel-rewrite)
-                 do (delete-overlay ov)
-                 (inline-diff-words
-                  ov-beg ov-end response)))))
-  ;; TODO: Figure out if this should work?
-  ;; (when (boundp 'gptel--rewrite-dispatch-actions)
-  ;;   (add-to-list
-  ;;    'gptel--rewrite-dispatch-actions '(?i "inline-diff")
-  ;;    'append))
-  )
 
 (when (wsl-p)
   (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
