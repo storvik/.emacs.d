@@ -205,9 +205,10 @@
            ("make:all" . "make all"))))
   (push `((file-exists-p "pubspec.yaml")
           ("flutter:run" . ,#'flutter-run)
-          ("flutter:hot-reload" . ,#'flutter-run-or-hotreload)
+          ("flutter:hot reload" . ,#'flutter-run-or-hot-reload)
           ("flutter:restart" . ,#'flutter-hot-restart)
-          ("flutter:quit" . ,#'flutter-quit))
+          ("flutter:quit" . ,#'flutter-quit)
+          ("flutter:build apk" . "flutter build apk"))
         compile-multi-config))
 
 (use-package consult-compile-multi
