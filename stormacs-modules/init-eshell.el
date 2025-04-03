@@ -65,4 +65,9 @@
   :config
   (eshell-atuin-mode))
 
+(use-package eat
+  :ensure (:host codeberg :repo "akib/emacs-eat")
+  :hook ((eshell-load . eat-eshell-mode)
+         (eshell-load . eat-eshell-visual-command-mode)))
+
 (provide 'init-eshell)
