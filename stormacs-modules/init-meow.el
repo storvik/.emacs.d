@@ -1,7 +1,32 @@
 ;; init-meow.el --- Meow modal editing -*- lexical-binding: t; -*-
-;; TODO: Should be possible to turn off meow in host config.
 
-;; TODO: Should make it possible to choose qwerty?
+;; TODO: Review this:
+;; (setq meow-two-char-escape-sequence "jk")
+;; (setq meow-two-char-escape-delay 0.5)
+
+;; (defun meow--two-char-exit-insert-state (s)
+;;   (when (meow-insert-mode-p)
+;;     (let ((modified (buffer-modified-p)))
+;;       (insert (elt s 0))
+;;       (let* ((second-char (elt s 1))
+;;              (event
+;;               (if defining-kbd-macro
+;;                   (read-event nil nil)
+;;                 (read-event nil nil meow-two-char-escape-delay))))
+;;         (when event
+;;           (if (and (characterp event) (= event second-char))
+;;               (progn
+;;                 (backward-delete-char 1)
+;;                 (set-buffer-modified-p modified)
+;;                 (meow--execute-kbd-macro "<escape>"))
+;;             (push event unread-command-events)))))))
+;; (defun meow-two-char-exit-insert-state ()
+;;   (interactive)
+;;   (meow--two-char-exit-insert-state meow-two-char-escape-sequence))
+;; (define-key meow-insert-state-keymap (substring meow-two-char-escape-sequence 0 1)
+;;             #'meow-two-char-exit-insert-state)
+
+;; TODO: Should add flymake prev / next, expand region, gptel, consult?
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-colemak-dh)
   (meow-motion-overwrite-define-key
@@ -37,11 +62,11 @@
    '("9" . meow-expand-9)
    '("-" . negative-argument)
    '(";" . meow-reverse)
-   '(":" . symbol-overlay-put)
+   '(":" . stormacs-tsc-symbol-overlay)
    '("," . meow-inner-of-thing)
    '("." . meow-bounds-of-thing)
-   '("[" . meow-beginning-of-thing)
-   '("]" . meow-end-of-thing)
+   '("<" . meow-beginning-of-thing)
+   '(">" . meow-end-of-thing)
    '("/" . meow-visit)
    '("a" . meow-append)
    '("A" . meow-open-below)
@@ -84,6 +109,7 @@
    '("x" . meow-delete)
    '("X" . meow-backward-delete)
    '("y" . meow-save)
+   '("Y" . gptel-menu)
    '("z" . meow-pop-selection)
    '("Z" . pop-global-mark)
    '("'" . repeat)
