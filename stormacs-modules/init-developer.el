@@ -178,14 +178,17 @@
   (setf (alist-get 'python-mode apheleia-mode-alist) 'ruff)
   (apheleia-global-mode +1))
 
-(use-package aider
-  :ensure (:host github :repo "tninja/aider.el")
-  :bind ("C-c a" . aider-transient-menu)
+(use-package aidermacs
+  :ensure (aidermacs :host github :repo "MatthewZMD/aidermacs" :files ("*.el"))
+  :bind (:map stormacs-overrides-minor-mode-map
+              ("C-c a" . aidermacs-transient-menu))
   :config
-  ;; Use claude-3-5-sonnet cause it is best in aider benchmark
-  (setq aider-args `("--model" "anthropic/claude-3-5-sonnet-20241022"
-                     "--anthropic-api-key" ,(anthropic-api-key)
-                     "--no-auto-commits")))
+  (setq aidermacs-use-architect-mode t)
+  (setenv "OPENAI_API_KEY" (openai-api-key))
+  (setq aidermacs-architect-model "o1-mini")
+  (setenv "ANTHROPIC_API_KEY" (anthropic-api-key))
+  (setq aidermacs-editor-model "anthropic/claude-3-5-sonnet-20241022"))
+
 (use-package compile-multi
   :ensure (compile-multi :host github :repo "mohkale/compile-multi")
   :bind
