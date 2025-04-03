@@ -17,7 +17,9 @@
 
 (use-package scad-mode
   :ensure (scad-mode :host github :repo "openscad/emacs-scad-mode")
-  :config (add-to-list 'eglot-server-programs
-		               '(scad-mode . ("openscad-lsp" "--stdio"))))
+  :after eglot
+  :config
+  (add-to-list 'eglot-server-programs
+		       '(scad-mode . ("openscad-lsp" "--stdio"))))
 
 (provide 'init-developer-script)
