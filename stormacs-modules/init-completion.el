@@ -195,7 +195,9 @@
       (corfu-mode 1)))
   (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
   ;; Enable corfu globally
-  (global-corfu-mode))
+  (global-corfu-mode)
+  ;; Extensions
+  (corfu-history-mode))
 
 (use-package nerd-icons-corfu
   :ensure (nerd-icons-corfu :host github :repo "LuigiPiucco/nerd-icons-corfu")
