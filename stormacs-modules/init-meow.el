@@ -1,5 +1,18 @@
 ;; init-meow.el --- Meow modal editing -*- lexical-binding: t; -*-
 
+(use-package repeat-fu
+  :ensure (repeat-fu :host codeberg :repo "ideasman42/emacs-repeat-fu")
+  :commands (repeat-fu-mode repeat-fu-execute)
+  :hook
+  ((meow-mode) . (lambda ()
+                   (when (and (not (minibufferp)) (not (derived-mode-p 'special-mode)))
+                     (repeat-fu-mode)
+                     ;; (define-key meow-normal-state-keymap (kbd "C-'") 'repeat-fu-execute)
+                     ;; (define-key meow-insert-state-keymap (kbd "C-'") 'repeat-fu-execute)
+                     )))
+  :config
+  (setq repeat-fu-preset 'meow))
+
 ;; TODO: Review this:
 ;; (setq meow-two-char-escape-sequence "jk")
 ;; (setq meow-two-char-escape-delay 0.5)
@@ -96,6 +109,7 @@
    '("o" . meow-block)
    '("O" . meow-to-block)
    '("p" . meow-yank)
+   '("P" . repeat-fu-execute)
    '("q" . meow-quit)
    '("r" . meow-replace)
    '("s" . meow-insert)
