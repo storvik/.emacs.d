@@ -28,6 +28,10 @@
 (add-hook 'elpaca-after-init-hook (lambda () (recentf-mode 1)))
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(setq ediff-keep-variants nil)
+(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
 (setq epg-pinentry-mode 'loopback)
 
 (winner-mode 1)
