@@ -203,6 +203,28 @@
   (setenv "ANTHROPIC_API_KEY" (anthropic-api-key))
   (setq aidermacs-editor-model "anthropic/claude-3-5-sonnet-20241022"))
 
+(use-package minuet
+  :ensure (minuet :host github :repo "milanglacier/minuet-ai.el")
+  :bind
+  (
+   :map stormacs-xref-keymap
+   ("M" . #'minuet-complete-with-minibuffer) ;; use minibuffer for completion
+   ("m" . #'minuet-show-suggestion) ;; use overlay for completion
+   :map minuet-active-mode-map
+   ;; These keymaps activate only when a minuet suggestion is displayed in the current buffer
+   ("M-p" . #'minuet-previous-suggestion) ;; invoke completion or cycle to next completion
+   ("M-n" . #'minuet-next-suggestion) ;; invoke completion or cycle to previous completion
+   ("M-a" . #'minuet-accept-suggestion) ;; accept whole completion
+   ("M-e" . #'minuet-dismiss-suggestion)
+   ("M-A" . #'minuet-accept-suggestion-line))
+  :config
+  (setq minuet-provider 'claude)
+  (plist-put minuet-claude-options :api-key #'anthropic-api-key)
+  (plist-put minuet-claude-options :model "claude-sonnet-4-20250514")
+
+  ;; The maximum total characters of the context before and after cursor
+  (setq minuet-context-window 16000))
+
 (use-package compile-multi
   :ensure (compile-multi :host github :repo "mohkale/compile-multi")
   :bind
