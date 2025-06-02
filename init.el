@@ -48,6 +48,9 @@
                               (time-subtract (current-time) before-init-time)))
                      gcs-done)))
 
+;; Define elpaca lock file
+;; (setq elpaca-lock-file (expand-file-name "elpaca.lock" user-emacs-directory))
+
 (setq sys-unix-p (or (eq system-type 'gnu/linux)
                      (eq system-type 'darwin)))
 
