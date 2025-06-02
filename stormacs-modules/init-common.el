@@ -30,6 +30,8 @@
 
 (setq epg-pinentry-mode 'loopback)
 
+(winner-mode 1)
+
 (use-package exec-path-from-shell
   :ensure (exec-path-from-shell :host github :repo "purcell/exec-path-from-shell")
   :when sys-unix-p
@@ -117,10 +119,6 @@
                  (with-selected-frame frame
                    (set-cursor-color col)))))))
        sym))))
-
-(use-package transpose-frame
-  :ensure (transpose-frame :host github :repo "emacsorphanage/transpose-frame")
-  :commands (transpose-frame flip-frame flop-frame rotate-frame))
 
 (use-package alert
   :ensure (alert :host github :repo "jwiegley/alert"))

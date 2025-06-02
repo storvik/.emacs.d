@@ -220,9 +220,13 @@
       ("d" "delete" delete-window :transient t)]
 
      ["Transpose frame"
-      ("t" "transpose" transpose-frame)
-      ("r" "rotate" rotate-frame-clockwise)
-      ("R" "rotate counterclock" rotate-frame-anticlockwise)]
+      ("t" "transpose" window-layout-transpose)
+      ("r" "rotate" rotate-windows)
+      ("R" "rotate counterclock" rotate-windows-back)]
+
+     ["Winne"
+      ("u" "undo" winner-undo)
+      ("U" "redo" winner-redo)]
 
      [("a" "ace windows" ace-window :transient t)
       ("o" "cycle windows" other-window :transient t)]]))
