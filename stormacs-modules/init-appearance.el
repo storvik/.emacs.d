@@ -131,7 +131,15 @@
                                                 :foreground "white"))))
           ("CANCELLED" . ((lambda (tag) (svg-lib-tag tag nil
                                                      :background "forest green"
-                                                     :foreground "white"))))))
+                                                     :foreground "white"))))
+          ;; Jira tags
+          ("jira#" . ((lambda (tag) (svg-tag-make tag :beg 0 :end -1 :margin 0 :crop-right t))))
+          ("jira#\\([A-Z]+-[0-9]+\\)" . ((lambda (tag) (svg-tag-make tag :beg 0 :margin 0 :crop-left t :inverse t))))
+          ;; Github tags
+          ("\\(gissue@[a-zA-Z_\-]+/[a-zA-Z_\-]+#\\)" . ((lambda (tag) (svg-tag-make tag :beg 7 :end -1 :margin 0 :crop-right t))))
+          ("gissue@[a-zA-Z_\-]+/[a-zA-Z_\-]+#\\([0-9]+\\)" . ((lambda (tag) (svg-tag-make tag :beg 0 :margin 0 :crop-left t :inverse t))))
+          ("\\(gpull@[a-zA-Z_\-]+/[a-zA-Z_\-]+#\\)" . ((lambda (tag) (svg-tag-make tag :beg 6 :end -1 :margin 0 :crop-right t))))
+          ("gpull@[a-zA-Z_\-]+/[a-zA-Z_\-]+#\\([0-9]+\\)" . ((lambda (tag) (svg-tag-make tag :beg 0 :margin 0 :crop-left t :inverse t))))))
   (defun stormacs-org-svg-tag-mode ()
     (interactive)
     (setq-local svg-tag-tags stormacs-org-svg-tag-tags)

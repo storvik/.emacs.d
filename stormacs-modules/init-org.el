@@ -75,7 +75,7 @@
                  "* %(org-cliplink-capture)%?\n" :empty-lines-before 0))))
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n@/!)" "WIPS(s@/!)" "|" "DONE(d)")
+        '((sequence "TODO(t)" "NEXT(n@/!)" "WIPS(s@/!)" "|" "DONE(d@/!)")
           (sequence "DEPENDSON(w@/!)" "FOLLOWUPS(f@/!)" "|" "DELEGATED(g@/!)" "CANCELLED(c@/!)")
           (sequence "PHONE" "MEETING" "|")))
 
@@ -140,6 +140,7 @@
                      ((org-agenda-prefix-format "  %i %-22(stormacs-agenda-title) %-12(stormacs-agenda-context-emoji)")
                       (org-agenda-hide-tags-regexp "@") ;; remove context tags from tag list
                       (org-agenda-remove-tags t)
+                      (org-agenda-todo-list-sublevels nil)
                       (org-agenda-overriding-header "")
                       (org-super-agenda-groups
                        '((:discard (:not (:tag ("work"))) :file-path "inbox")
@@ -335,6 +336,25 @@
   :bind
   (:map stormacs-prefix-map ("o" . stormacs-tsc-org))
   :config
+  (defun stormacs-org-open-todo ()
+    "Echo the current org-mode TODO item and check for jira/github."
+    (interactive)
+    (when (eq major-mode 'org-mode)
+      (let ((todo (org-get-heading t t t t)))
+        (cond
+         ((string-match "jira#\\([A-Z]+-[0-9]+\\)" todo)
+          (jira-actions-open-issue (match-string 1 todo)))
+         ((string-match "gissue@\\([a-zA-Z_\-]+/[a-zA-Z_\-]+\\)#\\([0-9]+\\)" todo)
+          (browse-url (concat "https://www.github.com/"
+                              (match-string 1 todo)
+                              "/issue/"
+                              (match-string 2 todo))))
+         ((string-match "gpull@\\([a-zA-Z_\-]+/[a-zA-Z_\-]+\\)#\\([0-9]+\\)" todo)
+          (browse-url (concat "https://www.github.com/"
+                              (match-string 1 todo)
+                              "/pull/"
+                              (match-string 2 todo))))
+         (t (message "Could not find Jira or Github link in this todo"))))))
   (transient-define-prefix stormacs-tsc-org ()
     "Prefix with descriptions specified with slots."
     ["Stormacs org mode transient\n"
