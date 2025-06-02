@@ -3,6 +3,20 @@
 ;; Use completing read functions instead of xref popup
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 
+;; Add prefix map used in M-.
+;; Map should contain navigation and some AI related stuff.
+(global-unset-key (kbd "M-."))
+(define-prefix-command 'stormacs-xref-keymap)
+(bind-keys :prefix-map stormacs-xref-keymap
+           :prefix-docstring "Stormacs xref map"
+           :prefix "M-.")
+(define-key stormacs-xref-keymap (kbd ",") 'xref-go-back)
+(define-key stormacs-xref-keymap (kbd ".") 'xref-find-definitions)
+(define-key stormacs-xref-keymap (kbd "/") 'xref-find-references)
+
+;; Assign stormacs-xref-keymap to M-. globally
+(global-set-key (kbd "M-.") stormacs-xref-keymap)
+
 (use-package emacs
   :ensure nil
   :bind (:map stormacs-overrides-minor-mode-map
