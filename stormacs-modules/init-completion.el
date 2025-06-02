@@ -125,7 +125,7 @@
   :after sudo-edit
   :demand t
   :bind (("C-." . embark-act)
-         ("M-." . embark-dwim)
+         ;; ("M-." . embark-dwim)
          ("C-h b" . embark-bindings)
          :map embark-file-map
          ("s" . sudo-edit))

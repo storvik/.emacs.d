@@ -1,6 +1,6 @@
 dtache.db
 .chatgpt-shell.el
-forge-database.sqlite
+*.sqlite
 multisession/*
 elpaca/*
 auto-save-list/*
@@ -43,3 +43,4 @@ history
 detached-*
 *.elc
 ielm-history.eld
+request/*
